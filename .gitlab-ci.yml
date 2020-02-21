@@ -1,6 +1,6 @@
 stages:
     - publish
-    - cleanup
+    - test
 
 publish:test-utilities:master:
     stage: publish
@@ -28,4 +28,12 @@ publish:test-utilities:tag:
     when: manual
     script:
         - ./bin/publish-package.sh tag
+
+test:package-integration:
+    stage: test
+    image: php
+    script:
+        - curl -sS https://getcomposer.org/installer | php -- --install-dir=. --filename=composer
+        - composer init -n
+        - composer require arjanfrans/test
 
