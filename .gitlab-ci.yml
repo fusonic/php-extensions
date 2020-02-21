@@ -1,6 +1,48 @@
 stages:
-    - publish
+    - ci
     - test
+    - publish
+
+variables:
+    DOCKER_IMAGE: docker:19.03
+    DOCKER_DIND_IMAGE: docker:19.03-dind
+    PHP_CLI_IMAGE: $CI_REGISTRY_IMAGE/php-cli:latest
+
+ci:build:php-cli-image:
+    stage: ci
+    image: ${DOCKER_IMAGE}
+    services:
+        - ${DOCKER_DIND_IMAGE}
+    script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker build --pull --cache-from $PHP_CLI_IMAGE --cache-from master -f docker/php-cli/Dockerfile --tag $PHP_CLI_IMAGE .
+        - docker push $PHP_CLI_IMAGE
+    interruptible: true
+    only:
+        refs:
+            - master
+        changes:
+            - docker/php-cli/**/*
+
+test:phpunit:test-utilities:
+    stage: test
+    image: ${PHP_CLI_IMAGE}
+    only:
+        changes:
+            - packages/test-utilities/**/*
+    interruptible: true
+    script:
+        - cd packages/test-utilities
+        - composer install
+        - vendor/bin/phpunit
+
+test:package-integration:
+    stage: test
+    image: ${PHP_CLI_IMAGE}
+    interruptible: true
+    script:
+        - composer init -n
+        - composer require arjanfrans/test
 
 publish:test-utilities:master:
     stage: publish
@@ -29,20 +71,4 @@ publish:test-utilities:tag:
     script:
         - ./bin/publish-package.sh tag
 
-test:phpunit:test-utilities:
-    stage: test
-    image: php:7.4-cli
-    script:
-        - cd packages/test-utilities
-        - curl -sS https://getcomposer.org/installer | php --
-        - php composer.phar install
-        - vendor/bin/phpunit
-
-test:package-integration:
-    stage: test
-    script:
-        - apt-get update && apt-get install -y --no-install-recommends php
-        - curl -sS https://getcomposer.org/installer | php --
-        - php composer.phar init -n
-        - php composer.phar require arjanfrans/test
 
