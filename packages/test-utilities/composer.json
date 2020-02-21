@@ -1,7 +1,7 @@
 {
     "name": "arjanfrans/test",
     "license": "proprietary",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "PHPUnit testing utilities.",
     "type": "library",
     "authors": [
