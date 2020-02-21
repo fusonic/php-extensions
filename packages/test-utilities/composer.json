@@ -1,0 +1,19 @@
+{
+    "name": "arjanfrans/test",
+    "license": "proprietary",
+    "version": "0.0.2",
+    "description": "PHPUnit testing utilities.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Fusonic GmbH",
+            "email": "office@fusonic.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Test\\": "src/"
+        }
+    },
+    "require": {}
+}
