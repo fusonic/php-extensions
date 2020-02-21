@@ -32,7 +32,7 @@ publish:test-utilities:tag:
 test:package-integration:
     stage: test
     script:
-        - apt update && apt install php
+        - apt update && apt install -y --no-install-recommends php
         - curl -sS https://getcomposer.org/installer | php --
         - php composer.phar init -n
         - php composer.phar require arjanfrans/test
