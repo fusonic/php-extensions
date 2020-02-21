@@ -1,0 +1,19 @@
+phpunit:test-utilities:
+    stage: test
+    image: ${PHP_CLI_IMAGE}
+    only:
+        changes:
+            - packages/test-utilities/**/*
+    interruptible: true
+    script:
+        - cd packages/test-utilities
+        - composer install
+        - vendor/bin/phpunit
+
+package-integration:
+    stage: test
+    image: ${PHP_CLI_IMAGE}
+    interruptible: true
+    script:
+        - composer init -n
+        - composer require arjanfrans/test

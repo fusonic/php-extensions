@@ -1,0 +1,27 @@
+test-utilities:master:
+    stage: publish
+    variables:
+        PACKAGE: packages/test-utilities
+        REPOSITORY: git@github.com:arjanfrans/test.git
+    only:
+        refs:
+            - master
+        changes:
+            - packages/test-utilities/**/*
+    script:
+        - ./bin/publish-package.sh master
+
+test-utilities:tag:
+    stage: publish
+    variables:
+        PACKAGE: packages/test-utilities
+        REPOSITORY: git@github.com:arjanfrans/test.git
+    only:
+        refs:
+            - master
+        changes:
+            - packages/test-utilities/**/*
+    when: manual
+    script:
+        - ./bin/publish-package.sh tag
+
