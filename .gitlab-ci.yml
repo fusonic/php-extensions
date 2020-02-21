@@ -31,9 +31,9 @@ publish:test-utilities:tag:
 
 test:package-integration:
     stage: test
-    image: php:7.4-cli
     script:
-        - curl -sS https://getcomposer.org/installer | php -- --filename=composer
-        - php composer init -n
-        - php composer require arjanfrans/test
+        - apt update && apt install php
+        - curl -sS https://getcomposer.org/installer | php --
+        - php composer.phar init -n
+        - php composer.phar require arjanfrans/test
 
