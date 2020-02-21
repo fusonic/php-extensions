@@ -1,7 +1,7 @@
 include:
-    - local: 'gitlab-cli/build.yml'
-    - local: 'gitlab-cli/tests.yml'
-    - local: 'gitlab-cli/publish.yml'
+    - local: 'gitlab-ci/build.yml'
+    - local: 'gitlab-ci/tests.yml'
+    - local: 'gitlab-ci/publish.yml'
 
 stages:
     - ci
