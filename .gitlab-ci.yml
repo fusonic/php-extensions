@@ -33,7 +33,7 @@ test:package-integration:
     stage: test
     image: php:7.4-cli
     script:
-        - curl -sS https://getcomposer.org/installer | php -- --install-dir=. --filename=composer
-        - composer init -n
-        - composer require arjanfrans/test
+        - curl -sS https://getcomposer.org/installer | php -- --filename=composer
+        - php composer init -n
+        - php composer require arjanfrans/test
 
