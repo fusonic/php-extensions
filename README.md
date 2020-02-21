@@ -8,7 +8,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 ## Development
 
 A Docker container with PHP and Composer is included.
-To run it execute `./docker/php-cli/run.sh` or `./docker/php-cli/run.sh package/<package name>` to set a given
+To run it execute `./docker/php-cli/run.sh` or `./docker/php-cli/run.sh packages/<package name>` to set a given
 package as the working directory.
 
 ## Tests
