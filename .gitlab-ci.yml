@@ -29,10 +29,19 @@ publish:test-utilities:tag:
     script:
         - ./bin/publish-package.sh tag
 
+test:phpunit:test-utilities:
+    stage: test
+    image: php:7.4-cli
+    script:
+        - cd packages/test-utilities
+        - curl -sS https://getcomposer.org/installer | php --
+        - php composer.phar install
+        - vendor/bin/phpunit
+
 test:package-integration:
     stage: test
     script:
-        - apt update && apt install -y --no-install-recommends php
+        - apt-get update && apt-get install -y --no-install-recommends php
         - curl -sS https://getcomposer.org/installer | php --
         - php composer.phar init -n
         - php composer.phar require arjanfrans/test

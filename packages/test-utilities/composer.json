@@ -15,5 +15,8 @@
             "Test\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "php/php": ">=7.0 <8.0.0",
+        "phpunit/phpunit": "^9.0"
+    }
 }
