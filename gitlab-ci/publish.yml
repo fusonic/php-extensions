@@ -1,26 +1,35 @@
-.publish:
+.publish-tag:
     stage: publish
+    variables:
+        PUBLISH: tag
     script:
         - ./bin/publish-package.sh $PUBLISH
-    only:
-        changes:
-            - $PACKAGE/**/*
+    when: manual
 
-test-utilities:master:
-    extends: .publish
+.publish-master:
+    extends: .publish-tag
     variables:
         PUBLISH: master
-        PACKAGE: packages/test-utilities
-        REPOSITORY: git@github.com:arjanfrans/test.git
     only:
         refs:
             - master
+    when: always
 
-test-utilities:tag:
-    extends: .publish
+test-utilities:master:
+    extends: .publish-master
     variables:
-        PUBLISH: tag
         PACKAGE: packages/test-utilities
         REPOSITORY: git@github.com:arjanfrans/test.git
-    when: manual
+    only:
+        changes:
+            - packages/test-utilities/**/*
+
+test-utilities:tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: packages/test-utilities
+        REPOSITORY: git@github.com:arjanfrans/test.git
+    only:
+        changes:
+            - packages/test-utilities/**/*
 
