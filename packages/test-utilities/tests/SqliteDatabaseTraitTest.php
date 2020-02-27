@@ -1,5 +1,6 @@
 <?php
 
+namespace Fusonic\TestUtilities\Tests;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
