@@ -1,0 +1,31 @@
+.publish-tag:
+    stage: publish
+    script:
+        - ./bin/publish-package.sh tag
+    when: manual
+
+.publish-master:
+    stage: publish
+    script:
+        - ./bin/publish-package.sh master
+    only:
+        refs:
+            - master
+    when: always
+
+.phpunit-test:
+    stage: test
+    image: php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
+    interruptible: true
+    variables:
+        APP_ENV: prod
+    before_script:
+        - apt-get update && apt-get install unzip libzip-dev -y --no-install-recommends
+        - docker-php-ext-install zip
+        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+        - cd packages/${PACKAGE}
+        - composer validate --no-check-all
+        - composer install
+    script:
+        - vendor/bin/phpunit
+

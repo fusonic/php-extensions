@@ -13,16 +13,18 @@ package as the working directory.
 
 ## Tests
 
-The `gitlab-ci/tests.yml` file contains tests. Unit tests for packages are also included here.
+The `ci/packages/<package name>` Gitlab CI file should contain the tests for a package.
 
 ## Publishing
 
 Each package must have a public Git repository to which the source will be published.
 
 
-The changes of packages merged into the master branch are automatically published (as `dev-master`). In order to publish a new
+The changes of packages merged into the master branch will automatically be published (as `dev-master`). In order to publish a new
 version, make sure to increase the version inside the `composer.json` file of the package. Once this is merged a manual
 `publish` pipeline step can be triggered.
+
+Publishing stages for individual packages are defined in `ci/packages/<package name>` Gitlab CI file.
 
 # CI Pipelines
 
