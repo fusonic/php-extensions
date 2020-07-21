@@ -30,6 +30,7 @@ class SqliteDatabaseTraitTest extends TestCase
         $sqliteFile = $this->getSqlitePath();
         $handle = fopen($sqliteFile, 'wb');
         $data = '{}';
+
         fwrite($handle, $data);
         fclose($handle);
     }

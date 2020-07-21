@@ -1,4 +1,7 @@
-FROM php:7.4-cli
+ARG PHP_VERSION
+ARG PHP_DOCKER_RELEASE
+
+FROM php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git zip unzip && \

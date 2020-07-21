@@ -1,16 +1,16 @@
 include:
-    - local: 'gitlab-ci/build.yml'
-    - local: 'gitlab-ci/tests.yml'
-    - local: 'gitlab-ci/publish.yml'
+    - local: 'ci/_includes.yml'
+    - local: 'ci/packages/test-utilities.yml'
 
 stages:
-    - ci
+    - install
     - test
     - publish
 
 variables:
     DOCKER_IMAGE: docker:19.03
     DOCKER_DIND_IMAGE: docker:19.03-dind
-    PHP_CLI_IMAGE: $CI_REGISTRY_IMAGE/php-cli:latest
+    PHP_VERSION: '7.4'
+    PHP_DOCKER_RELEASE: 'buster'
 
 
