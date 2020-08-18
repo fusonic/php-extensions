@@ -1,0 +1,29 @@
+phpunit:http-kernel-extensions:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: http-kernel-extensions
+    only:
+        changes:
+            - packages/http-kernel-extensions/**/*
+    script:
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit
+
+http-kernel-extensions:publish-master:
+    extends: .publish-master
+    variables:
+        PACKAGE: http-kernel-extensions
+        REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
+    only:
+        changes:
+            - packages/Fusonic/HttpKernelExtensions/**/*
+
+http-kernel-extensions:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: http-kernel-extensions
+        REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
+    only:
+        changes:
+            - packages/http-kernel-extensions/**/*

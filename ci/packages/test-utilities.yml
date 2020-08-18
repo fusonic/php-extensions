@@ -6,7 +6,7 @@ phpunit:test-utilities:
         changes:
             - packages/test-utilities/**/*
 
-test-utilities:master:
+test-utilities:publish-master:
     extends: .publish-master
     variables:
         PACKAGE: test-utilities
@@ -15,7 +15,7 @@ test-utilities:master:
         changes:
             - packages/test-utilities/**/*
 
-test-utilities:tag:
+test-utilities:publish-tag:
     extends: .publish-tag
     variables:
         PACKAGE: test-utilities

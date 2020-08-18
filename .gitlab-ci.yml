@@ -1,6 +1,7 @@
 include:
     - local: 'ci/_includes.yml'
     - local: 'ci/packages/test-utilities.yml'
+    - local: 'ci/packages/http-kernel-extensions.yml'
 
 stages:
     - install
@@ -12,5 +13,4 @@ variables:
     DOCKER_DIND_IMAGE: docker:19.03-dind
     PHP_VERSION: '7.4'
     PHP_DOCKER_RELEASE: 'buster'
-
 
