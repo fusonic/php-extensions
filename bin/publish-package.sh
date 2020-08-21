@@ -49,7 +49,7 @@ case "$1" in
     publish_master
     ;;
   "tag")
-    PACKAGE_VERSION=$(cat $PACKAGE/composer.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
+    PACKAGE_VERSION=$(cat packages/$PACKAGE/composer.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
     publish_tag
     ;;
   *)
