@@ -15,7 +15,7 @@ checkout_subtree () {
   TEMP_BRANCH=${CI_PIPELINE_ID}_tmp_${PACKAGE_VERSION}
 
   git branch -D ${TEMP_BRANCH} | true
-  git subtree split --prefix=${PACKAGE} -b ${TEMP_BRANCH}
+  git subtree split --prefix=packages/${PACKAGE} -b ${TEMP_BRANCH}
   git checkout ${TEMP_BRANCH}
 }
 
