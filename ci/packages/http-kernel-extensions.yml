@@ -17,7 +17,7 @@ http-kernel-extensions:publish-master:
         REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
     only:
         changes:
-            - packages/Fusonic/HttpKernelExtensions/**/*
+            - packages/http-kernel-extensions/**/*
 
 http-kernel-extensions:publish-tag:
     extends: .publish-tag
