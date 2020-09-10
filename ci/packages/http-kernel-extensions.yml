@@ -1,4 +1,4 @@
-phpunit:http-kernel-extensions:
+phpunit:http-kernel-extensions:symfony-5:
     extends: .phpunit-test
     variables:
         PACKAGE: http-kernel-extensions
@@ -6,6 +6,20 @@ phpunit:http-kernel-extensions:
         changes:
             - packages/http-kernel-extensions/**/*
     script:
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit
+
+phpunit:http-kernel-extensions:symfony-4:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: http-kernel-extensions
+    only:
+        changes:
+            - packages/http-kernel-extensions/**/*
+    script:
+        - composer require symfony/http-kernel:4.4.* symfony/serializer:4.4.* symfony/validator:4.4.* symfony/property-info:4.4.* symfony/property-access:4.4.* --no-update
+        - composer update --no-progress --no-suggest --no-interaction
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit

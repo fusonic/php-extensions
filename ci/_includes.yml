@@ -25,7 +25,7 @@
         - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
-        - composer install
+        - composer install --no-progress --no-suggest --no-interaction
     script:
         - vendor/bin/phpunit
 
