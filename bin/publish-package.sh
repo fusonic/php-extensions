@@ -29,7 +29,7 @@ publish_tag () {
   checkout_subtree
 
   git tag -a ${PACKAGE_VERSION} -m "Version ${PACKAGE_VERSION}"
-  git push ${PACKAGE} refs/tags/${PACKAGE_VERSION}:refs/tags/${PACKAGE_VERSION}
+  git push -f ${PACKAGE} refs/tags/${PACKAGE_VERSION}:refs/tags/${PACKAGE_VERSION}
 
   cleanup
 }
@@ -38,7 +38,7 @@ publish_master () {
   setup
   checkout_subtree
 
-  git push ${PACKAGE} ${TEMP_BRANCH}:master
+  git push -f ${PACKAGE} ${TEMP_BRANCH}:master
 
   cleanup
 }
