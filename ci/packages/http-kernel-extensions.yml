@@ -18,8 +18,7 @@ phpunit:http-kernel-extensions:symfony-4:
         changes:
             - packages/http-kernel-extensions/**/*
     script:
-        - composer require symfony/http-kernel:4.4.* symfony/serializer:4.4.* symfony/validator:4.4.* symfony/property-info:4.4.* symfony/property-access:4.4.* --no-update
-        - composer update --no-progress --no-suggest --no-interaction
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit

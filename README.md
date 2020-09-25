@@ -19,7 +19,6 @@ The `ci/packages/<package name>` Gitlab CI file should contain the tests for a p
 
 Each package must have a public Git repository to which the source will be published.
 
-
 The changes of packages merged into the master branch will automatically be published (as `dev-master`). In order to publish a new
 version, make sure to increase the version inside the `composer.json` file of the package. Once this is merged a manual
 `publish` pipeline step can be triggered.
