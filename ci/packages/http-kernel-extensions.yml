@@ -19,8 +19,6 @@ phpunit:http-kernel-extensions:symfony-4:
             - packages/http-kernel-extensions/**/*
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - composer phpstan
-        - composer phpcs-check
         - vendor/bin/phpunit
 
 http-kernel-extensions:publish-master:
