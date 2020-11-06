@@ -1,6 +1,6 @@
 {
     "name": "arjanfrans/test",
-    "license": "proprietary",
+    "license": "MIT",
     "version": "0.0.4",
     "description": "PHPUnit testing utilities.",
     "type": "library",
