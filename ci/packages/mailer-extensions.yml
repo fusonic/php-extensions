@@ -1,0 +1,40 @@
+phpunit:mailer-extensions:symfony-5:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: mailer-extensions
+    only:
+        changes:
+            - packages/mailer-extensions/**/*
+    script:
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit
+
+phpunit:mailer-extensions:symfony-4:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: mailer-extensions
+    only:
+        changes:
+            - packages/mailer-extensions/**/*
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - vendor/bin/phpunit
+
+mailer-extensions:publish-master:
+    extends: .publish-master
+    variables:
+        PACKAGE: mailer-extensions
+        REPOSITORY: git@github.com:fusonic/mailer-extensions.git
+    only:
+        changes:
+            - packages/mailer-extensions/**/*
+
+mailer-extensions:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: mailer-extensions
+        REPOSITORY: git@github.com:fusonic/mailer-extensions.git
+    only:
+        changes:
+            - packages/mailer-extensions/**/*
