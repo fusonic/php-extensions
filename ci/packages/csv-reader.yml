@@ -1,0 +1,33 @@
+phpunit:csv-reader:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: csv-reader
+        PHP_VERSION: '8.0'
+    only:
+        changes:
+            - packages/csv-reader/**/*
+    script:
+        - apt-get install -y libicu-dev
+        - docker-php-ext-configure intl
+        - docker-php-ext-install intl
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit
+
+csv-reader:publish-master:
+    extends: .publish-master
+    variables:
+        PACKAGE: csv-reader
+        REPOSITORY: git@github.com:fusonic/csv-reader.git
+    only:
+        changes:
+            - packages/csv-reader/**/*
+
+csv-reader:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: csv-reader
+        REPOSITORY: git@github.com:fusonic/csv-reader.git
+    only:
+        changes:
+            - packages/csv-reader/**/*
