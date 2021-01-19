@@ -3,6 +3,8 @@
     script:
         - ./bin/publish-package.sh tag
     when: manual
+    only:
+        - tags
 
 .publish-master:
     stage: publish

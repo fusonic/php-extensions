@@ -5,6 +5,10 @@
 The `packages` directory contains the source code for the packages. Everything in here will be published and available
 to the public (For example Gitlab CI related files or internal documentation must not be in here!)
 
+### Available packages
+
+- [http-kernel-extensions](packages/http-kernel-extensions/README.md)
+
 ## Development
 
 A Docker container with PHP and Composer is included.

@@ -8,7 +8,7 @@ phpunit:http-kernel-extensions:symfony-5:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit
+        - vendor/bin/phpunit --coverage-text
 
 phpunit:http-kernel-extensions:symfony-4:
     extends: .phpunit-test
