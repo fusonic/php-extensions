@@ -1,7 +1,8 @@
-phpunit:http-kernel-extensions:symfony-5:
+phpunit:http-kernel-extensions:symfony:
     extends: .phpunit-test
     variables:
         PACKAGE: http-kernel-extensions
+        PHP_VERSION: '8'
     only:
         changes:
             - packages/http-kernel-extensions/**/*
@@ -10,10 +11,11 @@ phpunit:http-kernel-extensions:symfony-5:
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-text
 
-phpunit:http-kernel-extensions:symfony-4:
+phpunit:http-kernel-extensions:symfony-lowest:
     extends: .phpunit-test
     variables:
         PACKAGE: http-kernel-extensions
+        PHP_VERSION: '8.0'
     only:
         changes:
             - packages/http-kernel-extensions/**/*
