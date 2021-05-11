@@ -12,7 +12,7 @@ phpunit:csv-reader:
         - docker-php-ext-install intl
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit
+        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
 
 csv-reader:publish-master:
     extends: .publish-master

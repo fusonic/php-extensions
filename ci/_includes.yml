@@ -21,13 +21,26 @@
     interruptible: true
     variables:
         APP_ENV: prod
+        XDEBUG_MODE: coverage
     before_script:
         - apt-get update && apt-get install unzip libzip-dev -y --no-install-recommends
         - docker-php-ext-install zip
+        - pecl install xdebug
+        - docker-php-ext-enable xdebug
         - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
         - composer install --no-progress --no-suggest --no-interaction
     script:
-        - vendor/bin/phpunit
-
+        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+    environment:
+        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}
+        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/html/index.html?job=${CI_JOB_NAME}
+        auto_stop_in: 1 week
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            cobertura: packages/${PACKAGE}/coverage/cobertura.xml
+    coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
