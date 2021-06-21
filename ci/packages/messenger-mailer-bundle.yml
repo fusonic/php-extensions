@@ -1,0 +1,42 @@
+phpunit:messenger-mailer-bundle:symfony:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: messenger-mailer-bundle
+        PHP_VERSION: '8'
+    only:
+        changes:
+            - packages/messenger-mailer-bundle/**/*
+    script:
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit --coverage-text
+
+phpunit:messenger-mailer-bundle:symfony-lowest:
+    extends: .phpunit-test
+    variables:
+        PACKAGE: messenger-mailer-bundle
+        PHP_VERSION: '8.0'
+    only:
+        changes:
+            - packages/messenger-mailer-bundle/**/*
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - vendor/bin/phpunit
+
+messenger-mailer-bundle:publish-master:
+    extends: .publish-master
+    variables:
+        PACKAGE: messenger-mailer-bundle
+        REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git
+    only:
+        changes:
+            - packages/messenger-mailer-bundle/**/*
+
+messenger-mailer-bundle:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: messenger-mailer-bundle
+        REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git
+    only:
+        changes:
+            - packages/messenger-mailer-bundle/**/*
