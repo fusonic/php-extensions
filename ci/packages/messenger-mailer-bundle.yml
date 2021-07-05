@@ -1,5 +1,6 @@
 phpunit:messenger-mailer-bundle:symfony:
     extends: .phpunit-test
+    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         PHP_VERSION: '8'
@@ -13,6 +14,7 @@ phpunit:messenger-mailer-bundle:symfony:
 
 phpunit:messenger-mailer-bundle:symfony-lowest:
     extends: .phpunit-test
+    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         PHP_VERSION: '8.0'
@@ -25,6 +27,7 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
 
 messenger-mailer-bundle:publish-master:
     extends: .publish-master
+    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git
@@ -34,6 +37,7 @@ messenger-mailer-bundle:publish-master:
 
 messenger-mailer-bundle:publish-tag:
     extends: .publish-tag
+    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git

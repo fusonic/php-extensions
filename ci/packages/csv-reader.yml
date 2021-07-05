@@ -1,5 +1,6 @@
 phpunit:csv-reader:
     extends: .phpunit-test
+    needs: []
     variables:
         PACKAGE: csv-reader
         PHP_VERSION: '8.0'
@@ -16,6 +17,7 @@ phpunit:csv-reader:
 
 csv-reader:publish-master:
     extends: .publish-master
+    needs: []
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/csv-reader.git
@@ -25,6 +27,7 @@ csv-reader:publish-master:
 
 csv-reader:publish-tag:
     extends: .publish-tag
+    needs: []
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/csv-reader.git

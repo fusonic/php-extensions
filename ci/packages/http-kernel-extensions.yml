@@ -1,5 +1,6 @@
 phpunit:http-kernel-extensions:symfony:
     extends: .phpunit-test
+    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         PHP_VERSION: '8'
@@ -13,6 +14,7 @@ phpunit:http-kernel-extensions:symfony:
 
 phpunit:http-kernel-extensions:symfony-lowest:
     extends: .phpunit-test
+    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         PHP_VERSION: '8.0'
@@ -27,6 +29,7 @@ phpunit:http-kernel-extensions:symfony-lowest:
 
 http-kernel-extensions:publish-master:
     extends: .publish-master
+    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
@@ -36,6 +39,7 @@ http-kernel-extensions:publish-master:
 
 http-kernel-extensions:publish-tag:
     extends: .publish-tag
+    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
