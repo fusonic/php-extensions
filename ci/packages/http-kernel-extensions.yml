@@ -10,7 +10,7 @@ phpunit:http-kernel-extensions:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text
+        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
 
 phpunit:http-kernel-extensions:symfony-lowest:
     extends: .phpunit-test
