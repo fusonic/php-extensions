@@ -3,7 +3,6 @@ phpunit:http-kernel-extensions:symfony:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-        PHP_VERSION: '8'
     only:
         changes:
             - packages/http-kernel-extensions/**/*

@@ -3,7 +3,6 @@ phpunit:messenger-mailer-bundle:symfony:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-        PHP_VERSION: '8'
     only:
         changes:
             - packages/messenger-mailer-bundle/**/*

@@ -12,5 +12,5 @@ stages:
 variables:
     DOCKER_IMAGE: docker:19.03
     DOCKER_DIND_IMAGE: docker:19.03-dind
-    PHP_VERSION: '8'
+    PHP_VERSION: '8.0'
     PHP_DOCKER_RELEASE: 'buster'
