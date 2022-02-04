@@ -3,11 +3,15 @@ ARG PHP_DOCKER_RELEASE
 
 FROM php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git zip unzip && \
-    pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+    apt-get install -y --no-install-recommends git && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions @composer xdebug zip
+
+
+RUN echo 'alias cs=composer' >> /root/.bashrc
 
 RUN \
     echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
@@ -16,5 +20,8 @@ RUN \
     echo "xdebug.discover_client_host=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
     echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-
+RUN \
+    # Set php memory limit
+    cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
+    sed -i -e "s/^ *memory_limit.*/memory_limit = 1G/g" -e "s/^ *max_execution_time.*/max_execution_time = 0/g" /usr/local/etc/php/php.ini
 

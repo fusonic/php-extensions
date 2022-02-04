@@ -9,6 +9,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 
 - [csv-reader](packages/csv-reader/README.md)
 - [http-kernel-extensions](packages/http-kernel-extensions/README.md)
+- [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
 
 ## Development
 
