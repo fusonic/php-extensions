@@ -4,13 +4,11 @@ phpunit:csv-reader:
     variables:
         PACKAGE: csv-reader
         PHP_VERSION: '8.0'
+        INSTALL_PHP_EXTENSIONS: intl
     only:
         changes:
             - packages/csv-reader/**/*
     script:
-        - apt-get install -y libicu-dev
-        - docker-php-ext-configure intl
-        - docker-php-ext-install intl
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text

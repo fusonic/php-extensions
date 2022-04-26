@@ -9,7 +9,7 @@ phpunit:messenger-mailer-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text
+        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
 
 phpunit:messenger-mailer-bundle:symfony-lowest:
     extends: .phpunit-test
@@ -17,11 +17,13 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
     variables:
         PACKAGE: messenger-mailer-bundle
         PHP_VERSION: '8.0'
+    environment:
+        name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
     only:
         changes:
             - packages/messenger-mailer-bundle/**/*
     script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
         - vendor/bin/phpunit
 
 messenger-mailer-bundle:publish-master:

@@ -21,15 +21,19 @@
     variables:
         APP_ENV: prod
         XDEBUG_MODE: coverage
+        INSTALL_PHP_EXTENSIONS: ''
     before_script:
-        - apt-get update && apt-get install unzip libzip-dev -y --no-install-recommends
-        - docker-php-ext-install zip
-        - pecl install xdebug
-        - docker-php-ext-enable xdebug
-        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+        - |
+           curl -sSLf \
+             -o /usr/local/bin/install-php-extensions \
+             https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+             chmod +x /usr/local/bin/install-php-extensions
+        - install-php-extensions @composer-2 xdebug zip
+        - |
+            [ -n "${INSTALL_PHP_EXTENSIONS}" ] && install-php-extensions ${INSTALL_PHP_EXTENSIONS}
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
-        - composer install --no-progress --no-suggest --no-interaction
+        - composer install --no-progress --no-interaction
     script:
         - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
     environment:

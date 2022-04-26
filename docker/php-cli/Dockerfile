@@ -8,7 +8,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions @composer xdebug zip
+    install-php-extensions @composer-2 xdebug zip intl
 
 
 RUN echo 'alias cs=composer' >> /root/.bashrc

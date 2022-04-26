@@ -23,7 +23,7 @@ phpunit:http-kernel-extensions:symfony-lowest:
         changes:
             - packages/http-kernel-extensions/**/*
     script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
         - vendor/bin/phpunit
 
 http-kernel-extensions:publish-master:
