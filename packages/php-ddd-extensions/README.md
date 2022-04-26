@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/packagist/l/fusonic/php-ddd-extensions?color=blue)](https://github.com/fusonic/php-ddd-extensions/blob/master/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-ddd-extensions.svg?color=blue)](https://github.com/fusonic/php-ddd-extensions/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/fusonic/php-ddd-extensions.svg?color=blue)](https://packagist.org/packages/fusonic/ddd-extensions)
+[![Total Downloads](https://img.shields.io/packagist/dt/fusonic/php-ddd-extensions.svg?color=blue)](https://packagist.org/packages/fusonic/php-ddd-extensions)
 [![php 8.0+](https://img.shields.io/badge/php-min%208.0-blue.svg)](https://gitlab.com/fusonic/devops/php/extensions/-/blob/12-open-source-preparations/packages/php-ddd-extensions/composer.json)
 
 * [About](#about)
