@@ -10,6 +10,7 @@ setup () {
 checkout_subtree () {
   echo "pushing ${PACKAGE_VERSION}"
 
+  git remote remove ${PACKAGE} || true
   git remote add ${PACKAGE} ${REPOSITORY} | true
 
   TEMP_BRANCH=${CI_PIPELINE_ID}_tmp_${PACKAGE_VERSION}

@@ -35,7 +35,7 @@ services:
 
 ## Usage and recommendations
 
-For an example, see the [examples in the tests]([here](./tests/Domain).
+For an example, see the [examples in the tests](./tests/Domain).
 
 ## Aggregate roots
 
