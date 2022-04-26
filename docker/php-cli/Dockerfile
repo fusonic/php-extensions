@@ -10,7 +10,6 @@ RUN apt-get update && \
     chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions @composer-2 xdebug zip intl
 
-
 RUN echo 'alias cs=composer' >> /root/.bashrc
 
 RUN \
