@@ -1,7 +1,7 @@
 include:
     - local: 'ci/_includes.yml'
     - local: 'ci/packages/http-kernel-extensions.yml'
-    - local: 'ci/packages/php-ddd-extensions.yml'
+    - local: 'ci/packages/ddd-extensions.yml'
     - local: 'ci/packages/messenger-mailer-bundle.yml'
     - local: 'ci/packages/csv-reader.yml'
 
