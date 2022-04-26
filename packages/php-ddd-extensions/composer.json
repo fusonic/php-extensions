@@ -1,7 +1,7 @@
 {
-    "name": "fusonic/ddd-extensions",
+    "name": "fusonic/php-ddd-extensions",
     "license": "MIT",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Symfony domain-driven design building blocks for usage with Doctrine ORM.",
     "type": "library",
     "authors": [
