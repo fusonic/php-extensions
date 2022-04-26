@@ -29,8 +29,10 @@ services:
     # This service dispatches the domain events raised on aggregate roots to the given message bus.
     Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber:
         arguments:
-            $bus: "@Symfony\Component\Messenger\MessageBusInterface"
-            $logger: "@logger" # optional
+            $bus: '@Symfony\Component\Messenger\MessageBusInterface'
+            $logger: '@logger' # optional
+        tags:
+            - { name: doctrine.event_subscriber }
 ```
 
 ## Usage and recommendations
