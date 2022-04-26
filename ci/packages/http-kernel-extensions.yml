@@ -31,7 +31,7 @@ http-kernel-extensions:publish-master:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-        REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
     only:
         changes:
             - packages/http-kernel-extensions/**/*
@@ -41,7 +41,7 @@ http-kernel-extensions:publish-tag:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-        REPOSITORY: git@github.com:fusonic/http-kernel-extensions.git
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
     only:
         changes:
             - packages/http-kernel-extensions/**/*

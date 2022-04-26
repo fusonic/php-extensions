@@ -18,7 +18,7 @@ csv-reader:publish-master:
     needs: []
     variables:
         PACKAGE: csv-reader
-        REPOSITORY: git@github.com:fusonic/csv-reader.git
+        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
     only:
         changes:
             - packages/csv-reader/**/*
@@ -28,7 +28,7 @@ csv-reader:publish-tag:
     needs: []
     variables:
         PACKAGE: csv-reader
-        REPOSITORY: git@github.com:fusonic/csv-reader.git
+        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
     only:
         changes:
             - packages/csv-reader/**/*

@@ -31,7 +31,7 @@ messenger-mailer-bundle:publish-master:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-        REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git
+        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
     only:
         changes:
             - packages/messenger-mailer-bundle/**/*
@@ -41,7 +41,7 @@ messenger-mailer-bundle:publish-tag:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-        REPOSITORY: git@github.com:fusonic/messenger-mailer-bundle.git
+        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
     only:
         changes:
             - packages/messenger-mailer-bundle/**/*
