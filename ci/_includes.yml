@@ -21,6 +21,7 @@
     variables:
         APP_ENV: prod
         XDEBUG_MODE: coverage
+        XDEBUG_CONFIG: "log_level=0"
         INSTALL_PHP_EXTENSIONS: ''
     before_script:
         - |
@@ -45,5 +46,7 @@
             - packages/${PACKAGE}/coverage
         expire_in: 1 week
         reports:
-            cobertura: packages/${PACKAGE}/coverage/cobertura.xml
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/

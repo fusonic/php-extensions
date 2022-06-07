@@ -1,0 +1,48 @@
+phpunit:api-documentation-bundle:symfony:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: api-documentation-bundle
+        PHP_VERSION: '8.1'
+    only:
+        changes:
+            - packages/api-documentation-bundle/**/*
+    script:
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+
+phpunit:api-documentation-bundle:symfony-lowest:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: api-documentation-bundle
+        PHP_VERSION: '8.1'
+    environment:
+        name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
+    only:
+        changes:
+            - packages/api-documentation-bundle/**/*
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
+        - vendor/bin/phpunit
+
+api-documentation-bundle:publish-master:
+    extends: .publish-master
+    needs: []
+    variables:
+        PACKAGE: api-documentation-bundle
+        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
+    only:
+        changes:
+            - packages/api-documentation-bundle/**/*
+
+api-documentation-bundle:publish-tag:
+    extends: .publish-tag
+    needs: []
+    variables:
+        PACKAGE: api-documentation-bundle
+        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
+    only:
+        changes:
+            - packages/api-documentation-bundle/**/*

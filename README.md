@@ -11,6 +11,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 - [http-kernel-extensions](packages/http-kernel-extensions/README.md)
 - [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
 - [ddd-extensions](packages/ddd-extensions/README.md)
+- [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
 
 ## Development
 

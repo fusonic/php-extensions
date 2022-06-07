@@ -1,0 +1,23 @@
+framework:
+    test: true
+    http_method_override: false
+    router:
+        utf8: true
+        resource: '%kernel.project_dir%/tests/App/routes.yaml'
+    property_info:
+        enabled: true
+
+fusonic_api_documentation:
+    request_object_class: Fusonic\ApiDocumentationBundle\Tests\App\FromRequest
+
+nelmio_api_doc:
+    documentation:
+        info:
+            title: My App
+            description: This is an awesome app!
+            version: 1.0.0
+
+services:
+    Fusonic\ApiDocumentationBundle\Tests\App\Controller\:
+        resource: '%kernel.project_dir%/tests/App/Controller'
+        tags: [ 'controller.service_arguments' ]

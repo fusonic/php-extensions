@@ -4,6 +4,7 @@ include:
     - local: 'ci/packages/ddd-extensions.yml'
     - local: 'ci/packages/messenger-mailer-bundle.yml'
     - local: 'ci/packages/csv-reader.yml'
+    - local: 'ci/packages/api-documentation-bundle.yml'
 
 stages:
     - install
@@ -13,5 +14,5 @@ stages:
 variables:
     DOCKER_IMAGE: docker:19.03
     DOCKER_DIND_IMAGE: docker:19.03-dind
-    PHP_VERSION: '8.0'
-    PHP_DOCKER_RELEASE: 'buster'
+    PHP_VERSION: '8.1'
+    PHP_DOCKER_RELEASE: 'bullseye'
