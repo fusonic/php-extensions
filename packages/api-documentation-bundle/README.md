@@ -1,8 +1,8 @@
 # fusonic-api-documentation-bundle
 
-[![License](https://img.shields.io/packagist/l/fusonic/fusonic-api-documentation-bundle?color=blue)](https://github.com/fusonic/fusonic-api-documentation-bundle/blob/master/LICENSE)
-[![Latest Version](https://img.shields.io/github/tag/fusonic/fusonic-api-documentation-bundle.svg?color=blue)](https://github.com/fusonic/fusonic-api-documentation-bundle/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/fusonic/fusonic-api-documentation-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/fusonic-api-documentation-bundle)
+[![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/master/LICENSE)
+[![Latest Version](https://img.shields.io/github/tag/fusonic/php-api-documentation-bundle.svg?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/releases)
+[![Total Downloads](https://img.shields.io/packagist/dt/fusonic/api-documentation-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/api-documentation-bundle)
 ![php 8.0+](https://img.shields.io/badge/php-min%208.0-blue.svg)
 
 * [About](#about)
@@ -29,7 +29,7 @@ the [http-kernel-extensions](https://github.com/fusonic/php-http-kernel-extensio
 Use composer to install the bundle from packagist.
 
 ```bash
-composer require fusonic/fusonic-api-documentation-bundle
+composer require fusonic/api-documentation-bundle
 ```
 
 Requirements:
