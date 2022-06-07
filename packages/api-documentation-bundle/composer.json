@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -42,7 +42,7 @@
         "symfony/property-info": "^5.4.9|^6.0",
         "phpunit/phpunit": "^9.5",
         "zircote/swagger-php": "^4.4",
-        "symfony/dom-crawler": "^5.4.9"
+        "symfony/dom-crawler": "^5.4.9|^6.0"
     },
     "scripts": {
         "phpstan": "php -d memory_limit=2048M vendor/bin/phpstan analyse",
