@@ -9,15 +9,19 @@ namespace Fusonic\DDDExtensions\Tests\Domain\Event;
 
 use Fusonic\DDDExtensions\Domain\Event\DomainEventInterface;
 use Fusonic\DDDExtensions\Tests\Domain\User;
+use Fusonic\DDDExtensions\Tests\Domain\UserId;
 
 class RegisterUserEvent implements DomainEventInterface
 {
-    public function __construct(private User $user)
+    private UserId $userId;
+
+    public function __construct(User $user)
     {
+        $this->userId = $user->getId();
     }
 
-    public function getUser(): User
+    public function getUserId(): UserId
     {
-        return $this->user;
+        return $this->userId;
     }
 }

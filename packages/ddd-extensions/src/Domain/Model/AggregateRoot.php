@@ -8,15 +8,12 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Domain\Model;
 
 use Fusonic\DDDExtensions\Domain\Event\DomainEventInterface;
-use Fusonic\DDDExtensions\Domain\Model\Traits\IdTrait;
 
 /**
  * Base class for aggregates in the domain.
  */
 abstract class AggregateRoot implements EntityInterface
 {
-    use IdTrait;
-
     /**
      * @var DomainEventInterface[]
      */

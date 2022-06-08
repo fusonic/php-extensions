@@ -39,6 +39,16 @@ services:
 
 For an example, see the [examples in the tests](./tests/Domain).
 
+## Value objects
+Value objects must extend `Fusonic\DDDExtensions\Domain\Model\ValueObject`. Value objects must be immutable.
+All the properties that it needs must be set when initiating the object.
+The value object can not have any setter properties.
+
+For comparing value objects you must implement the `equals` function.
+
+Value objects also require you to implement `__toString`, to provide a string representation of
+the object.
+
 ## Aggregate roots
 
 Aggregate roots are the *entry points* to the bounded context. Domain objects that extend `Fusonic\DDDExtensions\Domain\Model\AggregateRoot`
@@ -46,13 +56,26 @@ are aggregate roots. Only the aggregate roots can be created/modified directly o
 All sub-entities are modified/created through the aggregate root.
 
 ## Domain entities
-
-Domain entities must implement `Fusonic\DDDExtensions\Domain\Model\EntityInterface`. The `getId()` method return an integer as an
-identifier. In order to have consistent return type and to avoid null-checks everywhere;
-the library has set has the following rule: *`getId()` returns `0` as a value if the entity has not been flushed yet.*
+Domain entities must implement `Fusonic\DDDExtensions\Domain\Model\EntityInterface`.
 
 You should not do operations on domain entities (that are not aggregate roots) directly. Everything should
 go through the aggregate root.
+
+The `getId()` method returns a value object (of type `Fusonic\DDDExtensions\Domain\Model\AbstractId`). 
+It is recommended to create a dedicated "id" class for each domain entity. For example a `User` class with a `UserId` class.
+The `AbstractId` class must implement a `__toString` method which will return the internal value. The implementation of the internal
+value is up to you. For Doctrine you could use an integer, see ([this example](./tests/Domain/UserId.php).
+
+In order to have consistent return type and to avoid null-checks everywhere; you can not return null.
+If you want to check if an entity has not been flushed you could initialize your value object with a "null" value, e.g.:
+
+```php
+
+public function getId(): UserId
+{
+    return new UserId($this->id ?? 0);
+}
+```
 
 ### Assertions
 
@@ -72,17 +95,6 @@ raise events. Inside the class you can call `$this->raise(...)` with an event th
 
 All raised domain events will be dispatched when Doctrine `flush` is called.
 The `Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber` handles this.
-
-## Value objects
-
-Value objects must extend `Fusonic\DDDExtensions\Domain\Model\ValueObject`. Value objects must be immutable.
-All the properties that it needs must be set when initiating the object.
-The value object can not have any setter properties.
-
-For comparing value objects you must implement the `equals` function.
-
-Value objects also require you to implement `__toString`, to provide a string representation of
-the object.
 
 ## ORM Mapping
 You must not use PHP annotations or attributes for defining your ORM mapping. Mapping should be configured outside of

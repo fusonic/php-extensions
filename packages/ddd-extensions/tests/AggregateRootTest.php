@@ -9,6 +9,7 @@ namespace Fusonic\DDDExtensions\Tests;
 
 use Fusonic\DDDExtensions\Tests\Domain\Event\RegisterUserEvent;
 use Fusonic\DDDExtensions\Tests\Domain\User;
+use Fusonic\DDDExtensions\Tests\Domain\UserId;
 
 class AggregateRootTest extends AbstractTestCase
 {
@@ -16,7 +17,8 @@ class AggregateRootTest extends AbstractTestCase
     {
         $user = new User('John');
 
-        self::assertSame(0, $user->getId());
+        self::assertSame((string) new UserId(0), (string) $user->getId());
+        self::assertTrue((new UserId(0))->equals($user->getId()));
     }
 
     public function testEvent(): void
