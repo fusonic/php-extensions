@@ -64,9 +64,9 @@ go through the aggregate root.
 The `getId()` method returns a value object (of type `Fusonic\DDDExtensions\Domain\Model\AbstractId`). 
 It is recommended to create a dedicated "id" class for each domain entity. For example a `User` class with a `UserId` class.
 The `AbstractId` class must implement a `__toString` method which will return the internal value. The implementation of the internal
-value is up to you. For Doctrine you could use an integer, see ([this example](./tests/Domain/UserId.php).
+value is up to you. For Doctrine you could use an integer, see [this example](./tests/Domain/UserId.php).
 
-In order to have consistent return type and to avoid null-checks everywhere; you can not return null.
+In order to have consistent return types and to avoid null-checks everywhere, you cannot return null.
 If you want to check if an entity has not been flushed you could initialize your value object with a "null" value, e.g.:
 
 ```php
