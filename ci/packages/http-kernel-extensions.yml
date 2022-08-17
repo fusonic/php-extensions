@@ -3,9 +3,6 @@ phpunit:http-kernel-extensions:symfony:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-    only:
-        changes:
-            - packages/http-kernel-extensions/**/*
     script:
         - composer phpstan
         - composer phpcs-check
@@ -19,22 +16,16 @@ phpunit:http-kernel-extensions:symfony-lowest:
         PHP_VERSION: '8.0'
     environment:
         name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
-    only:
-        changes:
-            - packages/http-kernel-extensions/**/*
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
         - vendor/bin/phpunit
 
-http-kernel-extensions:publish-master:
-    extends: .publish-master
+http-kernel-extensions:publish-branch:
+    extends: .publish-branch
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
-    only:
-        changes:
-            - packages/http-kernel-extensions/**/*
 
 http-kernel-extensions:publish-tag:
     extends: .publish-tag
@@ -42,6 +33,3 @@ http-kernel-extensions:publish-tag:
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
-    only:
-        changes:
-            - packages/http-kernel-extensions/**/*

@@ -2,17 +2,21 @@
     stage: publish
     script:
         - ./bin/publish-package.sh tag
-    when: manual
-    only:
-        - tags
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: manual
+        - when: never
 
-.publish-master:
+.publish-branch:
     stage: publish
     script:
-        - ./bin/publish-package.sh master
-    only:
-        refs:
-            - master
+        - ./bin/publish-package.sh branch
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          changes:
+              - packages/${PACKAGE}/**/*
+          when: always
+        - when: manual
 
 .phpunit-test:
     stage: test
@@ -50,3 +54,7 @@
                 coverage_format: cobertura
                 path: packages/${PACKAGE}/coverage/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
+    rules:
+        - changes:
+              - packages/${PACKAGE}/**/*
+          when: always
