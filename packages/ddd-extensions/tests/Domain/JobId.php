@@ -1,17 +1,14 @@
 <?php
 
+// Copyright (c) Fusonic GmbH. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for license information.
+
+declare(strict_types=1);
+
 namespace Fusonic\DDDExtensions\Tests\Domain;
 
-use Fusonic\DDDExtensions\Domain\Model\AbstractId;
+use Fusonic\DDDExtensions\Domain\Model\AbstractIntegerId;
 
-class JobId extends AbstractId
+final class JobId extends AbstractIntegerId
 {
-    public function __construct(private int $id)
-    {
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->id;
-    }
 }

@@ -11,7 +11,7 @@ use Fusonic\DDDExtensions\Domain\Event\DomainEventInterface;
 use Fusonic\DDDExtensions\Tests\Domain\User;
 use Fusonic\DDDExtensions\Tests\Domain\UserId;
 
-class RegisterUserEvent implements DomainEventInterface
+final class RegisterUserEvent implements DomainEventInterface
 {
     private UserId $userId;
 

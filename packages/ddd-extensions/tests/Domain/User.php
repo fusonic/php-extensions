@@ -31,7 +31,7 @@ class User extends AggregateRoot
 
     public function getId(): UserId
     {
-        return new UserId($this->id ?? 0);
+        return new UserId($this->id);
     }
 
     public function getName(): string

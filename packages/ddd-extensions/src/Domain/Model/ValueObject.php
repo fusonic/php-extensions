@@ -13,10 +13,4 @@ abstract class ValueObject
      * Compare the ValueObject with another ValueObject.
      */
     abstract public function equals(self $object): bool;
-
-    /**
-     * All value objects should have a __toString method. This
-     * makes debugging and logging easier.
-     */
-    abstract public function __toString(): string;
 }

@@ -46,9 +46,6 @@ The value object can not have any setter properties.
 
 For comparing value objects you must implement the `equals` function.
 
-Value objects also require you to implement `__toString`, to provide a string representation of
-the object.
-
 ## Aggregate roots
 
 Aggregate roots are the *entry points* to the bounded context. Domain objects that extend `Fusonic\DDDExtensions\Domain\Model\AggregateRoot`
@@ -63,17 +60,19 @@ go through the aggregate root.
 
 The `getId()` method returns a value object (of type `Fusonic\DDDExtensions\Domain\Model\AbstractId`). 
 It is recommended to create a dedicated "id" class for each domain entity. For example a `User` class with a `UserId` class.
-The `AbstractId` class must implement a `__toString` method which will return the internal value. The implementation of the internal
-value is up to you. For Doctrine you could use an integer, see [this example](./tests/Domain/UserId.php).
+The `AbstractId` extended class must implement a `__toString` method which will return the internal value. The implementation of the internal
+value is up to you. For Doctrine you could use an integer and use the `Fusonic\DDDExtensions\Domain\Model\AbstractIntegerId` class,
+see [this example](./tests/Domain/UserId.php).
 
-In order to have consistent return types and to avoid null-checks everywhere, you cannot return null.
-If you want to check if an entity has not been flushed you could initialize your value object with a "null" value, e.g.:
+In order to have consistent return types and to avoid null-checks everywhere, you cannot return null. If you
+use the `AbstractIntegerId` base class, the default internal value will be `0`. To check for this a convenient `isNull`
+method is implemented.
 
 ```php
 
 public function getId(): UserId
 {
-    return new UserId($this->id ?? 0);
+    return new UserId($this->id);
 }
 ```
 

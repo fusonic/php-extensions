@@ -20,7 +20,7 @@ class Job implements EntityInterface
 
     public function getId(): JobId
     {
-        return new JobId($this->id ?? 0);
+        return new JobId($this->id);
     }
 
     public function getName(): ?string

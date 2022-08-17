@@ -11,8 +11,5 @@ abstract class AbstractId extends ValueObject
 {
     abstract public function __toString(): string;
 
-    public function equals(ValueObject $object): bool
-    {
-        return $object instanceof self && (string) $this === (string) $object;
-    }
+    abstract public function isNull(): bool;
 }
