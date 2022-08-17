@@ -20,6 +20,7 @@ final class AbstractIdTest extends AbstractTestCase
         self::assertTrue($id1->equals($id2));
         self::assertTrue($id2->equals($id1));
         self::assertEquals($id1, $id2);
+        self::assertEquals($id1->getValue(), $id2->getValue());
 
         self::assertFalse($id1->equals($id3));
         self::assertFalse($id3->equals($id1));

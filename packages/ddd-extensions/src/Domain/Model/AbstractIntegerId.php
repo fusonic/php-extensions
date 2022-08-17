@@ -26,8 +26,13 @@ abstract class AbstractIntegerId extends AbstractId
         return self::DEFAULT_VALUE === $this->id;
     }
 
+    public function getValue(): int
+    {
+        return $this->id;
+    }
+
     public function equals(ValueObject $object): bool
     {
-        return $object instanceof self && (string) $this === (string) $object;
+        return $object instanceof self && $this->getValue() === $object->getValue();
     }
 }

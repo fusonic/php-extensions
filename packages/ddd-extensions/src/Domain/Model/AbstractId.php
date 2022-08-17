@@ -12,4 +12,6 @@ abstract class AbstractId extends ValueObject
     abstract public function __toString(): string;
 
     abstract public function isNull(): bool;
+
+    abstract public function getValue(): mixed;
 }

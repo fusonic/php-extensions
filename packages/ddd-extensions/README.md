@@ -60,12 +60,12 @@ go through the aggregate root.
 
 The `getId()` method returns a value object (of type `Fusonic\DDDExtensions\Domain\Model\AbstractId`). 
 It is recommended to create a dedicated "id" class for each domain entity. For example a `User` class with a `UserId` class.
-The `AbstractId` extended class must implement a `__toString` method which will return the internal value. The implementation of the internal
+The `AbstractId` extended class must implement a `getValue()` method which will return the internal value. The implementation of the internal
 value is up to you. For Doctrine you could use an integer and use the `Fusonic\DDDExtensions\Domain\Model\AbstractIntegerId` class,
 see [this example](./tests/Domain/UserId.php).
 
 In order to have consistent return types and to avoid null-checks everywhere, you cannot return null. If you
-use the `AbstractIntegerId` base class, the default internal value will be `0`. To check for this a convenient `isNull`
+use the `AbstractIntegerId` base class, the default internal value will be `0`. To check for this a convenient `isNull()`
 method is implemented.
 
 ```php
