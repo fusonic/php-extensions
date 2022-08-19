@@ -33,26 +33,37 @@ services:
             $logger: '@logger' # optional
         tags:
             - { name: doctrine.event_subscriber }
+
+    # Optionally configure a ModelDescriber if you are using NelmioApiDocBundle to display AbstractId objects in the 
+    # generated documentation
+    Fusonic\DDDExtensions\ModelDescriber\AbstractIdDescriber:
+        tags:
+            - { name: nelmio_api_doc.model_describer, priority: 1000 }
+    
+    # Optionally configure a normalizer to normalizer to automatically serialize/deserialize AbstractIntegerId objects
+    Fusonic\DDDExtensions\Normalizer\AbstractIntegerIdNormalizer:
+        tags:
+            - { name: serializer.normalizer }
 ```
 
 ## Usage and recommendations
 
 For an example, see the [examples in the tests](./tests/Domain).
 
-## Value objects
+### Value objects
 Value objects must extend `Fusonic\DDDExtensions\Domain\Model\ValueObject`. Value objects must be immutable.
 All the properties that it needs must be set when initiating the object.
 The value object can not have any setter properties.
 
 For comparing value objects you must implement the `equals` function.
 
-## Aggregate roots
+### Aggregate roots
 
 Aggregate roots are the *entry points* to the bounded context. Domain objects that extend `Fusonic\DDDExtensions\Domain\Model\AggregateRoot`
 are aggregate roots. Only the aggregate roots can be created/modified directly outside of the bounded contexts.
 All sub-entities are modified/created through the aggregate root.
 
-## Domain entities
+### Domain entities
 Domain entities must implement `Fusonic\DDDExtensions\Domain\Model\EntityInterface`.
 
 You should not do operations on domain entities (that are not aggregate roots) directly. Everything should
@@ -83,12 +94,12 @@ The domain layer does not depend on any validation services. Validation logic ha
 For assertions in the domain there is a static helper class with common assertion functions.
 See: `Fusonic\DDDExtensions\Domain\Validation\Assert`.
 
-## Domain exceptions
+### Domain exceptions
 
 Domain exceptions can only be thrown from within the domain. All domain exceptions must implement
 the `Fusonic\DDDExtensions\Domain\Exception\DomainExcetionInterface`.
 
-## Domain events
+### Domain events
 Domain objects that extend `Fusonic\DomainDrivenDoctrin\Domain\Model\AggregateRoot` can
 raise events. Inside the class you can call `$this->raise(...)` with an event that implements
 `Fusonic\DDDExtensions\Domain\Event\DomainEventInterface`.
@@ -96,7 +107,7 @@ raise events. Inside the class you can call `$this->raise(...)` with an event th
 All raised domain events will be dispatched when Doctrine `flush` is called.
 The `Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber` handles this.
 
-## ORM Mapping
+### ORM Mapping
 You must not use PHP annotations or attributes for defining your ORM mapping. Mapping should be configured outside of
 the domain. For Doctrine, you can use XML or PHP mapping.
 

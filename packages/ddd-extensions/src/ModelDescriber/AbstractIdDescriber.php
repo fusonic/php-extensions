@@ -31,6 +31,7 @@ class AbstractIdDescriber implements ModelDescriberInterface
 
     public function describe(Model $model, Schema $schema): void
     {
+        $schema->readOnly = true;
         $schema->example = '1';
     }
 }
