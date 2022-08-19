@@ -20,9 +20,9 @@ class AbstractIntegerIdNormalizer implements NormalizerInterface, DenormalizerIn
     /**
      * @param mixed|AbstractIntegerId $object
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): string
+    public function normalize(mixed $object, string $format = null, array $context = []): int
     {
-        return (string) $object;
+        return $object->getValue();
     }
 
     /**
