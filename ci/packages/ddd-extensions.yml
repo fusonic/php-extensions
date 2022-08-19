@@ -22,14 +22,12 @@ phpunit:ddd-extensions:symfony-lowest:
 
 ddd-extensions:publish-branch:
     extends: .publish-branch
-    needs: []
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
 
 ddd-extensions:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git

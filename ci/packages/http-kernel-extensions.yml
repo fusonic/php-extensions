@@ -22,14 +22,12 @@ phpunit:http-kernel-extensions:symfony-lowest:
 
 http-kernel-extensions:publish-branch:
     extends: .publish-branch
-    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
 
 http-kernel-extensions:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: http-kernel-extensions
         REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git

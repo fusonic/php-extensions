@@ -11,6 +11,8 @@
     stage: publish
     script:
         - ./bin/publish-package.sh branch
+    allow_failure: true
+    needs: []
     rules:
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           changes:

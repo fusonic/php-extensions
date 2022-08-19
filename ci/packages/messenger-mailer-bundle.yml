@@ -22,14 +22,12 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
 
 messenger-mailer-bundle:publish-branch:
     extends: .publish-branch
-    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
 
 messenger-mailer-bundle:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git

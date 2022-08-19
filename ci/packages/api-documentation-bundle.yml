@@ -23,14 +23,12 @@ phpunit:api-documentation-bundle:symfony-lowest:
 
 api-documentation-bundle:publish-branch:
     extends: .publish-branch
-    needs: []
     variables:
         PACKAGE: api-documentation-bundle
         REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
 
 api-documentation-bundle:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: api-documentation-bundle
         REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
