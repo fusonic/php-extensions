@@ -5,12 +5,10 @@
 
 declare(strict_types=1);
 
+namespace Fusonic\DDDExtensions\Reflection;
+
 final class ReflectionHelper
 {
-    /**
-     * @param class-string $className
-     * @param class-string $baseClass
-     */
     public static function isInstanceOf(string $className, string $baseClass): bool
     {
         if (class_exists($className)) {

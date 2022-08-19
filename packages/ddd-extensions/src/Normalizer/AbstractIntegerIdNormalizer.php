@@ -7,37 +7,42 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Normalizer;
 
-use Fusonic\DDDExtensions\Domain\Model\AbstractId;
 use Fusonic\DDDExtensions\Domain\Model\AbstractIntegerId;
-use ReflectionHelper;
+use Fusonic\DDDExtensions\Reflection\ReflectionHelper;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * A normalizer for AbstractId value objects to serialize them into strings and deserialize them into objects.
+ * A normalizer for AbstractIntegerId value objects to serialize them into strings and deserialize them into objects.
  */
-class AbstractIdNormalizer implements NormalizerInterface, DenormalizerInterface
+class AbstractIntegerIdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @param AbstractId $object
+     * @param mixed|AbstractIntegerId $object
      */
-    public function normalize($object, string $format = null, array $context = []): string
+    public function normalize(mixed $object, string $format = null, array $context = []): string
     {
         return (string) $object;
     }
 
+    /**
+     * @param mixed|AbstractIntegerId $data
+     */
     public function supportsNormalization(mixed $data, string $format = null): bool
     {
-        return $data instanceof AbstractId;
+        return $data instanceof AbstractIntegerId;
     }
 
     public function denormalize(mixed $data, string $type, string $format = null, array $context = []): AbstractIntegerId
     {
-        return new $type($data);
+        /** @var AbstractIntegerId $integerId */
+        $integerId = new $type($data);
+
+        return $integerId;
     }
 
     public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
     {
-        return ReflectionHelper::isInstanceOf($type, AbstractIntegerId::class);
+        return is_int($data) && ReflectionHelper::isInstanceOf($type, AbstractIntegerId::class);
     }
 }

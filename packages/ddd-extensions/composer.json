@@ -36,7 +36,13 @@
         "symfony/phpunit-bridge": "^5.4|^6.0",
         "symfony/cache": "^5.4|^6.0",
         "phpstan/phpstan-strict-rules": "^1.1",
-        "nikic/php-parser": "^4.13"
+        "nikic/php-parser": "^4.13",
+        "symfony/serializer": "^5.4|^6.0",
+        "nelmio/api-doc-bundle": "^4.9"
+    },
+    "suggest": {
+        "symfony/serializer": "^5.4|^6.0",
+        "nelmio/api-doc-bundle": "^4.9"
     },
     "scripts": {
         "phpstan": "php -d memory_limit=2048M vendor/bin/phpstan analyse",
