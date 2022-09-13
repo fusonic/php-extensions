@@ -30,6 +30,12 @@ final class TestController extends AbstractController
         return (string) $query->id;
     }
 
+    #[DocumentedRoute(path: '/test-ignored-return-type', methods: ['GET'])]
+    public function testIgnoredReturnType(): Response
+    {
+        return new Response();
+    }
+
     #[DocumentedRoute(path: '/annotation-builtin-type-array/{id}', methods: ['GET'])]
     /**
      * @return string[]

@@ -43,6 +43,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyPostRouteWithTag('/test-post-route-with-tag/{id}', $content);
         $this->verifyCombinedAttributesRoute('/test-combined-attributes/{id}', $content);
         $this->verifyManualCollectionOutputRoute('/test-manual-collection-output/{id}', $content);
+        $this->verifyIgnoredReturnType('/test-ignored-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
         self::assertEquals([
@@ -84,6 +85,18 @@ final class NelmioApiDocsTest extends WebTestCase
                         ],
                     ],
                 ],
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    private function verifyIgnoredReturnType(string $path, array $content): void
+    {
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertEquals([
+            'default' => [
+                'description' => '',
             ],
         ], $content['paths'][$path]['get']['responses']);
     }

@@ -13,6 +13,7 @@ use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use ReflectionClass;
 use ReflectionNamedType;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyInfo\Type;
 
 final class AnnotationBuilder
@@ -21,8 +22,8 @@ final class AnnotationBuilder
     private readonly ?Model $outputModel;
     private readonly PropertyExtractor $propertyExtractor;
     private bool $outputIsCollection;
-    private ?string $output;
-    private ?string $input;
+    private ?string $output = null;
+    private ?string $input = null;
 
     /**
      * @param ReflectionClass<object>|null $requestObjectReflectionClass
@@ -61,8 +62,12 @@ final class AnnotationBuilder
         }
 
         foreach ($this->method->getParameters() as $reflectionParameter) {
-            /** @var ReflectionNamedType $reflectionType */
             $reflectionType = $reflectionParameter->getType();
+
+            if (!$reflectionType instanceof ReflectionNamedType) {
+                continue;
+            }
+
             /** @var class-string $typeName */
             $typeName = $reflectionType->getName();
 
@@ -114,12 +119,28 @@ final class AnnotationBuilder
         $collectionType = $this->propertyExtractor->extractCollectionReturnType($returnType);
 
         if (null !== $collectionType) {
-            $this->output = $collectionType->getClassName() ?? $collectionType->getBuiltinType();
+            $output = $collectionType->getClassName() ?? $collectionType->getBuiltinType();
+
+            // Ignore Symfony Response objects since they cannot be
+            // rendered in the docs. If a controller returns a Response,
+            // an `output` can be specified to display the model.
+            if (Response::class === $output || is_subclass_of($output, Response::class)) {
+                return;
+            }
+
+            $this->output = $output;
             $this->outputIsCollection = true;
 
             return;
         }
-        $this->output = $returnType->getClassName() ?? $returnType->getBuiltinType();
+
+        $output = $returnType->getClassName() ?? $returnType->getBuiltinType();
+
+        if (Response::class === $output || is_subclass_of($output, Response::class)) {
+            return;
+        }
+
+        $this->output = $output;
     }
 
     public function getInputAnnotation(string $httpMethod): ?AbstractAnnotation
