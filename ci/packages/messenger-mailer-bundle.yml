@@ -16,7 +16,7 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-        PHP_VERSION: '8.0'
+        PHP_VERSION: '8.1'
     environment:
         name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
     only:

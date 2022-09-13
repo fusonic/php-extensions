@@ -3,7 +3,7 @@ phpunit:csv-reader:
     needs: []
     variables:
         PACKAGE: csv-reader
-        PHP_VERSION: '8.0'
+        PHP_VERSION: '8.1'
         INSTALL_PHP_EXTENSIONS: intl
     only:
         changes:

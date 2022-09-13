@@ -16,7 +16,7 @@ phpunit:http-kernel-extensions:symfony-lowest:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-        PHP_VERSION: '8.0'
+        PHP_VERSION: '8.1'
     environment:
         name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
     only:
