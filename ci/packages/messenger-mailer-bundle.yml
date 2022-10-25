@@ -3,9 +3,6 @@ phpunit:messenger-mailer-bundle:symfony:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-    only:
-        changes:
-            - packages/messenger-mailer-bundle/**/*
     script:
         - composer phpstan
         - composer phpcs-check
@@ -16,32 +13,20 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-        PHP_VERSION: '8.1'
-    environment:
-        name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
-    only:
-        changes:
-            - packages/messenger-mailer-bundle/**/*
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
         - vendor/bin/phpunit
+    artifacts:
+        paths: []
 
-messenger-mailer-bundle:publish-master:
-    extends: .publish-master
-    needs: []
+messenger-mailer-bundle:publish-branch:
+    extends: .publish-branch
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
-    only:
-        changes:
-            - packages/messenger-mailer-bundle/**/*
 
 messenger-mailer-bundle:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
         REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
-    only:
-        changes:
-            - packages/messenger-mailer-bundle/**/*

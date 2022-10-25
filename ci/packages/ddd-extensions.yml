@@ -3,9 +3,6 @@ phpunit:ddd-extensions:symfony:
     needs: []
     variables:
         PACKAGE: ddd-extensions
-    only:
-        changes:
-            - packages/ddd-extensions/**/*
     script:
         - composer phpstan
         - composer phpcs-check
@@ -16,32 +13,20 @@ phpunit:ddd-extensions:symfony-lowest:
     needs: []
     variables:
         PACKAGE: ddd-extensions
-        PHP_VERSION: '8.1'
-    environment:
-        name: coverage/${PACKAGE}-symfony-lowest/${CI_COMMIT_REF_NAME}
-    only:
-        changes:
-            - packages/ddd-extensions/**/*
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
         - vendor/bin/phpunit
+    artifacts:
+        paths: []
 
-ddd-extensions:publish-master:
-    extends: .publish-master
-    needs: []
+ddd-extensions:publish-branch:
+    extends: .publish-branch
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
-    only:
-        changes:
-            - packages/ddd-extensions/**/*
 
 ddd-extensions:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
-    only:
-        changes:
-            - packages/ddd-extensions/**/*

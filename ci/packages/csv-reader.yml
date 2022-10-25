@@ -3,32 +3,20 @@ phpunit:csv-reader:
     needs: []
     variables:
         PACKAGE: csv-reader
-        PHP_VERSION: '8.1'
         INSTALL_PHP_EXTENSIONS: intl
-    only:
-        changes:
-            - packages/csv-reader/**/*
     script:
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
 
-csv-reader:publish-master:
-    extends: .publish-master
-    needs: []
+csv-reader:publish-branch:
+    extends: .publish-branch
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git
-    only:
-        changes:
-            - packages/csv-reader/**/*
 
 csv-reader:publish-tag:
     extends: .publish-tag
-    needs: []
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git
-    only:
-        changes:
-            - packages/csv-reader/**/*

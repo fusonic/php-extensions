@@ -37,26 +37,26 @@ publish_tag () {
   cleanup
 }
 
-publish_master () {
+publish_branch () {
   setup
   checkout_subtree
 
-  git push -f ${PACKAGE} ${TEMP_BRANCH}:master
+  git push -f ${PACKAGE} ${TEMP_BRANCH}:${CI_COMMIT_REF_NAME}
 
   cleanup
 }
 
 case "$1" in
-  "master")
-    PACKAGE_VERSION="dev-master"
-    publish_master
+  "branch")
+    PACKAGE_VERSION="dev-${CI_COMMIT_REF_NAME}"
+    publish_branch
     ;;
   "tag")
     PACKAGE_VERSION=$(cat packages/$PACKAGE/composer.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
     publish_tag
     ;;
   *)
-    echo "Publish 'tag' or 'master'"
+    echo "Publish 'tag' or 'branch'"
     exit 1
     ;;
 esac
