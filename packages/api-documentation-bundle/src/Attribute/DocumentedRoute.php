@@ -10,7 +10,7 @@ namespace Fusonic\ApiDocumentationBundle\Attribute;
 use Attribute;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Attribute(Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class DocumentedRoute extends Route
 {
     /**

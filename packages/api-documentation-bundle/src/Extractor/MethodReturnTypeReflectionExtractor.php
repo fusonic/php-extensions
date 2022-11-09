@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Extractor;
 
-use ReflectionClass;
-use ReflectionType;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
@@ -39,11 +37,11 @@ final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractor
     }
 
     /**
-     * @param ReflectionClass<object> $declaringClass
+     * @param \ReflectionClass<object> $declaringClass
      *
      * @return Type[]
      */
-    private function extractFromReflectionType(ReflectionType $reflectionType, ReflectionClass $declaringClass): array
+    private function extractFromReflectionType(\ReflectionType $reflectionType, \ReflectionClass $declaringClass): array
     {
         $types = [];
         $nullable = $reflectionType->allowsNull();
@@ -76,9 +74,9 @@ final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractor
     }
 
     /**
-     * @param ReflectionClass<object> $declaringClass
+     * @param \ReflectionClass<object> $declaringClass
      */
-    private function resolveTypeName(string $name, ReflectionClass $declaringClass): string
+    private function resolveTypeName(string $name, \ReflectionClass $declaringClass): string
     {
         if ('self' === $lcName = strtolower($name)) {
             return $declaringClass->name;

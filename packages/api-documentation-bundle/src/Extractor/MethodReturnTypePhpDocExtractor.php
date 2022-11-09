@@ -12,7 +12,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\ContextFactory;
-use ReflectionClass;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
@@ -124,9 +123,9 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
     /**
      * Prevents a lot of redundant calls to ContextFactory::createForNamespace().
      *
-     * @param ReflectionClass<object> $reflector
+     * @param \ReflectionClass<object> $reflector
      */
-    private function createFromReflector(ReflectionClass $reflector): Context
+    private function createFromReflector(\ReflectionClass $reflector): Context
     {
         $cacheKey = $reflector->getNamespaceName().':'.$reflector->getFileName();
 

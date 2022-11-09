@@ -7,11 +7,9 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Exception;
 
-use Throwable;
-
 /**
  * Exception thrown from the domain should implement this interface.
  */
-interface DomainExceptionInterface extends Throwable
+interface DomainExceptionInterface extends \Throwable
 {
 }

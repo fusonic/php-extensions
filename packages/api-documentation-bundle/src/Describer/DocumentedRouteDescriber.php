@@ -10,7 +10,6 @@ namespace Fusonic\ApiDocumentationBundle\Describer;
 use Fusonic\ApiDocumentationBundle\AnnotationBuilder\AnnotationBuilder;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Exception\DuplicateAttributesException;
-use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberTrait;
@@ -21,8 +20,6 @@ use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
-use ReflectionClass;
-use ReflectionMethod;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -32,9 +29,9 @@ final class DocumentedRouteDescriber implements DescriberInterface
     use RouteDescriberTrait;
 
     /**
-     * @var ReflectionClass<object>|null
+     * @var \ReflectionClass<object>|null
      */
-    private ?ReflectionClass $requestObjectReflectionClass;
+    private ?\ReflectionClass $requestObjectReflectionClass;
 
     /**
      * @param class-string|null $requestObjectClass
@@ -46,15 +43,15 @@ final class DocumentedRouteDescriber implements DescriberInterface
         ?string $requestObjectClass = null,
     ) {
         if (null !== $requestObjectClass && !class_exists($requestObjectClass)) {
-            throw new InvalidArgumentException(sprintf('Class %s does not exist.', $requestObjectClass));
+            throw new \InvalidArgumentException(sprintf('Class %s does not exist.', $requestObjectClass));
         } elseif (null !== $requestObjectClass) {
-            $this->requestObjectReflectionClass = new ReflectionClass($requestObjectClass);
+            $this->requestObjectReflectionClass = new \ReflectionClass($requestObjectClass);
         }
     }
 
     public function describe(OA\OpenApi $api): void
     {
-        /** @var ReflectionMethod $method */
+        /** @var \ReflectionMethod $method */
         foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName]) {
             $pathItem = Util::getPath($api, $path);
 
@@ -122,7 +119,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         return array_intersect(count($methods) > 0 ? $methods : $allMethods, $allMethods);
     }
 
-    private function createContext(PathItem $path, ReflectionMethod $method): Context
+    private function createContext(PathItem $path, \ReflectionMethod $method): Context
     {
         $context = Util::createContext(['nested' => $path], $path->_context);
         $context->namespace = $method->getNamespaceName();
@@ -133,7 +130,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         return $context;
     }
 
-    private function getDocumentedRouteObject(ReflectionMethod $method): ?DocumentedRoute
+    private function getDocumentedRouteObject(\ReflectionMethod $method): ?DocumentedRoute
     {
         $attributes = $method->getAttributes(DocumentedRoute::class);
 

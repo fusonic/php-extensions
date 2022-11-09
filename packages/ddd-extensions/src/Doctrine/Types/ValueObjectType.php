@@ -12,7 +12,6 @@ use Doctrine\DBAL\Types\Type;
 use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectDeserializationException;
 use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectSerializationException;
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
-use JsonException;
 
 /**
  * @template T
@@ -41,7 +40,7 @@ abstract class ValueObjectType extends Type
 
         try {
             return $convert(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
-        } catch (JsonException $exception) {
+        } catch (\JsonException $exception) {
             throw new ValueObjectDeserializationException($exception->getMessage(), $exception);
         }
     }
@@ -62,7 +61,7 @@ abstract class ValueObjectType extends Type
 
         try {
             return json_encode($convert($value), JSON_THROW_ON_ERROR);
-        } catch (JsonException $exception) {
+        } catch (\JsonException $exception) {
             throw new ValueObjectSerializationException($exception->getMessage(), $exception);
         }
     }
@@ -84,7 +83,7 @@ abstract class ValueObjectType extends Type
 
         try {
             $data = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $exception) {
+        } catch (\JsonException $exception) {
             throw new ValueObjectDeserializationException($exception->getMessage(), $exception);
         }
 
@@ -119,7 +118,7 @@ abstract class ValueObjectType extends Type
                 ),
                 JSON_THROW_ON_ERROR
             );
-        } catch (JsonException $exception) {
+        } catch (\JsonException $exception) {
             throw new ValueObjectSerializationException($exception->getMessage(), $exception);
         }
     }

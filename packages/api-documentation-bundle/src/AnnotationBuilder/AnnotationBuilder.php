@@ -11,8 +11,6 @@ use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
-use ReflectionClass;
-use ReflectionNamedType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -26,12 +24,12 @@ final class AnnotationBuilder
     private ?string $input = null;
 
     /**
-     * @param ReflectionClass<object>|null $requestObjectReflectionClass
+     * @param \ReflectionClass<object>|null $requestObjectReflectionClass
      */
     public function __construct(
         private readonly DocumentedRoute $route,
         private readonly \ReflectionMethod $method,
-        private readonly ?ReflectionClass $requestObjectReflectionClass
+        private readonly ?\ReflectionClass $requestObjectReflectionClass
     ) {
         $this->propertyExtractor = new PropertyExtractor();
 
@@ -64,7 +62,7 @@ final class AnnotationBuilder
         foreach ($this->method->getParameters() as $reflectionParameter) {
             $reflectionType = $reflectionParameter->getType();
 
-            if (!$reflectionType instanceof ReflectionNamedType) {
+            if (!$reflectionType instanceof \ReflectionNamedType) {
                 continue;
             }
 
@@ -85,7 +83,7 @@ final class AnnotationBuilder
                 return;
             }
 
-            $parameterReflectionClass = new ReflectionClass($typeName);
+            $parameterReflectionClass = new \ReflectionClass($typeName);
             if ($this->requestObjectReflectionClass->isInterface()
                 && $parameterReflectionClass->implementsInterface($this->requestObjectReflectionClass->getName())
             ) {
@@ -154,7 +152,7 @@ final class AnnotationBuilder
         $inputModel = new Model(type: $input);
 
         if ('get' === strtolower($httpMethod)) {
-            $inputClassBasename = (new ReflectionClass($input))->getShortName();
+            $inputClassBasename = (new \ReflectionClass($input))->getShortName();
             $propertyInfoProperties = $this->propertyExtractor->extractClassProperties($input);
 
             if (null !== $propertyInfoProperties && count($propertyInfoProperties) > 0) {
@@ -215,7 +213,7 @@ final class AnnotationBuilder
     {
         /** @var class-string $output */
         $output = $this->output;
-        $outputClassBasename = (new ReflectionClass($output))->getShortName();
+        $outputClassBasename = (new \ReflectionClass($output))->getShortName();
 
         return sprintf(
             '%s %s%s',

@@ -10,7 +10,6 @@ namespace Fusonic\ApiDocumentationBundle\AnnotationBuilder;
 use Fusonic\ApiDocumentationBundle\Exception\UnsupportedTypeException;
 use Fusonic\ApiDocumentationBundle\Extractor\MethodReturnTypePhpDocExtractor;
 use Fusonic\ApiDocumentationBundle\Extractor\MethodReturnTypeReflectionExtractor;
-use ReflectionMethod;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
@@ -32,7 +31,7 @@ final class PropertyExtractor
         return $this->propertyInfoExtractor->getProperties($className);
     }
 
-    public function extractMethodReturnType(ReflectionMethod $method): ?Type
+    public function extractMethodReturnType(\ReflectionMethod $method): ?Type
     {
         $returnTypes = $this->propertyInfoExtractor->getTypes(
             $method->getDeclaringClass()->getName(),

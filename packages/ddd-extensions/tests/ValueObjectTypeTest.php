@@ -7,7 +7,6 @@ use Fusonic\DDDExtensions\Domain\Model\ValueObject;
 use Fusonic\DDDExtensions\Tests\Doctrine\Types\AddressValueObjectType;
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 use Fusonic\DDDExtensions\Tests\Domain\User;
-use InvalidArgumentException;
 
 class ValueObjectTypeTest extends AbstractTestCase
 {
@@ -67,7 +66,7 @@ class ValueObjectTypeTest extends AbstractTestCase
         $exception = null;
         try {
             $valueObjectType->convertToPHPValue(1, $this->getDatabasePlatformStub());
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $exception = $e;
         }
 

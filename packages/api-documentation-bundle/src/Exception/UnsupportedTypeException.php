@@ -7,9 +7,7 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Exception;
 
-use LogicException;
-
-final class UnsupportedTypeException extends LogicException
+final class UnsupportedTypeException extends \LogicException
 {
     public function __construct(string $message)
     {

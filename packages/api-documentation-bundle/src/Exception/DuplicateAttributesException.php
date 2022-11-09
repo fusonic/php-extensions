@@ -7,9 +7,7 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Exception;
 
-use LogicException;
-
-final class DuplicateAttributesException extends LogicException
+final class DuplicateAttributesException extends \LogicException
 {
     public function __construct(string $attributeClass)
     {
