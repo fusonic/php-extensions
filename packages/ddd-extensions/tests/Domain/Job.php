@@ -8,13 +8,13 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\EntityInterface;
-use Fusonic\DDDExtensions\Domain\Model\Traits\IdTrait;
+use Fusonic\DDDExtensions\Domain\Model\Traits\IntegerIdTrait;
 
 class Job implements EntityInterface
 {
-    use IdTrait;
+    use IntegerIdTrait;
 
-    public function __construct(private ?string $name)
+    public function __construct(private readonly ?string $name)
     {
     }
 

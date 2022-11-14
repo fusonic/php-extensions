@@ -40,4 +40,9 @@ class User extends AggregateRoot
     {
         $this->raise(new RegisterUserEvent($this));
     }
+
+    public function getId(): int
+    {
+        return 0;
+    }
 }

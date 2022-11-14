@@ -13,5 +13,5 @@ namespace Fusonic\DDDExtensions\Domain\Model;
  */
 interface EntityInterface
 {
-    public function getId(): int;
+    public function getId(): mixed;
 }

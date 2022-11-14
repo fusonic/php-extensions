@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Model\Traits;
 
-trait IdTrait
+trait IntegerIdTrait
 {
     /**
      * The `getId` will return 0 if it hasn't been flushed to the database yet. After it is
