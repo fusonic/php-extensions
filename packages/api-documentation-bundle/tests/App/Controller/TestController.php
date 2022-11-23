@@ -12,10 +12,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class TestController extends AbstractController
 {
-    #[DocumentedRoute(path: '/test-manual-output/{id}', methods: ['GET'], output: TestResponse::class)]
+    #[DocumentedRoute(
+        path: '/test-manual-output/{id}',
+        methods: ['GET'],
+        output: TestResponse::class,
+    )]
     public function testManualOutput(#[FromRequest] TestRequest $query): Response
     {
         return new Response((string) $query->id, 200);
+    }
+
+    #[DocumentedRoute(path: '/test-status-code/{id}', methods: ['GET'], statusCode: 422)]
+    public function testStatusCode(#[FromRequest] TestRequest $query): Response
+    {
+        return new Response((string) $query->id, 422);
     }
 
     #[DocumentedRoute(path: '/test-return-type/{id}', methods: ['GET'])]
@@ -54,7 +64,7 @@ final class TestController extends AbstractController
         return [new TestResponse($query->id)];
     }
 
-    #[DocumentedRoute(path: '/test-combined-attributes/{id}', methods: ['POST'])]
+    #[DocumentedRoute(path: '/test-combined-attributes/{id}', methods: ['POST'], description: 'Object found')]
     #[OA\Response(response: 404, description: 'Object was not found.')]
     public function testCombinedAttributes(#[FromRequest] TestRequest $query): TestResponse
     {

@@ -36,10 +36,11 @@ class DocumentedRoute extends Route
         bool $utf8 = null,
         bool $stateless = null,
         ?string $env = null,
-        private ?string $input = null,
-        private ?string $output = null,
-        private ?bool $outputIsCollection = null,
-        private ?int $statusCode = null
+        private readonly ?string $input = null,
+        private readonly ?string $output = null,
+        private readonly ?bool $outputIsCollection = null,
+        private readonly ?int $statusCode = null,
+        private readonly ?string $description = null
     ) {
         parent::__construct(
             path: $path,
@@ -63,6 +64,11 @@ class DocumentedRoute extends Route
     public function getStatusCode(): ?int
     {
         return $this->statusCode;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     /**

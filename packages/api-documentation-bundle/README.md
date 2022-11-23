@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/master/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-api-documentation-bundle.svg?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/api-documentation-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/api-documentation-bundle)
-![php 8.0+](https://img.shields.io/badge/php-min%208.0-blue.svg)
+![php 8.1+](https://img.shields.io/badge/php-min%208.1-blue.svg)
 
 * [About](#about)
 * [Install](#install)
@@ -106,6 +106,8 @@ If your manually defined output is a collection, you can set `outputIsCollection
     path: '/test-return-type/{id}',
     methods: ['GET'],
     input: TestRequest::class,
+    description: 'custom description',
+    statusCode: 200,
     output: 'string',
     outputIsCollection: true
 )]

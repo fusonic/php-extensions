@@ -173,16 +173,22 @@ final class AnnotationBuilder
 
     public function getOutputAnnotation(string $httpMethod): ?AbstractAnnotation
     {
+        $statusCode = $this->route->getStatusCode() ?? Response::HTTP_OK;
+        $description = $this->route->getDescription();
+        $options = [
+            'response' => (string) $statusCode,
+            'description' => $description ?? (Response::$statusTexts[$statusCode] ?? ''),
+        ];
+
         if (null === $this->output) {
-            return null;
+            return new OA\Response($options);
         }
 
-        $statusCode = $this->route->getStatusCode();
-        $description = $this->outputIsBuiltinType ? $this->builtinTypeDescription($httpMethod) : $this->classTypeDescription($httpMethod);
-        $options = [
-            'response' => (string) ($statusCode ?? 200),
-            'description' => $description,
-        ];
+        if (null === $description) {
+            $options['description'] = $this->outputIsBuiltinType
+                ? $this->builtinTypeDescription($httpMethod)
+                : $this->classTypeDescription($httpMethod);
+        }
 
         if ($this->outputIsCollection) {
             $items = $this->outputIsBuiltinType ? ['type' => $this->output] : new OA\Items(['ref' => $this->outputModel]);

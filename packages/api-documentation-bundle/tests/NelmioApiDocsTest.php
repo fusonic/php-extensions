@@ -4,6 +4,7 @@ namespace Fusonic\ApiDocumentationBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 final class NelmioApiDocsTest extends WebTestCase
 {
@@ -36,6 +37,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('paths', $content);
 
         $this->verifyManualOutputRoute('/test-manual-output/{id}', $content);
+        $this->verifyStatusCodeRoute('/test-status-code/{id}', $content);
         $this->verifyReturnTypeRoute('/test-return-type/{id}', $content);
         $this->verifyBuiltinReturnTypeRoute('/test-builtin-return-type/{id}', $content);
         $this->verifyAnnotationBuiltinArrayReturnTypeRoute('/annotation-builtin-type-array/{id}', $content);
@@ -89,14 +91,28 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    private function verifyStatusCodeRoute(string $path, array $content): void
+    {
+        $this->verifyTestRequestObjectQuery($path, $content);
+
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertEquals([
+            422 => [
+                'description' => Response::$statusTexts[422],
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
     private function verifyIgnoredReturnType(string $path, array $content): void
     {
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
         self::assertEquals([
-            'default' => [
-                'description' => '',
+            200 => [
+                'description' => 'OK',
             ],
         ], $content['paths'][$path]['get']['responses']);
     }
@@ -312,7 +328,7 @@ final class NelmioApiDocsTest extends WebTestCase
 
         self::assertEquals([
             200 => [
-                'description' => 'post TestResponse',
+                'description' => 'Object found',
                 'content' => [
                     'application/json' => [
                         'schema' => [

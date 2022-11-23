@@ -37,8 +37,8 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
     private ContextFactory $contextFactory;
     private DocBlockFactory $docBlockFactory;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
         $this->docBlockFactory = DocBlockFactory::createInstance();
         $this->phpDocTypeHelper = new PhpDocTypeHelper();
         $this->contextFactory = new ContextFactory();
