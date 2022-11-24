@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -31,7 +31,8 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.1",
         "symfony/test-pack": "^1.0",
-        "symfony/yaml": "^5.4.14|^6.0"
+        "symfony/yaml": "^5.4.14|^6.0",
+        "symplify/phpstan-rules": "^11.1"
     },
     "require": {
         "php": ">=8.1",
@@ -45,10 +46,10 @@
         "symfony/dom-crawler": "^5.4.14|^6.0"
     },
     "scripts": {
-        "phpstan": "php -d memory_limit=2048M vendor/bin/phpstan analyse",
-        "phpcs-check": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --diff --using-cache=yes",
-        "phpcs-fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --using-cache=yes",
-        "test": "vendor/bin/phpunit --testdox",
-        "test-coverage" : "vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html"
+        "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
+        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --diff --using-cache=yes",
+        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --using-cache=yes",
+        "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
+        "test-coverage" : "XDEBUG_MODE=off vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html"
     }
 }

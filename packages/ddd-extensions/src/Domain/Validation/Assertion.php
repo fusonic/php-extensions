@@ -14,11 +14,8 @@ class Assertion extends BaseAssertion
 {
     /**
      * {@inheritDoc}
-     *
-     * @param mixed   $propertyPath
-     * @param mixed[] $constraints
      */
-    protected static function createException($value, $message, $code, $propertyPath = null, array $constraints = []): void
+    protected static function createException(mixed $value, mixed $message, mixed $code, mixed $propertyPath = null, array $constraints = []): void
     {
         $exception = parent::createException(
             $value,

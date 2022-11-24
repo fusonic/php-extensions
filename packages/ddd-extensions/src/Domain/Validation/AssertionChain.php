@@ -13,7 +13,7 @@ class AssertionChain extends BaseAssertionChain
 {
     protected string $rootPath;
 
-    public function __construct($value, string $rootPath, string $propertyPath, ?string $defaultMessage = null)
+    public function __construct(mixed $value, string $rootPath, string $propertyPath, mixed $defaultMessage = null)
     {
         parent::__construct($value, $defaultMessage, sprintf('%s.%s', $rootPath, $propertyPath));
     }
