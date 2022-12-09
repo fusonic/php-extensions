@@ -15,8 +15,14 @@ class NestedDto
     #[Assert\Valid]
     private DummyClassA $objectArgument;
 
-    public function __construct(DummyClassA $objectArgument)
-    {
+    public function __construct(
+        DummyClassA $objectArgument,
+
+        /**
+         * @var array<NestedDto>|null
+         */
+        public readonly ?array $nestedItems
+    ) {
         $this->objectArgument = $objectArgument;
     }
 

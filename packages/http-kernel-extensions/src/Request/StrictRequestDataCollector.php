@@ -8,11 +8,13 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelExtensions\Request;
 
 use Fusonic\HttpKernelExtensions\Cache\ReflectionClassCache;
+use Fusonic\HttpKernelExtensions\Exception\UnionTypeNotSupportedException;
 use Fusonic\HttpKernelExtensions\Request\BodyParser\FormRequestBodyParser;
 use Fusonic\HttpKernelExtensions\Request\BodyParser\JsonRequestBodyParser;
 use Fusonic\HttpKernelExtensions\Request\BodyParser\RequestBodyParserInterface;
 use Fusonic\HttpKernelExtensions\Request\UrlParser\FilterVarUrlParser;
 use Fusonic\HttpKernelExtensions\Request\UrlParser\UrlParserInterface;
+use Fusonic\HttpKernelExtensions\Types\TypeHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -58,13 +60,13 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
      */
     public function collect(Request $request, string $className): array
     {
-        $routeParameters = $this->parseUrlProperties($request->attributes->get('_route_params', []), $className);
+        $routeParameters = $this->parseObjectProperty($request->attributes->get('_route_params', []), $className);
 
         if (in_array($request->getMethod(), self::METHODS_WITH_STRICT_TYPE_CHECKS, true)) {
             return $this->mergeRequestData($this->parseRequestBody($request), $routeParameters);
         }
 
-        return $this->mergeRequestData($this->parseUrlProperties($request->query->all(), $className), $routeParameters);
+        return $this->mergeRequestData($this->parseObjectProperty($request->query->all(), $className), $routeParameters);
     }
 
     /**
@@ -105,15 +107,20 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
      *
      * @return array<string, mixed>
      */
-    private function parseUrlProperties(array $params, string $className, string $propertyPath = null): array
+    private function parseObjectProperty(array $params, string $className, string $propertyPath = null): array
     {
         $reflectionClass = ReflectionClassCache::getReflectionClass($className);
 
         foreach ($params as $name => $param) {
             if ($reflectionClass->hasProperty($name)) {
                 $property = $reflectionClass->getProperty($name);
-                /** @var \ReflectionNamedType|null $propertyType */
+
+                /** @var \ReflectionNamedType|\ReflectionUnionType|null $propertyType */
                 $propertyType = $property->getType();
+
+                if ($propertyType instanceof \ReflectionUnionType) {
+                    throw UnionTypeNotSupportedException::fromReflectionUnionType($propertyType);
+                }
                 /** @var string|class-string|null $type */
                 $type = $propertyType?->getName();
 
@@ -123,7 +130,7 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
                             $params[$name] = $this->parseProperty($className, $name, $type, $propertyType->allowsNull(), $param, $this->appendPropertyPath($propertyPath, $name));
                         }
                     } elseif (class_exists($type)) {
-                        $params[$name] = $this->parseUrlProperties($param, $type, $this->appendPropertyPath($propertyPath, $name));
+                        $params[$name] = $this->parseObjectProperty($param, $type, $this->appendPropertyPath($propertyPath, $name));
                     }
                 }
             }
@@ -166,7 +173,24 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
 
             foreach ($collectionValueTypes as $collectionValueType) {
                 foreach ($param as $key => $arrayItem) {
-                    $parsedValues[$key] = $this->parseProperty($className, $name, $collectionValueType->getBuiltinType(), $collectionValueType->isNullable(), $arrayItem, $this->appendPropertyPath($propertyPath, $key));
+                    if ('object' === $collectionValueType->getBuiltinType()) {
+                        $collectionValueClassName = $collectionValueType->getClassName();
+
+                        if (TypeHelper::isUnionType($collectionValueClassName)) {
+                            throw new UnionTypeNotSupportedException($collectionValueClassName);
+                        }
+
+                        $parsedValues[$key] = $this->parseObjectProperty($arrayItem, $collectionValueClassName, $this->appendPropertyPath($propertyPath, $name));
+                    } else {
+                        $parsedValues[$key] = $this->parseProperty(
+                            $className,
+                            $name,
+                            $collectionValueType->getBuiltinType(),
+                            $collectionValueType->isNullable(),
+                            $arrayItem,
+                            $this->appendPropertyPath($propertyPath, $key)
+                        );
+                    }
                 }
             }
         }
