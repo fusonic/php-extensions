@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FormRequestBodyParser implements RequestBodyParserInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function parse(Request $request): array
     {
         return $request->request->all();

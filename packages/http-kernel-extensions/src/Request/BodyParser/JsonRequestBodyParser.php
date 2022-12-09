@@ -20,6 +20,9 @@ final class JsonRequestBodyParser implements RequestBodyParserInterface
     ) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function parse(Request $request): array
     {
         $content = $request->getContent();

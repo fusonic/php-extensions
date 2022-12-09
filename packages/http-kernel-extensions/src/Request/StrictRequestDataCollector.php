@@ -87,7 +87,7 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
      */
     private function parseRequestBody(Request $request): array
     {
-        $requestBodyParser = $this->requestBodyParsers[$request->getContentType()] ?? null;
+        $requestBodyParser = $this->requestBodyParsers[$request->getContentTypeFormat()] ?? null;
 
         if (null === $requestBodyParser) {
             $requestBodyParser = $this->requestBodyParsers['default'];
@@ -105,7 +105,7 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
      *
      * @return array<string, mixed>
      */
-    private function parseUrlProperties(array $params, string $className): array
+    private function parseUrlProperties(array $params, string $className, string $propertyPath = null): array
     {
         $reflectionClass = ReflectionClassCache::getReflectionClass($className);
 
@@ -120,10 +120,10 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
                 if (null !== $propertyType && null !== $type) {
                     if (in_array($type, Type::$builtinTypes, true)) {
                         if (is_string($param) || is_array($param)) {
-                            $params[$name] = $this->parseProperty($className, $name, $type, $propertyType->allowsNull(), $param);
+                            $params[$name] = $this->parseProperty($className, $name, $type, $propertyType->allowsNull(), $param, $this->appendPropertyPath($propertyPath, $name));
                         }
                     } elseif (class_exists($type)) {
-                        $params[$name] = $this->parseUrlProperties($param, $type);
+                        $params[$name] = $this->parseUrlProperties($param, $type, $this->appendPropertyPath($propertyPath, $name));
                     }
                 }
             }
@@ -132,13 +132,26 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
         return $params;
     }
 
+    private function appendPropertyPath(?string $propertyPath, string|int $key): ?string
+    {
+        if (null === $propertyPath) {
+            return null;
+        }
+
+        if (is_string($key)) {
+            return sprintf('%s.%s', $propertyPath, $key);
+        }
+
+        return sprintf('%s[%s]', $propertyPath, $key);
+    }
+
     /**
      * @param class-string            $className
      * @param array<array-key, mixed> $param
      *
      * @return array<array-key, float|int|bool|string|array<array-key, mixed>|null>
      */
-    private function parseArrayProperty(string $className, string $name, array $param): array
+    private function parseArrayProperty(string $className, string $name, array $param, string $propertyPath = null): array
     {
         $arrayPropertyTypes = $this->getPropertyInfoExtractor()->getTypes($className, $name);
 
@@ -153,7 +166,7 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
 
             foreach ($collectionValueTypes as $collectionValueType) {
                 foreach ($param as $key => $arrayItem) {
-                    $parsedValues[$key] = $this->parseProperty($className, $name, $collectionValueType->getBuiltinType(), $collectionValueType->isNullable(), $arrayItem);
+                    $parsedValues[$key] = $this->parseProperty($className, $name, $collectionValueType->getBuiltinType(), $collectionValueType->isNullable(), $arrayItem, $this->appendPropertyPath($propertyPath, $key));
                 }
             }
         }
@@ -164,8 +177,9 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
     /**
      * @param class-string $className
      */
-    private function parseProperty(string $className, string $name, string $type, bool $isNullable, string|array $param): int|float|bool|string|null|array
+    private function parseProperty(string $className, string $name, string $type, bool $isNullable, string|array $param, string $propertyPath = null): int|float|bool|string|null|array
     {
+        $propertyPath = $propertyPath ?? $name;
         $parsedValue = null;
 
         if ($isNullable && is_string($param) && $this->urlParser->isNull($param)) {
@@ -173,7 +187,7 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
         }
 
         if (Type::BUILTIN_TYPE_ARRAY !== $type && is_array($param)) {
-            $this->urlParser->handleFailure($name, $className, $type, Type::BUILTIN_TYPE_ARRAY);
+            $this->urlParser->handleFailure($name, $className, $type, '[]', $propertyPath);
         } elseif (is_string($param)) {
             if (Type::BUILTIN_TYPE_INT === $type) {
                 $parsedValue = $this->urlParser->parseInteger($param);
@@ -185,11 +199,11 @@ final class StrictRequestDataCollector implements RequestDataCollectorInterface
                 $parsedValue = $this->urlParser->parseString($param);
             }
         } elseif (Type::BUILTIN_TYPE_ARRAY === $type) {
-            $parsedValue = $this->parseArrayProperty($className, $name, $param);
+            $parsedValue = $this->parseArrayProperty($className, $name, $param, $propertyPath);
         }
 
         if (null === $parsedValue) {
-            $this->urlParser->handleFailure($name, $className, $type, is_array($param) ? '[]' : $param);
+            $this->urlParser->handleFailure($name, $className, $type, is_array($param) ? '[]' : $param, $propertyPath);
         }
 
         return $parsedValue;

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface RequestBodyParserInterface
 {
     /**
-     * @return mixed[]
+     * @return array<string, mixed>|array<array<string, mixed>>
      */
     public function parse(Request $request): array;
 }

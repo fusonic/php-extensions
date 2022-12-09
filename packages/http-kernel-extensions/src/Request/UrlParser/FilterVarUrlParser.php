@@ -36,8 +36,8 @@ final class FilterVarUrlParser implements UrlParserInterface
         return $value;
     }
 
-    public function handleFailure(string $attribute, string $className, string $expectedType, string $value): void
+    public function handleFailure(string $attribute, string $className, string $expectedType, string $value, string $propertyPath): void
     {
-        throw NotNormalizableValueException::createForUnexpectedDataType(sprintf('The type of the "%s" attribute for class "%s" must be %s ("%s" given).', $attribute, $className, $expectedType, $value), $value, [$expectedType]);
+        throw NotNormalizableValueException::createForUnexpectedDataType(sprintf('The type of the "%s" attribute for class "%s" must be %s ("%s" given).', $attribute, $className, $expectedType, $value), $value, [$expectedType], $propertyPath);
     }
 }

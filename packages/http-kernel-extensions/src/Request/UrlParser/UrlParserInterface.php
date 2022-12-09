@@ -28,5 +28,5 @@ interface UrlParserInterface
      *
      * @param class-string $className
      */
-    public function handleFailure(string $attribute, string $className, string $expectedType, string $value): void;
+    public function handleFailure(string $attribute, string $className, string $expectedType, string $value, string $propertyPath): void;
 }

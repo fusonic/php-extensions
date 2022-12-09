@@ -16,6 +16,7 @@ class IntArrayDto
      */
     #[Assert\NotNull]
     #[Assert\Valid]
+    #[Assert\All([new Assert\Positive()])]
     private array $items;
 
     public readonly ?array $nullableItems;
