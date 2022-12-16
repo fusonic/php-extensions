@@ -10,9 +10,10 @@ stages:
     - install
     - test
     - publish
+    - cleanup
 
 variables:
-    DOCKER_IMAGE: docker:19.03
-    DOCKER_DIND_IMAGE: docker:19.03-dind
+    DOCKER_IMAGE: docker:20.10
+    DOCKER_DIND_IMAGE: docker:20.10-dind
     PHP_VERSION: '8.1'
     PHP_DOCKER_RELEASE: 'bullseye'

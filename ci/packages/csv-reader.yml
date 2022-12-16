@@ -11,12 +11,21 @@ phpunit:csv-reader:
 
 csv-reader:publish-branch:
     extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: csv-reader:delete-branch
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git
 
 csv-reader:publish-tag:
     extends: .publish-tag
+    variables:
+        PACKAGE: csv-reader
+        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
+
+csv-reader:delete-branch:
+    extends: .delete-branch
     variables:
         PACKAGE: csv-reader
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git

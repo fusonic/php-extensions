@@ -21,12 +21,21 @@ phpunit:ddd-extensions:symfony-lowest:
 
 ddd-extensions:publish-branch:
     extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: ddd-extensions:delete-branch
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
 
 ddd-extensions:publish-tag:
     extends: .publish-tag
+    variables:
+        PACKAGE: ddd-extensions
+        REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
+
+ddd-extensions:delete-branch:
+    extends: .delete-branch
     variables:
         PACKAGE: ddd-extensions
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git

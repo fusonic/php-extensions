@@ -46,7 +46,18 @@ publish_branch () {
   cleanup
 }
 
+delete_branch () {
+  setup
+
+  git remote add ${PACKAGE} ${REPOSITORY} | true
+
+  git push ${PACKAGE} --delete ${CI_COMMIT_REF_NAME} || true
+}
+
 case "$1" in
+  "delete-branch")
+    delete_branch
+    ;;
   "branch")
     PACKAGE_VERSION="dev-${CI_COMMIT_REF_NAME}"
     publish_branch
