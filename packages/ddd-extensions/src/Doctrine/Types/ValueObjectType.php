@@ -34,12 +34,12 @@ abstract class ValueObjectType extends Type
             return null;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new ValueObjectDeserializationException('Database value must be a string (json).');
         }
 
         try {
-            return $convert(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
+            return $convert(json_decode($value, true, 512, \JSON_THROW_ON_ERROR));
         } catch (\JsonException $exception) {
             throw new ValueObjectDeserializationException($exception->getMessage(), $exception);
         }
@@ -60,7 +60,7 @@ abstract class ValueObjectType extends Type
         }
 
         try {
-            return json_encode($convert($value), JSON_THROW_ON_ERROR);
+            return json_encode($convert($value), \JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             throw new ValueObjectSerializationException($exception->getMessage(), $exception);
         }
@@ -77,12 +77,12 @@ abstract class ValueObjectType extends Type
             return [];
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new ValueObjectDeserializationException('Database value must be a string (json array).');
         }
 
         try {
-            $data = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($value, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             throw new ValueObjectDeserializationException($exception->getMessage(), $exception);
         }
@@ -100,7 +100,7 @@ abstract class ValueObjectType extends Type
      */
     public static function serializeArray(mixed $value, callable $convert): string
     {
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             throw new ValueObjectSerializationException(sprintf('Value must be an array of type `%s[]`', ValueObject::class));
         }
 
@@ -116,7 +116,7 @@ abstract class ValueObjectType extends Type
                     },
                     $value
                 ),
-                JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR
             );
         } catch (\JsonException $exception) {
             throw new ValueObjectSerializationException($exception->getMessage(), $exception);

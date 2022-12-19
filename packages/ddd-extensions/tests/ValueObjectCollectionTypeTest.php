@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fusonic\DDDExtensions\Tests;
 
 use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectDeserializationException;
@@ -107,11 +109,11 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
 
         $phpValue = $valueObjectType->convertToPHPValue(null, $this->getDatabasePlatformStub());
 
-        self::assertEquals([], $phpValue);
+        self::assertSame([], $phpValue);
 
         $phpValue = $valueObjectType->convertToPHPValue('null', $this->getDatabasePlatformStub());
 
-        self::assertEquals([], $phpValue);
+        self::assertSame([], $phpValue);
     }
 
     public function testSQLDeclaration(): void

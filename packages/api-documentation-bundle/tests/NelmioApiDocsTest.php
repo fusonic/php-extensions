@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fusonic\ApiDocumentationBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -31,7 +33,7 @@ final class NelmioApiDocsTest extends WebTestCase
 
         $this->writeApiDocsJson((string) $response->getContent());
 
-        $content = json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $content = json_decode((string) $response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
         self::assertResponseStatusCodeSame(200);
         self::assertArrayHasKey('paths', $content);
@@ -48,7 +50,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyIgnoredReturnType('/test-ignored-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
-        self::assertEquals([
+        self::assertSame([
             'schemas' => [
                 'TestRequest' => [
                     'properties' => [
@@ -77,7 +79,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get TestResponse',
                 'content' => [
@@ -98,7 +100,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             422 => [
                 'description' => Response::$statusTexts[422],
             ],
@@ -110,7 +112,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'OK',
             ],
@@ -121,14 +123,14 @@ final class NelmioApiDocsTest extends WebTestCase
     {
         $this->verifyTestRequestObjectQuery($path, $content);
         self::assertArrayHasKey('tags', $content['paths'][$path]['get']);
-        self::assertEquals([
+        self::assertSame([
             'test',
         ], $content['paths'][$path]['get']['tags']);
         self::assertCount(1, $content['paths'][$path]);
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get TestResponse collection',
                 'content' => [
@@ -152,7 +154,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get TestResponse',
                 'content' => [
@@ -173,7 +175,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get string',
                 'content' => [
@@ -194,7 +196,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get string collection',
                 'content' => [
@@ -218,7 +220,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
         self::assertCount(1, $content['paths'][$path]['get']['responses']);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'get TestResponse collection',
                 'content' => [
@@ -241,7 +243,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('parameters', $content['paths'][$path]['get']);
         self::assertCount(2, $content['paths'][$path]['get']['parameters']);
 
-        self::assertEquals([
+        self::assertSame([
             'name' => 'TestRequest',
             'in' => 'query',
             'explode' => true,
@@ -250,7 +252,7 @@ final class NelmioApiDocsTest extends WebTestCase
             ],
         ], $content['paths'][$path]['get']['parameters'][0]);
 
-        self::assertEquals([
+        self::assertSame([
             'name' => 'id',
             'in' => 'path',
             'required' => true,
@@ -265,7 +267,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('post', $content['paths'][$path]);
         self::assertArrayHasKey('parameters', $content['paths'][$path]['post']);
         self::assertCount(1, $content['paths'][$path]['post']['parameters']);
-        self::assertEquals([
+        self::assertSame([
             'name' => 'id',
             'in' => 'path',
             'required' => true,
@@ -277,7 +279,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('requestBody', $content['paths'][$path]['post']);
         self::assertCount(2, $content['paths'][$path]['post']['requestBody']);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 'required' => true,
                 'content' => [
@@ -299,12 +301,12 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertArrayHasKey('responses', $content['paths'][$path]['post']);
         self::assertCount(1, $content['paths'][$path]['post']['responses']);
         self::assertArrayHasKey('tags', $content['paths'][$path]['post']);
-        self::assertEquals([
+        self::assertSame([
             'test',
         ], $content['paths'][$path]['post']['tags']);
         self::assertCount(1, $content['paths'][$path]);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'post TestResponse',
                 'content' => [
@@ -326,7 +328,7 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertCount(2, $content['paths'][$path]['post']['responses']);
         self::assertCount(1, $content['paths'][$path]);
 
-        self::assertEquals([
+        self::assertSame([
             200 => [
                 'description' => 'Object found',
                 'content' => [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fusonic\DDDExtensions\Tests;
 
 use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectDeserializationException;

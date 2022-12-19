@@ -17,7 +17,7 @@ class Assert
 {
     public static function that(object|string $rootPath, string $propertyPath, mixed $value, ?string $defaultMessage = null): AssertionChain
     {
-        $rootPropertyPath = is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
+        $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
         $assertionChain = new AssertionChain($value, $rootPropertyPath, $propertyPath, $defaultMessage);
 
         return $assertionChain->setAssertionClassName(Assertion::class);
@@ -25,7 +25,7 @@ class Assert
 
     public static function lazy(object|string $rootPath): LazyAssertion
     {
-        $rootPropertyPath = is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
+        $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
         $lazyAssertion = new LazyAssertion($rootPropertyPath);
 
         return $lazyAssertion

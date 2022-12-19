@@ -38,8 +38,8 @@ final class PropertyExtractor
             $method->getName()
         );
 
-        if (null !== $returnTypes && count($returnTypes) > 0) {
-            if (count($returnTypes) > 1) {
+        if (null !== $returnTypes && \count($returnTypes) > 0) {
+            if (\count($returnTypes) > 1) {
                 throw new UnsupportedTypeException('Multiple return types not supported');
             }
 
@@ -57,8 +57,8 @@ final class PropertyExtractor
 
         $collectionTypes = $returnType->getCollectionValueTypes();
 
-        if (count($collectionTypes) > 0) {
-            if (count($collectionTypes) > 1) {
+        if (\count($collectionTypes) > 0) {
+            if (\count($collectionTypes) > 1) {
                 throw new UnsupportedTypeException('Multiple collection return types not supported');
             }
 

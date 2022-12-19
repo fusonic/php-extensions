@@ -38,7 +38,7 @@ class AddressValueObject extends ValueObject
 
     public function equals(ValueObject $object): bool
     {
-        return $object instanceof AddressValueObject
+        return $object instanceof self
             && $object->getStreet() === $this->getStreet()
             && $object->getNumber() === $this->getNumber();
     }

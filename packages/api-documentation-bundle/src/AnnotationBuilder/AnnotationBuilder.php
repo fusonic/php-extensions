@@ -38,7 +38,7 @@ final class AnnotationBuilder
         $this->outputIsCollection = $this->route->getOutputIsCollection() ?? false;
         $this->configureOutputType($this->route->getOutput());
 
-        $this->outputIsBuiltinType = in_array($this->output, Type::$builtinTypes, true);
+        $this->outputIsBuiltinType = \in_array($this->output, Type::$builtinTypes, true);
 
         if (!$this->outputIsBuiltinType && null !== $this->output) {
             $this->outputModel = new Model(type: $this->output);
@@ -77,7 +77,7 @@ final class AnnotationBuilder
                 $this->requestObjectReflectionClass->getName()
             );
 
-            if (count($requestObjectClassAttribute) > 0) {
+            if (\count($requestObjectClassAttribute) > 0) {
                 $this->input = $typeName;
 
                 return;
@@ -155,7 +155,7 @@ final class AnnotationBuilder
             $inputClassBasename = (new \ReflectionClass($input))->getShortName();
             $propertyInfoProperties = $this->propertyExtractor->extractClassProperties($input);
 
-            if (null !== $propertyInfoProperties && count($propertyInfoProperties) > 0) {
+            if (null !== $propertyInfoProperties && \count($propertyInfoProperties) > 0) {
                 return new OA\Parameter([
                     'name' => $inputClassBasename,
                     'in' => 'query',

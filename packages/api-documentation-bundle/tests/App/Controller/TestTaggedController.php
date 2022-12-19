@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fusonic\ApiDocumentationBundle\Tests\App\Controller;
 
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;

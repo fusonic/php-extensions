@@ -25,8 +25,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class DocumentedRouteDescriber implements DescriberInterface
 {
-    use SetsContextTrait;
     use RouteDescriberTrait;
+    use SetsContextTrait;
 
     /**
      * @var \ReflectionClass<object>|null
@@ -97,7 +97,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
             }
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
-            if (0 === count($supportedHttpMethods)) {
+            if (0 === \count($supportedHttpMethods)) {
                 $this->logger->warning(
                     'None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path',
                     [
@@ -116,7 +116,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         $allMethods = Util::OPERATIONS;
         $methods = array_map('strtolower', $route->getMethods());
 
-        return array_intersect(count($methods) > 0 ? $methods : $allMethods, $allMethods);
+        return array_intersect(\count($methods) > 0 ? $methods : $allMethods, $allMethods);
     }
 
     private function createContext(PathItem $path, \ReflectionMethod $method): Context
@@ -134,11 +134,11 @@ final class DocumentedRouteDescriber implements DescriberInterface
     {
         $attributes = $method->getAttributes(DocumentedRoute::class);
 
-        if (0 === count($attributes)) {
+        if (0 === \count($attributes)) {
             return null;
         }
 
-        if (count($attributes) > 1) {
+        if (\count($attributes) > 1) {
             throw new DuplicateAttributesException(DocumentedRoute::class);
         }
 

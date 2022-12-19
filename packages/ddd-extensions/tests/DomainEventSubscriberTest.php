@@ -65,7 +65,7 @@ class DomainEventSubscriberTest extends AbstractTestCase
         $logger = new NullLogger();
         $subscriber = new DomainEventSubscriber($messageBus, $logger);
 
-        self::assertEquals([
+        self::assertSame([
             'postPersist',
             'postUpdate',
             'postRemove',

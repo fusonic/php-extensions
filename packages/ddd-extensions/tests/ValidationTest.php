@@ -26,7 +26,7 @@ class ValidationTest extends AbstractTestCase
         self::assertNotNull($exception);
         echo $exception->getMessage();
         self::assertSame(
-            'The following 1 assertions failed:'.PHP_EOL.'1) User.name: Value "" is empty, but non empty value was expected.'.PHP_EOL,
+            'The following 1 assertions failed:'.\PHP_EOL.'1) User.name: Value "" is empty, but non empty value was expected.'.\PHP_EOL,
             $exception->getMessage()
         );
     }
@@ -44,9 +44,9 @@ class ValidationTest extends AbstractTestCase
         self::assertNotNull($exception);
         echo $exception->getMessage();
         self::assertSame(
-            'The following 2 assertions failed:'.PHP_EOL.
-            '1) AddressValueObject.street: Value "" is empty, but non empty value was expected.'.PHP_EOL.
-            '2) AddressValueObject.number: Value "" is empty, but non empty value was expected.'.PHP_EOL,
+            'The following 2 assertions failed:'.\PHP_EOL.
+            '1) AddressValueObject.street: Value "" is empty, but non empty value was expected.'.\PHP_EOL.
+            '2) AddressValueObject.number: Value "" is empty, but non empty value was expected.'.\PHP_EOL,
             $exception->getMessage()
         );
     }
