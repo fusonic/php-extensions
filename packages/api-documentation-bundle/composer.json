@@ -31,8 +31,7 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.1",
         "symfony/test-pack": "^1.0",
-        "symfony/yaml": "^5.4.14|^6.0",
-        "symplify/phpstan-rules": "^11.1"
+        "symfony/yaml": "^5.4.14|^6.0"
     },
     "require": {
         "php": ">=8.1",

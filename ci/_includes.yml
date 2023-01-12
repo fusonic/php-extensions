@@ -76,6 +76,4 @@
                 path: packages/${PACKAGE}/coverage/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
     rules:
-        - changes:
-              - packages/${PACKAGE}/**/*
-          when: always
+        - when: always

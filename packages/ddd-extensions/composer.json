@@ -36,8 +36,7 @@
         "symfony/phpunit-bridge": "^5.4|^6.0",
         "symfony/cache": "^5.4|^6.0",
         "phpstan/phpstan-strict-rules": "^1.1",
-        "nikic/php-parser": "^4.13",
-        "symplify/phpstan-rules": "^11.1"
+        "nikic/php-parser": "^4.13"
     },
     "scripts": {
         "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
