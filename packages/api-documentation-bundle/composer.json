@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -31,7 +31,8 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.1",
         "symfony/test-pack": "^1.0",
-        "symfony/yaml": "^5.4.14|^6.0"
+        "symfony/yaml": "^5.4.14|^6.0",
+        "tomasvotruba/type-coverage": "^0.0.9"
     },
     "require": {
         "php": ">=8.1",
