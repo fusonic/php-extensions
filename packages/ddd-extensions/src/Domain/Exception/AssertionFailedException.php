@@ -10,7 +10,7 @@ namespace Fusonic\DDDExtensions\Domain\Exception;
 use Assert\InvalidArgumentException;
 use Assert\LazyAssertionException;
 
-class DomainAssertionFailedException extends LazyAssertionException implements DomainExceptionInterface
+class AssertionFailedException extends LazyAssertionException implements DomainExceptionInterface
 {
     /**
      * @param InvalidArgumentException[] $errors

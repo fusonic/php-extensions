@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace Fusonic\AssertExtensions\Validation;
 
 use Assert\Assert as BaseAssert;
-use Fusonic\AssertExtensions\Domain\Exception\AssertionFailedException;
+use Fusonic\AssertExtensions\Exception\AssertionFailedException;
 
 /**
  * Assertions that should be used in the domain context.

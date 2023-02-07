@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Domain\Validation;
 
 use Assert\Assert as BaseAssert;
-use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
+use Fusonic\DDDExtensions\Domain\Exception\AssertionFailedException;
 
 /**
  * Assertions that should be used in the domain context.
@@ -30,7 +30,7 @@ class Assert
 
         return $lazyAssertion
             ->setAssertClass(BaseAssert::class)
-            ->setExceptionClass(DomainAssertionFailedException::class);
+            ->setExceptionClass(AssertionFailedException::class);
     }
 
     protected static function getClassBasename(string $className): string

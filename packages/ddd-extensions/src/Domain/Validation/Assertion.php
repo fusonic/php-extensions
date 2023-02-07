@@ -8,14 +8,17 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Domain\Validation;
 
 use Assert\Assertion as BaseAssertion;
-use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
+use Assert\LazyAssertionException;
+use Fusonic\DDDExtensions\Domain\Exception\AssertionFailedException;
 
 class Assertion extends BaseAssertion
 {
+    private array $errors = [];
+    
     /**
      * {@inheritDoc}
      */
-    protected static function createException(mixed $value, mixed $message, mixed $code, mixed $propertyPath = null, array $constraints = []): void
+    protected static function createException(mixed $value, mixed $message, mixed $code, mixed $propertyPath = null, array $constraints = []): LazyAssertionException
     {
         $exception = parent::createException(
             $value,
@@ -24,7 +27,16 @@ class Assertion extends BaseAssertion
             $propertyPath,
             $constraints
         );
-
-        throw DomainAssertionFailedException::fromErrors([$exception]);
+        
+        return $exception;
+    }
+    
+    public function verifyNow(): bool
+    {
+        if ($this->errors) {
+            throw AssertionFailedException::fromErrors($this->errors);
+        }
+        
+        return true;
     }
 }

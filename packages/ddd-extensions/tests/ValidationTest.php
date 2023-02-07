@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Tests;
 
-use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
+use Fusonic\DDDExtensions\Domain\Exception\AssertionFailedException;
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 use Fusonic\DDDExtensions\Tests\Domain\User;
 
@@ -19,7 +19,7 @@ class ValidationTest extends AbstractTestCase
 
         try {
             new User('');
-        } catch (DomainAssertionFailedException $e) {
+        } catch (AssertionFailedException $e) {
             $exception = $e;
         }
 
@@ -37,7 +37,7 @@ class ValidationTest extends AbstractTestCase
 
         try {
             new AddressValueObject('', '');
-        } catch (DomainAssertionFailedException $e) {
+        } catch (AssertionFailedException $e) {
             $exception = $e;
         }
 
