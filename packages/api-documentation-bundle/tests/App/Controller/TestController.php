@@ -72,4 +72,9 @@ final class TestController extends AbstractController
     {
         return new TestResponse($query->id);
     }
+
+    #[DocumentedRoute(path: '/test-void-return-type', methods: ['GET'])]
+    public function testVoidReturnType(#[FromRequest] TestRequest $query): void
+    {
+    }
 }

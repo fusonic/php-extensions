@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [

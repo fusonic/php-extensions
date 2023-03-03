@@ -48,6 +48,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyCombinedAttributesRoute('/test-combined-attributes/{id}', $content);
         $this->verifyManualCollectionOutputRoute('/test-manual-collection-output/{id}', $content);
         $this->verifyIgnoredReturnType('/test-ignored-return-type', $content);
+        $this->verifyVoidReturnType('/test-void-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
         self::assertSame([
@@ -115,6 +116,18 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertSame([
             200 => [
                 'description' => 'OK',
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    private function verifyVoidReturnType(string $path, array $content): void
+    {
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertArrayNotHasKey(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            204 => [
+                'description' => 'No Content',
             ],
         ], $content['paths'][$path]['get']['responses']);
     }

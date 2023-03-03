@@ -22,6 +22,7 @@ final class AnnotationBuilder
     private bool $outputIsCollection;
     private ?string $output = null;
     private ?string $input = null;
+    private bool $outputIsVoid = false;
 
     /**
      * @param \ReflectionClass<object>|null $requestObjectReflectionClass
@@ -134,6 +135,12 @@ final class AnnotationBuilder
 
         $output = $returnType->getClassName() ?? $returnType->getBuiltinType();
 
+        if ('null' === $output) {
+            $this->outputIsVoid = true;
+
+            return;
+        }
+
         if (Response::class === $output || is_subclass_of($output, Response::class)) {
             return;
         }
@@ -163,6 +170,8 @@ final class AnnotationBuilder
                     'value' => $inputModel,
                 ]);
             }
+
+            return null;
         }
 
         return new OA\RequestBody([
@@ -173,7 +182,8 @@ final class AnnotationBuilder
 
     public function getOutputAnnotation(string $httpMethod): ?AbstractAnnotation
     {
-        $statusCode = $this->route->getStatusCode() ?? Response::HTTP_OK;
+        $statusCode = $this->route->getStatusCode() ?? ($this->outputIsVoid ? Response::HTTP_NO_CONTENT : Response::HTTP_OK);
+
         $description = $this->route->getDescription();
         $options = [
             'response' => (string) $statusCode,
