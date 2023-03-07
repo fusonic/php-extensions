@@ -8,11 +8,14 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\AggregateRoot;
+use Fusonic\DDDExtensions\Domain\Model\Traits\IntegerIdTrait;
 use Fusonic\DDDExtensions\Domain\Validation\Assert;
 use Fusonic\DDDExtensions\Tests\Domain\Event\RegisterUserEvent;
 
-class User extends AggregateRoot
+final class User extends AggregateRoot
 {
+    use IntegerIdTrait;
+
     private string $name;
     private ?Job $job;
 
@@ -24,6 +27,11 @@ class User extends AggregateRoot
 
         $this->name = $name;
         $this->job = null !== $jobName ? new Job($jobName) : null;
+    }
+
+    public function getId(): UserId
+    {
+        return new UserId($this->id);
     }
 
     public function getName(): string
@@ -38,11 +46,6 @@ class User extends AggregateRoot
 
     public function register(): void
     {
-        $this->raise(new RegisterUserEvent($this));
-    }
-
-    public function getId(): int
-    {
-        return 0;
+        $this->raise(new RegisterUserEvent($this->getId()));
     }
 }

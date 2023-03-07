@@ -7,10 +7,11 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Model;
 
-abstract class ValueObject
+abstract class EntityId extends ValueObject
 {
-    /**
-     * Compare the ValueObject with another ValueObject.
-     */
-    abstract public function equals(self $object): bool;
+    abstract public function __toString(): string;
+
+    abstract public function isDefined(): bool;
+
+    abstract public function getValue(): mixed;
 }

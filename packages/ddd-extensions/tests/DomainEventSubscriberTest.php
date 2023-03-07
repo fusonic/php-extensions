@@ -13,15 +13,13 @@ use Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber;
 use Fusonic\DDDExtensions\Tests\Domain\Event\RegisterUserEvent;
 use Fusonic\DDDExtensions\Tests\Domain\Job;
 use Fusonic\DDDExtensions\Tests\Domain\User;
-use Psr\Log\NullLogger;
 
-class DomainEventSubscriberTest extends AbstractTestCase
+final class DomainEventSubscriberTest extends AbstractTestCase
 {
     public function testRaisingEventsOnAggregateRoot(): void
     {
         $messageBus = $this->getMessageBus();
-        $logger = new NullLogger();
-        $subscriber = new DomainEventSubscriber($messageBus, $logger);
+        $subscriber = new DomainEventSubscriber($messageBus);
         $user = new User('John');
         $user->register();
 
@@ -43,8 +41,7 @@ class DomainEventSubscriberTest extends AbstractTestCase
     public function testRaisingEventsOnNonAggregateRoot(): void
     {
         $messageBus = $this->getMessageBus();
-        $logger = new NullLogger();
-        $subscriber = new DomainEventSubscriber($messageBus, $logger);
+        $subscriber = new DomainEventSubscriber($messageBus);
         $job = new Job('Project Manager');
 
         $lifeCycleEvent = new LifecycleEventArgs($job, $this->getEntityManager());
@@ -62,8 +59,7 @@ class DomainEventSubscriberTest extends AbstractTestCase
     public function testSubscribedEvents(): void
     {
         $messageBus = $this->getMessageBus();
-        $logger = new NullLogger();
-        $subscriber = new DomainEventSubscriber($messageBus, $logger);
+        $subscriber = new DomainEventSubscriber($messageBus);
 
         self::assertSame([
             'postPersist',

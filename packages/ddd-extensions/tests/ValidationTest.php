@@ -11,7 +11,7 @@ use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 use Fusonic\DDDExtensions\Tests\Domain\User;
 
-class ValidationTest extends AbstractTestCase
+final class ValidationTest extends AbstractTestCase
 {
     public function testValidationException(): void
     {
@@ -24,7 +24,6 @@ class ValidationTest extends AbstractTestCase
         }
 
         self::assertNotNull($exception);
-        echo $exception->getMessage();
         self::assertSame(
             'The following 1 assertions failed:'.\PHP_EOL.'1) User.name: Value "" is empty, but non empty value was expected.'.\PHP_EOL,
             $exception->getMessage()
@@ -42,7 +41,6 @@ class ValidationTest extends AbstractTestCase
         }
 
         self::assertNotNull($exception);
-        echo $exception->getMessage();
         self::assertSame(
             'The following 2 assertions failed:'.\PHP_EOL.
             '1) AddressValueObject.street: Value "" is empty, but non empty value was expected.'.\PHP_EOL.

@@ -9,7 +9,7 @@ namespace Fusonic\DDDExtensions\Tests;
 
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 
-class ValueObjectTest extends AbstractTestCase
+final class ValueObjectTest extends AbstractTestCase
 {
     public function testEquals(): void
     {

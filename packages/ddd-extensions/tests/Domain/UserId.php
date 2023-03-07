@@ -5,9 +5,10 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\DDDExtensions\Domain\Model\Traits;
+namespace Fusonic\DDDExtensions\Tests\Domain;
 
-trait IntegerIdTrait
+use Fusonic\DDDExtensions\Domain\Model\EntityIntegerId;
+
+final class UserId extends EntityIntegerId
 {
-    protected ?int $id = null;
 }

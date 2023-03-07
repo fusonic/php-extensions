@@ -14,7 +14,7 @@ use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 /**
  * @extends ValueObjectType<AddressValueObject>
  */
-class AddressValueObjectCollectionType extends ValueObjectType
+final class AddressValueObjectCollectionType extends ValueObjectType
 {
     public function getName(): string
     {

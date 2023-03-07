@@ -11,8 +11,8 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
-use Fusonic\DDDExtensions\Domain\Model\AggregateRoot;
-use Psr\Log\LoggerInterface;
+use Fusonic\DDDExtensions\Domain\Event\DomainEventInterface;
+use Fusonic\DDDExtensions\Event\DomainEventHandlerTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -21,14 +21,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class DomainEventSubscriber implements EventSubscriber
 {
-    /**
-     * @var AggregateRoot[]
-     */
-    private array $entities = [];
+    use DomainEventHandlerTrait;
 
     public function __construct(
-        private MessageBusInterface $bus,
-        private ?LoggerInterface $logger = null
+        private readonly MessageBusInterface $bus
     ) {
     }
 
@@ -44,38 +40,26 @@ class DomainEventSubscriber implements EventSubscriber
 
     public function postPersist(LifecycleEventArgs $args): void
     {
-        $this->keepAggregateRoots($args);
+        $this->addObject($args->getObject());
     }
 
     public function postUpdate(LifecycleEventArgs $args): void
     {
-        $this->keepAggregateRoots($args);
+        $this->addObject($args->getObject());
     }
 
     public function postRemove(LifecycleEventArgs $args): void
     {
-        $this->keepAggregateRoots($args);
+        $this->addObject($args->getObject());
     }
 
     public function postFlush(PostFlushEventArgs $args): void
     {
-        foreach ($this->entities as $entity) {
-            foreach ($entity->popEvents() as $event) {
-                $this->bus->dispatch($event);
-
-                $this->logger?->debug(sprintf('DomainEvent dispatched: %s', $event::class));
-            }
-        }
+        $this->dispatchEvents();
     }
 
-    private function keepAggregateRoots(LifecycleEventArgs $args): void
+    protected function dispatchEvent(DomainEventInterface $event): void
     {
-        $entity = $args->getEntity();
-
-        if (!($entity instanceof AggregateRoot)) {
-            return;
-        }
-
-        $this->entities[] = $entity;
+        $this->bus->dispatch($event);
     }
 }

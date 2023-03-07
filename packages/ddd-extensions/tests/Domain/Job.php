@@ -10,12 +10,17 @@ namespace Fusonic\DDDExtensions\Tests\Domain;
 use Fusonic\DDDExtensions\Domain\Model\EntityInterface;
 use Fusonic\DDDExtensions\Domain\Model\Traits\IntegerIdTrait;
 
-class Job implements EntityInterface
+final class Job implements EntityInterface
 {
     use IntegerIdTrait;
 
     public function __construct(private readonly ?string $name)
     {
+    }
+
+    public function getId(): JobId
+    {
+        return new JobId($this->id);
     }
 
     public function getName(): ?string

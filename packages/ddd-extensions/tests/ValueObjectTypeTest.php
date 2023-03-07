@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Tests;
 
 use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectDeserializationException;
+use Fusonic\DDDExtensions\Doctrine\Exception\ValueObjectSerializationException;
+use Fusonic\DDDExtensions\Doctrine\Types\ValueObjectType;
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
 use Fusonic\DDDExtensions\Tests\Doctrine\Types\AddressValueObjectType;
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 use Fusonic\DDDExtensions\Tests\Domain\User;
 
-class ValueObjectTypeTest extends AbstractTestCase
+final class ValueObjectTypeTest extends AbstractTestCase
 {
     public function testConversion(): void
     {
@@ -117,5 +119,65 @@ class ValueObjectTypeTest extends AbstractTestCase
         $sqlDeclaration = $valueObjectType->getSQLDeclaration($fieldDeclarationStub, $platformStub);
 
         self::assertSame('JSON', $sqlDeclaration);
+    }
+
+    public function testInvalidJsonDeserialization(): void
+    {
+        $exception = null;
+        try {
+            ValueObjectType::deserialize('{]}', static fn (array $data) => 'test');
+        } catch (ValueObjectDeserializationException $e) {
+            $exception = $e;
+        }
+
+        self::assertInstanceOf(ValueObjectDeserializationException::class, $exception);
+        self::assertSame('State mismatch (invalid or malformed JSON)', $exception->getMessage());
+    }
+
+    public function testInvalidJsonArrayDeserialization(): void
+    {
+        $exception = null;
+        try {
+            ValueObjectType::deserialize('[{]}]', static fn (array $data) => 'test');
+        } catch (ValueObjectDeserializationException $e) {
+            $exception = $e;
+        }
+
+        self::assertInstanceOf(ValueObjectDeserializationException::class, $exception);
+        self::assertSame('State mismatch (invalid or malformed JSON)', $exception->getMessage());
+    }
+
+    public function testInvalidJsonSerialization(): void
+    {
+        $address1 = new AddressValueObject('Street', '1');
+
+        $exception = null;
+        try {
+            // Return a 'resource' array to trigger a json decoding exception
+            // @phpstan-ignore-next-line
+            ValueObjectType::serialize($address1, static fn (AddressValueObject $object) => get_resources());
+        } catch (ValueObjectSerializationException $e) {
+            $exception = $e;
+        }
+
+        self::assertInstanceOf(ValueObjectSerializationException::class, $exception);
+        self::assertSame('Type is not supported', $exception->getMessage());
+    }
+
+    public function testInvalidJsonArraySerialization(): void
+    {
+        $address1 = new AddressValueObject('Street', '1');
+
+        $exception = null;
+        try {
+            // Return a 'resource' array to trigger a json decoding exception
+            // @phpstan-ignore-next-line
+            ValueObjectType::serializeArray([$address1], static fn (AddressValueObject $object) => get_resources());
+        } catch (ValueObjectSerializationException $e) {
+            $exception = $e;
+        }
+
+        self::assertInstanceOf(ValueObjectSerializationException::class, $exception);
+        self::assertSame('Type is not supported', $exception->getMessage());
     }
 }

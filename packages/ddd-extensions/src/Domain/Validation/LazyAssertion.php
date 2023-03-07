@@ -19,7 +19,7 @@ class LazyAssertion extends BaseLazyAssertion
     }
 
     /**
-     * {@inheritDoc}
+     * @return $this
      */
     public function that(mixed $value, string $propertyPath = null, mixed $defaultMessage = null): static
     {
