@@ -44,9 +44,6 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
         $this->contextFactory = new ContextFactory();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTypes(string $class, string $property, array $context = []): ?array
     {
         $docBlock = $this->getDocBlock($class, $property);

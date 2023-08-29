@@ -28,12 +28,15 @@ composer require fusonic/ddd-extensions
 ```yaml
 services:
     # This service dispatches the domain events raised on aggregate roots to the given message bus.
-    Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber:
+    Fusonic\DDDExtensions\Doctrine\LifecycleListener\DomainEventLifecycleListener:
         arguments:
             $bus: '@Symfony\Component\Messenger\MessageBusInterface'
-            $logger: '@logger' # optional
         tags:
-            - { name: doctrine.event_subscriber }
+            # Note: The listener has to be tagged individually for each event
+            - { name: doctrine.event_listener, event: 'postPersist', priority: 500 }
+            - { name: doctrine.event_listener, event: 'postUpdate', priority: 500 }
+            - { name: doctrine.event_listener, event: 'postRemove', priority: 500 }
+            - { name: doctrine.event_listener, event: 'postFlush', priority: 500 }
 
     # Optionally configure a ModelDescriber if you are using NelmioApiDocBundle to display EntityId objects in the 
     # generated documentation
@@ -105,7 +108,7 @@ raise events. Inside the class you can call `$this->raise(...)` with an event th
 `Fusonic\DDDExtensions\Domain\Event\DomainEventInterface`.
 
 All raised domain events will be dispatched when Doctrine `flush` is called.
-The `Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber` handles this.
+The `Fusonic\DDDExtensions\Doctrine\LifecycleListener\DomainEventLifecycleListener` handles this.
 
 ### ORM Mapping
 You must not use PHP annotations or attributes for defining your ORM mapping. Mapping should be configured outside of

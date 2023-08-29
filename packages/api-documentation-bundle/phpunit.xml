@@ -11,7 +11,8 @@
 
     <php>
         <ini name="error_reporting" value="-1"/>
-        <server name="KERNEL_CLASS" value="TestKernel"/>
+        <server name="KERNEL_CLASS" value="Fusonic\ApiDocumentationBundle\Tests\App\TestKernel"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     </php>
 
     <testsuites>
@@ -19,4 +20,8 @@
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+    </listeners>
 </phpunit>

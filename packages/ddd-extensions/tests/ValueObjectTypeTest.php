@@ -49,7 +49,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         self::assertSame(sprintf('Value should be of type `%s`.', ValueObject::class), $exception->getMessage());
     }
 
-    public function testInvalidJsonToPHPConversion(): void
+    public function testInvalidJsonToPhpConversion(): void
     {
         $valueObjectType = new AddressValueObjectType();
 
@@ -63,7 +63,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         self::assertNotNull($exception);
     }
 
-    public function testInvalidTypeToPHPConversion(): void
+    public function testInvalidTypeToPhpConversion(): void
     {
         $valueObjectType = new AddressValueObjectType();
 
@@ -91,7 +91,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         self::assertNull($phpValue);
     }
 
-    public function testSQLDeclaration(): void
+    public function testSqlDeclaration(): void
     {
         $valueObjectType = new AddressValueObjectType();
 

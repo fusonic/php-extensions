@@ -20,21 +20,26 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @param mixed|EntityIntegerId $object
+     * @param array<mixed>          $context
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): int
+    public function normalize(mixed $object, ?string $format = null, array $context = []): int
     {
         return $object->getValue();
     }
 
     /**
      * @param mixed|EntityIntegerId $data
+     * @param array<mixed>          $context
      */
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof EntityIntegerId;
     }
 
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): EntityIntegerId
+    /**
+     * @param array<mixed> $context
+     */
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): EntityIntegerId
     {
         /** @var EntityIntegerId $integerId */
         $integerId = new $type($data);
@@ -42,8 +47,21 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
         return $integerId;
     }
 
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    /**
+     * @param array<mixed> $context
+     */
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return \is_int($data) && is_a($type, EntityIntegerId::class, true);
+    }
+
+    /**
+     * @return array<class-string, bool>
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            EntityIntegerId::class => true,
+        ];
     }
 }

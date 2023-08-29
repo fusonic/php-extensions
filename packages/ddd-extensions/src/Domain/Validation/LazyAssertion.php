@@ -21,7 +21,7 @@ class LazyAssertion extends BaseLazyAssertion
     /**
      * @return $this
      */
-    public function that(mixed $value, string $propertyPath = null, mixed $defaultMessage = null): static
+    public function that(mixed $value, ?string $propertyPath = null, mixed $defaultMessage = null): static
     {
         $propertyPath = null === $propertyPath ? $this->rootPath : sprintf('%s.%s', $this->rootPath, $propertyPath);
 

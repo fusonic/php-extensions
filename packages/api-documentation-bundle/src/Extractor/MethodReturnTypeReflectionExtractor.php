@@ -16,9 +16,6 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getTypes(string $class, string $property, array $context = []): ?array
     {
         return $this->extractFromAccessor($class, $property);

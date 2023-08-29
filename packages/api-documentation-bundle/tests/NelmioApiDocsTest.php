@@ -1,5 +1,8 @@
 <?php
 
+// Copyright (c) Fusonic GmbH. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for license information.
+
 declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Tests;
@@ -33,6 +36,7 @@ final class NelmioApiDocsTest extends WebTestCase
 
         $this->writeApiDocsJson((string) $response->getContent());
 
+        /** @var array<mixed> $content */
         $content = json_decode((string) $response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
         self::assertResponseStatusCodeSame(200);

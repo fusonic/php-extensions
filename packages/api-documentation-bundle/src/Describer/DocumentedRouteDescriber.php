@@ -14,7 +14,6 @@ use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberTrait;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
@@ -26,7 +25,6 @@ use Symfony\Component\Routing\RouteCollection;
 final class DocumentedRouteDescriber implements DescriberInterface
 {
     use RouteDescriberTrait;
-    use SetsContextTrait;
 
     /**
      * @var \ReflectionClass<object>|null
@@ -55,7 +53,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName]) {
             $pathItem = Util::getPath($api, $path);
 
-            $this->setContext($this->createContext($pathItem, $method));
+            Generator::$context = $this->createContext($pathItem, $method);
 
             $documentedRoute = $this->getDocumentedRouteObject($method);
 
@@ -81,7 +79,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         }
 
         // Reset the Generator after the parsing
-        $this->setContext(null);
+        Generator::$context = null;
     }
 
     private function getMethodsToParse(): \Generator

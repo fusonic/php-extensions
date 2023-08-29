@@ -43,6 +43,8 @@ final class AnnotationBuilder
 
         if (!$this->outputIsBuiltinType && null !== $this->output) {
             $this->outputModel = new Model(type: $this->output);
+        } else {
+            $this->outputModel = null;
         }
     }
 

@@ -55,7 +55,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         self::assertSame(sprintf('Values in array should be of type `%s`.', ValueObject::class), $exception->getMessage());
     }
 
-    public function testInvalidJsonToPHPConversion(): void
+    public function testInvalidJsonToPhpConversion(): void
     {
         $valueObjectType = new AddressValueObjectCollectionType();
 
@@ -69,7 +69,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         self::assertNotNull($exception);
     }
 
-    public function testInvalidTypeToPHPConversion(): void
+    public function testInvalidTypeToPhpConversion(): void
     {
         $valueObjectType = new AddressValueObjectCollectionType();
 
@@ -103,7 +103,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         );
     }
 
-    public function testNullValueToPHPConversion(): void
+    public function testNullValueToPhpConversion(): void
     {
         $valueObjectType = new AddressValueObjectCollectionType();
 
@@ -116,7 +116,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         self::assertSame([], $phpValue);
     }
 
-    public function testSQLDeclaration(): void
+    public function testSqlDeclaration(): void
     {
         $valueObjectType = new AddressValueObjectCollectionType();
 
