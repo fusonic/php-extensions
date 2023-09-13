@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Attribute;
 
-use Attribute;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
