@@ -1,0 +1,41 @@
+phpunit:http-kernel-bundle:symfony:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: http-kernel-bundle
+    script:
+        - composer phpstan
+        - composer phpcs-check
+        - composer test-coverage
+
+phpunit:http-kernel-bundle:symfony-lowest:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: http-kernel-bundle
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
+        - vendor/bin/phpunit
+    artifacts:
+        paths: []
+
+http-kernel-bundle:publish-branch:
+    extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: http-kernel-bundle:delete-branch
+    variables:
+        PACKAGE: http-kernel-bundle
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
+
+http-kernel-bundle:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: http-kernel-bundle
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
+
+http-kernel-bundle:delete-branch:
+    extends: .delete-branch
+    variables:
+        PACKAGE: http-kernel-bundle
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
