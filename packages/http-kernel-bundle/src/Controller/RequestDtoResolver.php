@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +33,7 @@ final class RequestDtoResolver implements ValueResolverInterface
     ];
 
     private ErrorHandlerInterface $errorHandler;
-    private RequestDataCollectorInterface $modelDataParser;
+    private RequestDataCollectorInterface $requestDataCollector;
 
     public function __construct(
         private readonly DenormalizerInterface $serializer,
@@ -48,7 +47,7 @@ final class RequestDtoResolver implements ValueResolverInterface
         ?RequestDataCollectorInterface $modelDataParser = null,
     ) {
         $this->errorHandler = $errorHandler ?? new ConstraintViolationErrorHandler();
-        $this->modelDataParser = $modelDataParser ?? new StrictRequestDataCollector();
+        $this->requestDataCollector = $modelDataParser ?? new StrictRequestDataCollector();
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
@@ -57,17 +56,18 @@ final class RequestDtoResolver implements ValueResolverInterface
             return;
         }
 
-        $data = $this->modelDataParser->collect($request);
-
-        if (\in_array($request->getMethod(), self::METHODS_WITH_STRICT_TYPE_CHECKS, true)) {
-            $options = [];
-        } else {
-            $options = [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true];
-        }
-
         /** @var class-string $className */
         $className = $argument->getType();
-        $dto = $this->denormalize($data, $className, $options);
+
+        $data = [];
+        try {
+            $data = $this->requestDataCollector->collect($request, $className);
+
+            $dto = $this->denormalize($data, $className);
+        } catch (\Throwable $ex) {
+            throw $this->errorHandler->handleDenormalizeError($ex, $data, $className);
+        }
+
         $this->applyProviders($dto);
         $this->validate($dto);
 
@@ -103,23 +103,18 @@ final class RequestDtoResolver implements ValueResolverInterface
     }
 
     /**
-     * @param array<mixed>         $data
-     * @param class-string         $class
-     * @param array<string, mixed> $options
+     * @param array<mixed> $data
+     * @param class-string $class
      */
-    private function denormalize(array $data, string $class, array $options): object
+    private function denormalize(array $data, string $class): object
     {
-        try {
-            if (\count($data) > 0) {
-                $dto = $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT, $options);
-            } else {
-                $dto = new $class();
-            }
-
-            return $dto;
-        } catch (\Throwable $ex) {
-            throw $this->errorHandler->handleDenormalizeError($ex, $data, $class);
+        if (\count($data) > 0) {
+            $dto = $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT);
+        } else {
+            $dto = new $class();
         }
+
+        return $dto;
     }
 
     private function validate(object $dto): void

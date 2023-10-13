@@ -18,14 +18,22 @@ class IntArrayDto
      */
     #[Assert\NotNull]
     #[Assert\Valid]
+    #[Assert\All(new Assert\Positive())]
     private array $items;
 
     /**
-     * @param int[] $items
+     * @var array<mixed>|null
      */
-    public function __construct(array $items)
+    public readonly ?array $nullableItems;
+
+    /**
+     * @param int[]             $items
+     * @param array<mixed>|null $nullableItems
+     */
+    public function __construct(array $items, ?array $nullableItems = null)
     {
         $this->items = $items;
+        $this->nullableItems = $nullableItems;
     }
 
     /**

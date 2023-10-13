@@ -26,7 +26,7 @@ Our RequestDtoResolver can be used to map request data directly to objects. Inst
 information from your request and placing it in an object or, heaven forbid, passing around generic data arrays, this
 class leverages the Symfony [Serializer](https://symfony.com/doc/current/components/serializer.html) to map requests to
 objects. This enables you to use custom objects as data transfer objects (DTOs) to transport the request data from your
-controller to your business logic. Additionally, it will validate the resulting object using the Symfony 
+controller to your business logic. Additionally, it will validate the resulting object using the Symfony
 [Validator component](https://symfony.com/doc/current/components/validator.html) if you set validation constraints.
 
 - Mapping will happen for parameters accompanied by the [`Fusonic\HttpKernelBundle\Attribute\FromRequest`
@@ -83,10 +83,10 @@ final readonly class UpdateFooDto {
         #[Assert\NotNull]
         #[Assert\Positive]
         public int $id,
-        
+
         #[Assert\NotBlank]
         public string $clientVersion,
-        
+
         #[Assert\NotNull]
         public array $browserInfo,
     ) {
@@ -148,6 +148,10 @@ into an implementation of `Fusonic\HttpKernelBundle\Request\RequestDataCollector
 `Fusonic\HttpKernelBundle\Controller\RequestDtoResolver`. Inside the `RequestDataCollectorInterface` you can
 also modify the behaviour of how and which values are used from the `Request` object.
 
+Data that originates from the route attributes and query parameters are also validated against the model. By default
+it will use the `filter_var` function with the types based on the model to convert the values. To override the parsing
+you can create your own implementation of `Fusonic\HttpKernelBundle\Request\UrlParser\UrlParserInterface`.
+
 ### Error handling
 
 The bundle provides a default error handler (`http-kernel-bundle/src/ErrorHandler/ConstraintViolationErrorHandler.php`)
@@ -174,7 +178,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 final class ExceptionSubscriber implements EventSubscriberInterface {
 
-    public function __construct(private readonly NormalizerInterface $normalizer) 
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -188,7 +192,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface {
     public function onKernelException(ExceptionEvent $event): void
     {
         $throwable = $event->getThrowable();
-        
+
         if ($throwable instanceof ConstraintViolationException) {
             $data = $this->normalizer->normalize($throwable);
             $event->setResponse(new JsonResponse($data, 422));
@@ -243,7 +247,7 @@ final readonly class UserIdAwareProvider implements ContextAwareProviderInterfac
 2. Create the interface to mark the class you support and set the data.
 
 ```php
-//... 
+//...
 interface UserIdAwareInterface
 {
     public function withUserId(int $id): void;

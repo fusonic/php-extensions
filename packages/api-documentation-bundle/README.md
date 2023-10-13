@@ -22,7 +22,7 @@ writing many annotations with a repetitive pattern. With this bundle common anno
 single route attribute.
 
 This bundle can work well together with
-the [http-kernel-extensions](https://github.com/fusonic/php-http-kernel-extensions).
+the [http-kernel-bundle](https://github.com/fusonic/php-http-kernel-bundle).
 
 ## Install
 
