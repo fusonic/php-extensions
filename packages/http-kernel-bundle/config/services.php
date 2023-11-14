@@ -23,5 +23,6 @@ return static function (ContainerConfigurator $container): void {
         ]);
 
     $services->set(ConstraintViolationExceptionNormalizer::class)
+        ->autoconfigure()
         ->arg('$normalizer', service('serializer.normalizer.constraint_violation_list'));
 };
