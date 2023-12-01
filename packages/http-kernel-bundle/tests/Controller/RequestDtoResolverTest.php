@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -657,8 +658,11 @@ class RequestDtoResolverTest extends TestCase
 
     private function getValidator(): ValidatorInterface
     {
-        return Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
-            ->getValidator();
+        $validatorBuilder = Validation::createValidatorBuilder();
+
+        // @phpstan-ignore-next-line
+        Kernel::VERSION_ID >= 70000 ? $validatorBuilder->enableAttributeMapping() : $validatorBuilder->enableAnnotationMapping();
+
+        return $validatorBuilder->getValidator();
     }
 }
