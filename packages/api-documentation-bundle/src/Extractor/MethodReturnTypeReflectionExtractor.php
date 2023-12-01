@@ -49,6 +49,11 @@ final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractor
             ($reflectionType instanceof \ReflectionUnionType || $reflectionType instanceof \ReflectionIntersectionType)
                 ? $reflectionType->getTypes() : [$reflectionType] as $type
         ) {
+            if (!$type instanceof \ReflectionNamedType) {
+                // Nested composite types are not supported yet.
+                return [];
+            }
+
             $phpTypeOrClass = $type->getName();
             if ('null' === $phpTypeOrClass || 'mixed' === $phpTypeOrClass || 'never' === $phpTypeOrClass) {
                 continue;
