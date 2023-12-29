@@ -41,31 +41,46 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
 
     private readonly UrlParserInterface $urlParser;
     private ?PropertyInfoExtractor $propertyInfoExtractor = null;
+    private bool $strictRouteParams;
+    private bool $strictQueryParams;
 
     /**
      * @param array<string, RequestBodyParserInterface>|null $requestBodyParsers
      */
     public function __construct(
         ?UrlParserInterface $urlParser = null,
-
         ?array $requestBodyParsers = null,
+        bool $strictRouteParams = false,
+        bool $strictQueryParams = false,
     ) {
         $this->urlParser = $urlParser ?? new FilterVarUrlParser();
         $this->requestBodyParsers = $requestBodyParsers ?? [
             'json' => new JsonRequestBodyParser(),
             'default' => new FormRequestBodyParser(),
         ];
+        $this->strictRouteParams = $strictRouteParams;
+        $this->strictQueryParams = $strictQueryParams;
     }
 
     public function collect(Request $request, string $className): array
     {
-        $routeParameters = $this->parseUrlProperties($request->attributes->get('_route_params', []), $className);
+        if ($this->strictRouteParams) {
+            $routeParameters = $this->parseUrlProperties($request->attributes->get('_route_params', []), $className);
+        } else {
+            $routeParameters = $request->attributes->get('_route_params', []);
+        }
 
         if (\in_array($request->getMethod(), self::METHODS_WITH_STRICT_TYPE_CHECKS, true)) {
             return $this->mergeRequestData($this->parseRequestBody($request), $routeParameters);
         }
 
-        return $this->mergeRequestData($this->parseUrlProperties($request->query->all(), $className), $routeParameters);
+        if ($this->strictQueryParams) {
+            $queryParameters = $this->parseUrlProperties($request->query->all(), $className);
+        } else {
+            $queryParameters = $request->query->all();
+        }
+
+        return $this->mergeRequestData($queryParameters, $routeParameters);
     }
 
     /**

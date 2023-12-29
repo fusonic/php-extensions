@@ -43,7 +43,7 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], ['_route_params' => ['id' => 15]]);
         $argument = $this->createArgumentMetadata(NotADto::class, []);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
     
@@ -52,7 +52,7 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = $this->createArgumentMetadata(NotADto::class, []);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
     
@@ -61,7 +61,7 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = $this->createArgumentMetadata('NotExistingClass', [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
     
@@ -70,7 +70,7 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = new ArgumentMetadata('routeParameterDto', null, false, false, null);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
     
@@ -90,7 +90,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $iterable = $resolver->resolve($request, $argument);
         
         $dto = $iterable->current();
@@ -114,7 +114,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -139,7 +139,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -168,7 +168,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -279,7 +279,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $generator->current();
@@ -298,7 +298,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         $generator->current();
     }
@@ -325,7 +325,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $generator->current();
@@ -343,7 +343,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -367,7 +367,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $generator->current();
@@ -386,7 +386,7 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], $attributes);
         $argument = $this->createArgumentMetadata(RouteParameterDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -411,7 +411,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(RouteParameterDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -442,7 +442,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         $generator->current();
     }
@@ -453,7 +453,7 @@ class RequestDtoResolverTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(EmptyDto::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $dto = $generator->current();
@@ -507,7 +507,7 @@ class RequestDtoResolverTest extends TestCase
         
         $argument = $this->createArgumentMetadata($dtoClass, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $exception = null;
@@ -532,7 +532,7 @@ class RequestDtoResolverTest extends TestCase
         
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $exception = null;
@@ -559,7 +559,7 @@ class RequestDtoResolverTest extends TestCase
         
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
         
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         
         $exception = null;

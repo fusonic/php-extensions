@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Controller;
 
+use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
 use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
+use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -35,6 +37,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 trait RequestDtoResolverTestTrait
 {
+    private function getRequestDtoResolver(): RequestDtoResolver
+    {
+        return new RequestDtoResolver($this->getDenormalizer(), $this->getValidator(), requestDataCollector: new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true));
+    }
+
     private function getDenormalizer(): DenormalizerInterface
     {
         $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);

@@ -17,6 +17,9 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
+    // Disable strict query params by default
+    $container->parameters()->set('fusonic_http_kernel.strict_query_params', false);
+
     $services->set(RequestDtoResolver::class)
         ->autowire()
         ->tag('controller.argument_value_resolver', [

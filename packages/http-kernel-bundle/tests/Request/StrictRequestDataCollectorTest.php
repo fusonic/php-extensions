@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\Tests\Normalizer;
 
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
+use Fusonic\HttpKernelBundle\Tests\Dto\DummyClassB;
 use Fusonic\HttpKernelBundle\Tests\Dto\RouteParameterDto;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class StrictRequestDataCollectorTest extends TestCase
 {
     public function testInvalidFloat(): void
     {
-        $urlParser = new StrictRequestDataCollector();
+        $urlParser = new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true);
         $attributes = [
             '_route_params' => [
                 'int' => '5',
@@ -51,7 +52,7 @@ class StrictRequestDataCollectorTest extends TestCase
 
     public function testInvalidBoolean(): void
     {
-        $urlParser = new StrictRequestDataCollector();
+        $urlParser = new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true);
         $attributes = [
             '_route_params' => [
                 'int' => '5',
@@ -81,7 +82,7 @@ class StrictRequestDataCollectorTest extends TestCase
 
     public function testInvalidInteger(): void
     {
-        $urlParser = new StrictRequestDataCollector();
+        $urlParser = new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true);
         $attributes = [
             '_route_params' => [
                 'int' => 'aa5',
@@ -111,7 +112,7 @@ class StrictRequestDataCollectorTest extends TestCase
 
     public function testNullable(): void
     {
-        $urlParser = new StrictRequestDataCollector();
+        $urlParser = new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true);
         $attributes = [
             '_route_params' => [
                 'int' => '5',
@@ -128,5 +129,26 @@ class StrictRequestDataCollectorTest extends TestCase
         );
 
         self::assertNull($data['float']);
+    }
+
+    public function testNonStrict(): void
+    {
+        $urlParser = new StrictRequestDataCollector(strictRouteParams: false, strictQueryParams: false);
+        $attributes = [
+            '_route_params' => [
+                'requiredArgument' => 'a',
+            ],
+        ];
+        $request = new Request([
+            'someProperty' => '123',
+        ], [], $attributes);
+
+        $data = $urlParser->collect(
+            $request,
+            DummyClassB::class
+        );
+
+        self::assertSame('a', $data['requiredArgument']);
+        self::assertSame('123', $data['someProperty']);
     }
 }

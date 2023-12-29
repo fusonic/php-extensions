@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\Tests\Controller;
 
 use Fusonic\HttpKernelBundle\Attribute\FromRequest;
-use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Tests\Dto\UnionTypeDto;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +29,7 @@ final class QueryParameterUnionTypeTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(UnionTypeDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $this->expectExceptionMessage('Using union types in the url is not supported. Type: (Fusonic\HttpKernelBundle\Tests\Dto\StringIdDto|int|null)');

@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\Tests\Controller;
 
 use Fusonic\HttpKernelBundle\Attribute\FromRequest;
-use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Fusonic\HttpKernelBundle\Tests\Dto\IntArrayDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\NestedDto;
@@ -32,7 +31,7 @@ final class QueryParameterArrayTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(IntArrayDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $dto = $generator->current();
@@ -50,7 +49,7 @@ final class QueryParameterArrayTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(IntArrayDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $ex = null;
@@ -79,7 +78,7 @@ final class QueryParameterArrayTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(IntArrayDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $ex = null;
@@ -108,7 +107,7 @@ final class QueryParameterArrayTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(IntArrayDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $ex = null;
@@ -141,7 +140,7 @@ final class QueryParameterArrayTest extends TestCase
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(NestedDto::class, [new FromRequest()]);
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
         $this->expectExceptionMessage('Using object types in the url is not supported.');

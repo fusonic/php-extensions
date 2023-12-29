@@ -44,10 +44,10 @@ final class RequestDtoResolver implements ValueResolverInterface
          */
         #[TaggedIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)]
         private readonly iterable $providers = [],
-        ?RequestDataCollectorInterface $modelDataParser = null,
+        ?RequestDataCollectorInterface $requestDataCollector = null,
     ) {
         $this->errorHandler = $errorHandler ?? new ConstraintViolationErrorHandler();
-        $this->requestDataCollector = $modelDataParser ?? new StrictRequestDataCollector();
+        $this->requestDataCollector = $requestDataCollector ?? new StrictRequestDataCollector();
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\DependencyInjection;
 
+use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,6 +24,24 @@ class FusonicHttpKernelExtension extends Extension
             container: $container,
             locator: new FileLocator(__DIR__.'/../../config')
         );
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(
+            'fusonic_http_kernel.strict_query_params',
+            $config['strict_query_params'] ?? null
+        );
+
+        $container->setParameter(
+            'fusonic_http_kernel.strict_route_params',
+            $config['strict_route_params'] ?? null
+        );
+
+        $definition = $container->getDefinition(RequestDtoResolver::class);
+        $definition->replaceArgument('$strictQueryParams', $config['strict_query_params']);
+        $definition->replaceArgument('$strictRouteParams', $config['strict_route_params']);
+
         $loader->load('services.php');
 
         $container->registerForAutoconfiguration(ContextAwareProviderInterface::class)
