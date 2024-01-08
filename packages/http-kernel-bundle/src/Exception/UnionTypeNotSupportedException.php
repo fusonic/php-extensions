@@ -25,10 +25,16 @@ class UnionTypeNotSupportedException extends \RuntimeException
                 '(%s)',
                 implode(
                     '|',
-                    array_map(static function (\ReflectionNamedType $type) {
-                        return $type->getName();
-                    },
-                        $reflectionUnionType->getTypes())
+                    array_map(
+                        static function (\ReflectionNamedType $type) {
+                            return $type->getName();
+                        },
+                        array_filter(
+                            $reflectionUnionType->getTypes(),
+                            static fn (\ReflectionNamedType|\ReflectionIntersectionType $type
+                            ) => $type instanceof \ReflectionNamedType
+                        )
+                    )
                 )
             )
         );

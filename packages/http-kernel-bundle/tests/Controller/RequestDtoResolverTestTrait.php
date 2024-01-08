@@ -78,7 +78,6 @@ trait RequestDtoResolverTestTrait
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
             ->getValidator();
     }
 }

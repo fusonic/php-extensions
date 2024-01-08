@@ -37,47 +37,47 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class RequestDtoResolverTest extends TestCase
 {
     use RequestDtoResolverTestTrait;
-    
+
     public function testSupportOfNotSupportedClass(): void
     {
         $request = new Request([], [], ['_route_params' => ['id' => 15]]);
         $argument = $this->createArgumentMetadata(NotADto::class, []);
-        
+
         $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
-    
+
     public function testResolveOfNotSupportedClass(): void
     {
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = $this->createArgumentMetadata(NotADto::class, []);
-        
+
         $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
-    
+
     public function testSupportOfNotExistingClass(): void
     {
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = $this->createArgumentMetadata('NotExistingClass', [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
-    
+
     public function testSupportWithNull(): void
     {
         $request = new Request([], [], ['_route_params' => ['id' => 5]]);
         $argument = new ArgumentMetadata('routeParameterDto', null, false, false, null);
-        
+
         $resolver = $this->getRequestDtoResolver();
         self::assertNull($resolver->resolve($request, $argument)->current());
     }
-    
+
     public function testValidation(): void
     {
         $this->expectException(ConstraintViolationException::class);
-        
+
         /** @var string $data */
         $data = json_encode(
             [
@@ -85,18 +85,18 @@ class RequestDtoResolverTest extends TestCase
                 'bool' => true,
             ]
         );
-        
+
         $request = new Request([], [], [], [], [], [], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $iterable = $resolver->resolve($request, $argument);
-        
+
         $dto = $iterable->current();
         self::assertInstanceOf(TestDto::class, $dto);
     }
-    
+
     public function testExpectedFloatProvidedIntStrictTypeChecking(): void
     {
         /** @var string $data */
@@ -109,19 +109,19 @@ class RequestDtoResolverTest extends TestCase
                 'test' => 'barfoo',
             ],
         ], \JSON_THROW_ON_ERROR);
-        
+
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(TestDto::class, $dto);
         self::assertSame(9.0, $dto->getFloat());
     }
-    
+
     public function testStrictTypeMappingForPostJsonRequestBody(): void
     {
         /** @var string $data */
@@ -134,24 +134,24 @@ class RequestDtoResolverTest extends TestCase
                 'test' => 'barfoo',
             ],
         ], \JSON_THROW_ON_ERROR);
-        
+
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(TestDto::class, $dto);
         self::assertSame(5, $dto->getInt());
         self::assertSame(9.99, $dto->getFloat());
         self::assertSame('foobar', $dto->getString());
         self::assertTrue($dto->isBool());
-        
+
         self::assertSame('barfoo', $dto->getSubType()->getTest());
     }
-    
+
     public function testStrictTypeMappingForPostFormRequestBody(): void
     {
         $data = [
@@ -163,24 +163,24 @@ class RequestDtoResolverTest extends TestCase
                 'test' => 'barfoo',
             ],
         ];
-        
+
         $request = new Request([], $data, [], [], [], []);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(TestDto::class, $dto);
         self::assertSame(5, $dto->getInt());
         self::assertSame(9.99, $dto->getFloat());
         self::assertSame('foobar', $dto->getString());
         self::assertTrue($dto->isBool());
-        
+
         self::assertSame('barfoo', $dto->getSubType()->getTest());
     }
-    
+
     public function testValidEnumFormRequestBody(): void
     {
         $data = [
@@ -263,7 +263,7 @@ class RequestDtoResolverTest extends TestCase
     public function testSkippingBodyGetRequest(): void
     {
         $this->expectException(ConstraintViolationException::class);
-        
+
         /** @var string $data */
         $data = json_encode([
             'int' => 5,
@@ -274,17 +274,20 @@ class RequestDtoResolverTest extends TestCase
                 'test' => 'barfoo',
             ],
         ], \JSON_THROW_ON_ERROR);
-        
+
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
+
+        $x = $generator->current();
         
-        $generator->current();
+        var_dump($x);
+        self::assertFalse(true);
     }
-    
+
     public function testInvalidRequestBodyHandling(): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -297,12 +300,12 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data).'foobar');
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         $generator->current();
     }
-    
+
     public function testDuplicateKeyHandling(): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -320,17 +323,17 @@ class RequestDtoResolverTest extends TestCase
                 'bool' => true,
             ],
         ];
-        
+
         $request = new Request($query, [], $attributes);
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $generator->current();
     }
-    
+
     public function testQueryParameterHandling(): void
     {
         $query = [
@@ -342,10 +345,10 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request($query);
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(TestDto::class, $dto);
         self::assertSame(5, $dto->getInt());
@@ -353,11 +356,11 @@ class RequestDtoResolverTest extends TestCase
         self::assertSame('foobar', $dto->getString());
         self::assertTrue($dto->isBool());
     }
-    
+
     public function testInvalidQueryParameterHandling(): void
     {
         $this->expectException(ConstraintViolationException::class);
-        
+
         $query = [
             'int' => [
                 'subentity' => [1, 2, 3, 4],
@@ -366,13 +369,13 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request($query);
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $generator->current();
     }
-    
+
     public function testRouteParameterHandlingWithNotMatchingTypes(): void
     {
         $attributes = [
@@ -385,10 +388,10 @@ class RequestDtoResolverTest extends TestCase
         ];
         $request = new Request([], [], $attributes);
         $argument = $this->createArgumentMetadata(RouteParameterDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(RouteParameterDto::class, $dto);
         self::assertSame(5, $dto->getInt());
@@ -396,7 +399,7 @@ class RequestDtoResolverTest extends TestCase
         self::assertSame('foobar', $dto->getString());
         self::assertTrue($dto->isBool());
     }
-    
+
     public function testRouteParameterHandlingWithStrings(): void
     {
         $attributes = [
@@ -410,10 +413,10 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], $attributes);
         $request->setMethod(Request::METHOD_GET);
         $argument = $this->createArgumentMetadata(RouteParameterDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(RouteParameterDto::class, $dto);
         self::assertSame(5, $dto->getInt());
@@ -421,7 +424,7 @@ class RequestDtoResolverTest extends TestCase
         self::assertSame('foobar', $dto->getString());
         self::assertTrue($dto->isBool());
     }
-    
+
     public function testInvalidTypeMappingHandling(): void
     {
         $this->expectException(ConstraintViolationException::class);
@@ -441,25 +444,25 @@ class RequestDtoResolverTest extends TestCase
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
         $generator->current();
     }
-    
+
     public function testEmptyBodyHandling(): void
     {
         $request = new Request();
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(EmptyDto::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $dto = $generator->current();
         self::assertInstanceOf(EmptyDto::class, $dto);
     }
-    
+
     public function testContextAwareProviderCalling(): void
     {
         /** @var string $data */
@@ -472,25 +475,25 @@ class RequestDtoResolverTest extends TestCase
                 'test' => 'barfoo',
             ],
         ], \JSON_THROW_ON_ERROR);
-        
+
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
-        
+
         $mockProvider1 = $this->createMock(ContextAwareProviderInterface::class);
         $mockProvider1->expects(self::once())->method('supports')->willReturn(true);
         $mockProvider1->expects(self::once())->method('provide');
-        
+
         $mockProvider2 = $this->createMock(ContextAwareProviderInterface::class);
         $mockProvider2->expects(self::once())->method('supports')->willReturn(false);
         $mockProvider2->expects(self::never())->method('provide');
-        
+
         $providers = [$mockProvider1, $mockProvider2];
-        
+
         $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator(), null, $providers);
         $resolver->resolve($request, $argument)->current();
     }
-    
+
     /**
      * @param array<mixed> $data
      * @param class-string $dtoClass
@@ -504,88 +507,88 @@ class RequestDtoResolverTest extends TestCase
         $data = json_encode($data, \JSON_THROW_ON_ERROR);
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
-        
+
         $argument = $this->createArgumentMetadata($dtoClass, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $exception = null;
         try {
             $generator->current();
         } catch (\Throwable $e) {
             $exception = $e;
         }
-        
+
         self::assertNotNull($exception);
         self::assertInstanceOf(ConstraintViolationException::class, $exception);
         $violations = $exception->getConstraintViolationList();
-        
+
         self::assertCount(1, $violations);
         self::assertInstanceOf($expectedViolationClass, $violations->get(0));
     }
-    
+
     public function testTypeError(): void
     {
         $request = new Request(['requiredArgument' => null]);
         $request->setMethod(Request::METHOD_GET);
-        
+
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $exception = null;
         try {
             $generator->current();
         } catch (\Throwable $e) {
             $exception = $e;
         }
-        
+
         self::assertNotNull($exception);
         self::assertInstanceOf(ConstraintViolationException::class, $exception);
         $violations = $exception->getConstraintViolationList();
-        
+
         self::assertCount(1, $violations);
         self::assertInstanceOf(NotNormalizableValueConstraintViolation::class, $violations->get(0));
         self::assertSame('null', $violations->get(0)->getInvalidValue());
         self::assertSame('requiredArgument', $violations->get(0)->getPropertyPath());
     }
-    
+
     public function testUrlParsingError(): void
     {
         $request = new Request(['requiredArgument' => 'aaaa']);
         $request->setMethod(Request::METHOD_GET);
-        
+
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
-        
+
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
-        
+
         $exception = null;
         try {
             $generator->current();
         } catch (\Throwable $e) {
             $exception = $e;
         }
-        
+
         self::assertNotNull($exception);
         self::assertInstanceOf(ConstraintViolationException::class, $exception);
         $violations = $exception->getConstraintViolationList();
-        
+
         self::assertCount(1, $violations);
         self::assertInstanceOf(NotNormalizableValueConstraintViolation::class, $violations->get(0));
         self::assertSame('aaaa', $violations->get(0)->getInvalidValue());
         self::assertSame('requiredArgument', $violations->get(0)->getPropertyPath());
     }
-    
+
     public function testIntegerRouteParameterTypeError(): void
     {
         $request = new Request([], ['requiredArgument' => '1']);
         $request->setMethod(Request::METHOD_POST);
-        
+
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
-        
+
         $resolver = new RequestDtoResolver(
             $this->getDenormalizer(),
             $this->getValidator(),
@@ -594,20 +597,20 @@ class RequestDtoResolverTest extends TestCase
             new StrictRequestDataCollector(null)
         );
         $generator = $resolver->resolve($request, $argument);
-        
+
         $this->expectExceptionMessage('ConstraintViolation: This value should be of type int.');
-        
+
         /* @var DummyClassA $dto */
         $generator->current();
     }
-    
+
     public function testValidIntegerRouteParameter(): void
     {
         $request = new Request([], ['requiredArgument' => 1]);
         $request->setMethod(Request::METHOD_POST);
-        
+
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
-        
+
         $resolver = new RequestDtoResolver(
             $this->getDenormalizer(),
             $this->getValidator(),
@@ -616,13 +619,13 @@ class RequestDtoResolverTest extends TestCase
             new StrictRequestDataCollector(null)
         );
         $generator = $resolver->resolve($request, $argument);
-        
+
         /* @var DummyClassA $dto */
         $dto = $generator->current();
-        
+
         self::assertSame(1, $dto->getRequiredArgument());
     }
-    
+
     /**
      * @return array<array<mixed>>
      */
