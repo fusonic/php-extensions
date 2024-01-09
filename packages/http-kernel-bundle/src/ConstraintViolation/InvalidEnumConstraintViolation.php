@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\ConstraintViolation;
 
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Fusonic\HttpKernelBundle\Exception\InvalidEnumException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
- * Wraps an {@see InvalidArgumentException} into a {@see ConstraintViolation}.
+ * Wraps an {@see InvalidEnumException} into a {@see ConstraintViolation} to provide information about the valid choices.
  */
 class InvalidEnumConstraintViolation extends ConstraintViolation
 {
