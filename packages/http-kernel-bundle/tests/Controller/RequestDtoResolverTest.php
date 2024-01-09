@@ -17,6 +17,7 @@ use Fusonic\HttpKernelBundle\ConstraintViolation\TypeConstraintViolation;
 use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
+use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Fusonic\HttpKernelBundle\Tests\Dto\ArrayDto;
@@ -693,6 +694,7 @@ class RequestDtoResolverTest extends TestCase
         $normalizers = [
             new UnwrappingDenormalizer(),
             new ConstraintViolationExceptionNormalizer($constraintViolationListNormalizer),
+            new DecoratedBackedEnumNormalizer(new BackedEnumNormalizer()),
             new ProblemNormalizer(),
             new UidNormalizer(),
             new JsonSerializableNormalizer(),

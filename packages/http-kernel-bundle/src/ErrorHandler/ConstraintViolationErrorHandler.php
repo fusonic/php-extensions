@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\ErrorHandler;
 
 use Fusonic\HttpKernelBundle\ConstraintViolation\ArgumentCountConstraintViolation;
-use Fusonic\HttpKernelBundle\ConstraintViolation\InvalidArgumentConstraintViolation;
+use Fusonic\HttpKernelBundle\ConstraintViolation\InvalidEnumConstraintViolation;
 use Fusonic\HttpKernelBundle\ConstraintViolation\MissingConstructorArgumentsConstraintViolation;
 use Fusonic\HttpKernelBundle\ConstraintViolation\NotNormalizableValueConstraintViolation;
 use Fusonic\HttpKernelBundle\ConstraintViolation\TypeConstraintViolation;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Fusonic\HttpKernelBundle\Exception\InvalidEnumException;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -28,9 +28,9 @@ class ConstraintViolationErrorHandler implements ErrorHandlerInterface
      */
     public function handleDenormalizeError(\Throwable $ex, array $data, string $className): \Throwable
     {
-        if ($ex instanceof InvalidArgumentException) {
+        if ($ex instanceof InvalidEnumException) {
             return ConstraintViolationException::fromConstraintViolation(
-                new InvalidArgumentConstraintViolation($ex, $data, $className)
+                new InvalidEnumConstraintViolation($ex->enumClass, $ex->data, $ex->propertyPath)
             );
         }
 
