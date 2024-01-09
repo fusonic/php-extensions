@@ -261,6 +261,26 @@ class RequestDtoResolverTest extends TestCase
         $generator->current();
     }
 
+    public function testInvalidEnumTypeFormBody(): void
+    {
+        $data = [
+            'exampleEnum' => [],
+        ];
+
+        $request = new Request([], $data, [], [], [], []);
+        $request->setMethod(Request::METHOD_POST);
+        $argument = $this->createArgumentMetadata(EnumDto::class, [new FromRequest()]);
+
+        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $generator = $resolver->resolve($request, $argument);
+
+        $this->expectException(ConstraintViolationException::class);
+        $this->expectExceptionMessage(
+            'ConstraintViolation: This value should be of type int|string.'
+        );
+        $generator->current();
+    }
+
     public function testSkippingBodyGetRequest(): void
     {
         $this->expectException(ConstraintViolationException::class);
@@ -567,7 +587,7 @@ class RequestDtoResolverTest extends TestCase
         );
         $generator = $resolver->resolve($request, $argument);
 
-        self::expectExceptionMessage('ConstraintViolation: This value should be of type int.');
+        $this->expectExceptionMessage('ConstraintViolation: This value should be of type int.');
 
         /* @var DummyClassA $dto */
         $generator->current();

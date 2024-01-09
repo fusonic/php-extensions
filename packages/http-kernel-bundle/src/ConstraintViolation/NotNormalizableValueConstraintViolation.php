@@ -66,6 +66,10 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
             }
 
             $propertyPath = $this->determinePropertyPath($data, $className);
+        } elseif (str_starts_with($message, 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type')) {
+            $propertyPath = $exception->getPath();
+            $invalidValue = $exception->getCurrentType();
+            $expectedType = implode('|', $exception->getExpectedTypes());
         } else {
             throw $exception;
         }

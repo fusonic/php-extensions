@@ -5,8 +5,6 @@
  * Licensed under the MIT License. See LICENSE file in the project root for license information.
  */
 
-// Licensed under the MIT License. See LICENSE file in the project root for license information.
-
 declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\ConstraintViolation;
@@ -35,7 +33,7 @@ class InvalidEnumConstraintViolation extends ConstraintViolation
         parent::__construct(
             message: $constraint->message,
             messageTemplate: $constraint->message,
-            parameters: ['{{ choices }}' => $choices, '{{ value }}' => $propertyPathAndValue[1] ?? null],
+            parameters: ['{{ choices }}' => $choices, '{{ value }}' => $propertyPath],
             root: null,
             propertyPath: $propertyPath,
             invalidValue: $data,
