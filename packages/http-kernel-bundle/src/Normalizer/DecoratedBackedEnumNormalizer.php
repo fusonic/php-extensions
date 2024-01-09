@@ -48,6 +48,7 @@ final class DecoratedBackedEnumNormalizer implements NormalizerInterface, Denorm
     {
         try {
             return $this->inner->denormalize($data, $type, $format, $context);
+            // @phpstan-ignore-next-line Ignore since the normalizer doesn't have the correct @throws tag
         } catch (InvalidArgumentException) {
             throw new InvalidEnumException($type, $data, $context['deserialization_path'] ?? null);
         }

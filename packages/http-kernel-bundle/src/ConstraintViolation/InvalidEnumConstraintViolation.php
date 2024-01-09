@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 class InvalidEnumConstraintViolation extends ConstraintViolation
 {
     /**
-     * @param class-string $enumClass
+     * @param class-string<\UnitEnum> $enumClass
      *
      * @throws \ReflectionException
      */
