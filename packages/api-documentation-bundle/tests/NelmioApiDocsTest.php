@@ -12,6 +12,7 @@ namespace Fusonic\ApiDocumentationBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
 
 final class NelmioApiDocsTest extends WebTestCase
 {
@@ -57,26 +58,56 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyVoidReturnType('/test-void-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
-        self::assertSame([
-            'schemas' => [
-                'TestRequest' => [
-                    'properties' => [
-                        'id' => [
-                            'type' => 'integer',
+
+        if (Kernel::VERSION_ID < 70000) {
+            self::assertSame([
+                'schemas' => [
+                    'TestRequest' => [
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer',
+                            ],
                         ],
+                        'type' => 'object',
                     ],
-                    'type' => 'object',
-                ],
-                'TestResponse' => [
-                    'properties' => [
-                        'id' => [
-                            'type' => 'integer',
+                    'TestResponse' => [
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer',
+                            ],
                         ],
+                        'type' => 'object',
                     ],
-                    'type' => 'object',
                 ],
-            ],
-        ], $content['components']);
+            ], $content['components']);
+        } else {
+            self::assertSame([
+                'schemas' => [
+                    'TestRequest' => [
+                        'required' => [
+                            'id',
+                        ],
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer',
+                            ],
+                        ],
+                        'type' => 'object',
+                    ],
+                    'TestResponse' => [
+                        'required' => [
+                            'id',
+                        ],
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer',
+                            ],
+                        ],
+                        'type' => 'object',
+                    ],
+                ],
+            ], $content['components']);
+        }
     }
 
     private function verifyManualOutputRoute(string $path, array $content): void
