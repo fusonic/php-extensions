@@ -89,7 +89,7 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
      *
      * @return array<string, mixed>
      */
-    private function mergeRequestData(array $data, array $routeParameters): array
+    protected function mergeRequestData(array $data, array $routeParameters): array
     {
         if (\count($keys = array_intersect_key($data, $routeParameters)) > 0) {
             throw new BadRequestHttpException(
