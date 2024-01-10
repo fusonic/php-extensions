@@ -5,7 +5,7 @@
 - Bumped the required Symfony version from `^5.4|^6.0` to `^6.3`
 
 ## Changes
-- Namespaces of all classes have changed from `Fusonic/HttpKernelBundle` to `Fusonic/HttpKernelBundle`
+- Namespaces of all classes have changed from `Fusonic/HttpKernelBundle` to `Fusonic/HttpKernelExtensions`
 
 ## Configuration
 - Manually registering and tagging the `RequestDtoResolver` is not necessary anymore

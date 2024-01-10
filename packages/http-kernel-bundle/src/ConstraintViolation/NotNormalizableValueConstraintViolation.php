@@ -26,20 +26,39 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
     {
         $message = $exception->getMessage();
         $matches = [];
-        $propertyPath = null;
-        $invalidValue = null;
+        $propertyPath = $exception->getPath();
+        $invalidValue = $exception->getCurrentType();
+        $expectedTypes = $exception->getExpectedTypes();
+        $expectedType = null !== $expectedTypes ? implode('|', $expectedTypes) : null;
 
         if (str_starts_with($message, 'The type of the')) {
-            $pattern = '/The type of the "(\w+)" attribute for class "(.+)" must be one of "(.+)" \("(.+)" given\)\./';
-            preg_match($pattern, $message, $matches);
+            if (1 === preg_match(
+                '/The type of the "(\w+)" attribute for class "(.+)" must be (.+) \("(.+)" given\)\./',
+                $message,
+                $matches
+            )) {
+                if (\count($matches) < 5) {
+                    throw $exception;
+                }
 
-            if (\count($matches) < 5) {
+                $invalidValue = $matches[4];
+                $expectedType ??= $matches[3];
+                $propertyPath ??= $matches[1];
+            } elseif (1 === preg_match(
+                '/The type of the "(\w+)" attribute for class "(.+)" must be one of "(.+)" \("(.+)" given\)\./',
+                $message,
+                $matches
+            )) {
+                if (\count($matches) < 5) {
+                    throw $exception;
+                }
+
+                $invalidValue = $matches[4];
+                $expectedType = $matches[3];
+                $propertyPath = $matches[1];
+            } else {
                 throw $exception;
             }
-
-            $invalidValue = $matches[4];
-            $expectedType = $matches[3];
-            $propertyPath = $matches[1];
         } elseif (str_starts_with($message, 'Failed to denormalize attribute')) {
             $pattern = '/Failed to denormalize attribute "(\w+)" value for class "(.+)": Expected argument of type "(.+)", "(.+)" given/';
             preg_match($pattern, $message, $matches);
@@ -66,7 +85,10 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
             }
 
             $propertyPath = $this->determinePropertyPath($data, $className);
-        } elseif (str_starts_with($message, 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type')) {
+        } elseif (str_starts_with(
+            $message,
+            'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type'
+        )) {
             $propertyPath = $exception->getPath();
             $invalidValue = $exception->getCurrentType();
             $expectedType = implode('|', $exception->getExpectedTypes());

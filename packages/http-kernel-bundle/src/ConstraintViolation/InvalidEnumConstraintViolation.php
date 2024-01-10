@@ -27,7 +27,13 @@ class InvalidEnumConstraintViolation extends ConstraintViolation
     {
         $reflectionEnum = new \ReflectionEnum($enumClass);
 
-        $choices = array_map(static fn (\ReflectionEnumUnitCase $case) => $case->getName(), $reflectionEnum->getCases());
+        $choices = array_map(static function (\ReflectionEnumUnitCase|\ReflectionEnumBackedCase $case) {
+            if ($case instanceof \ReflectionEnumBackedCase) {
+                return $case->getBackingValue();
+            }
+
+            return $case->getValue();
+        }, $reflectionEnum->getCases());
         $constraint = new Choice(choices: $choices);
 
         parent::__construct(

@@ -92,7 +92,12 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
     private function mergeRequestData(array $data, array $routeParameters): array
     {
         if (\count($keys = array_intersect_key($data, $routeParameters)) > 0) {
-            throw new BadRequestHttpException(sprintf('Parameters (%s) used as route attributes can not be used in the request body or query parameters.', implode(', ', array_keys($keys))));
+            throw new BadRequestHttpException(
+                sprintf(
+                    'Parameters (%s) used as route attributes can not be used in the request body or query parameters.',
+                    implode(', ', array_keys($keys))
+                )
+            );
         }
 
         return array_merge($data, $routeParameters);
@@ -140,13 +145,24 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
                 $type = $propertyType?->getName();
 
                 if ('object' === $type || !\in_array($type, Type::$builtinTypes, true)) {
-                    throw new ObjectTypeNotSupportedException();
+                    if (null !== $type && TypeHelper::isTypeEnum($type)) {
+                        $type = TypeHelper::ENUM_TYPE;
+                    } else {
+                        throw new ObjectTypeNotSupportedException();
+                    }
                 }
 
                 if (null !== $propertyType) {
                     if (\in_array($type, Type::$builtinTypes, true)) {
                         if (\is_string($param) || \is_array($param)) {
-                            $params[$name] = $this->parseUrlProperty($className, $name, $type, $propertyType->allowsNull(), $param, $this->appendPropertyPath($propertyPath, $name));
+                            $params[$name] = $this->parseUrlProperty(
+                                $className,
+                                $name,
+                                $type,
+                                $propertyType->allowsNull(),
+                                $param,
+                                $this->appendPropertyPath($propertyPath, $name)
+                            );
                         }
                     }
                 }
@@ -175,8 +191,12 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
      *
      * @return array<array-key, float|int|bool|string|array<array-key, mixed>|null>
      */
-    private function parseArrayProperty(string $className, string $name, array $param, ?string $propertyPath = null): array
-    {
+    private function parseArrayProperty(
+        string $className,
+        string $name,
+        array $param,
+        ?string $propertyPath = null
+    ): array {
         $arrayPropertyTypes = $this->getPropertyInfoExtractor()->getTypes($className, $name);
 
         if (null === $arrayPropertyTypes) {
@@ -189,24 +209,30 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
             $collectionValueTypes = $arrayPropertyType->getCollectionValueTypes();
 
             foreach ($collectionValueTypes as $collectionValueType) {
+                $typeName = $collectionValueType->getBuiltinType();
+
                 foreach ($param as $key => $arrayItem) {
-                    if ('object' === $collectionValueType->getBuiltinType()) {
+                    if ('object' === $typeName) {
                         $collectionValueClassName = $collectionValueType->getClassName();
 
                         if (null !== $collectionValueClassName && TypeHelper::isUnionType($collectionValueClassName)) {
                             throw new UnionTypeNotSupportedException($collectionValueClassName);
                         }
 
-                        throw new ObjectTypeNotSupportedException();
+                        if (null !== $collectionValueClassName && TypeHelper::isTypeEnum($collectionValueClassName)) {
+                            $typeName = TypeHelper::ENUM_TYPE;
+                        } else {
+                            throw new ObjectTypeNotSupportedException();
+                        }
                     }
 
                     $parsedValues[$key] = $this->parseUrlProperty(
                         $className,
                         $name,
-                        $collectionValueType->getBuiltinType(),
+                        $typeName,
                         $collectionValueType->isNullable(),
                         $arrayItem,
-                        $this->appendPropertyPath($propertyPath, $key)
+                        $this->appendPropertyPath($propertyPath, $key),
                     );
                 }
             }
@@ -219,8 +245,14 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
      * @param class-string    $className
      * @param string|string[] $param
      */
-    private function parseUrlProperty(string $className, string $name, string $type, bool $isNullable, string|array $param, ?string $propertyPath = null): mixed
-    {
+    private function parseUrlProperty(
+        string $className,
+        string $name,
+        string $type,
+        bool $isNullable,
+        string|array $param,
+        ?string $propertyPath = null,
+    ): mixed {
         $propertyPath ??= $name;
         $parsedValue = null;
 
@@ -238,6 +270,8 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
             } elseif (Type::BUILTIN_TYPE_BOOL === $type) {
                 $parsedValue = $this->urlParser->parseBoolean($param);
             } elseif (Type::BUILTIN_TYPE_STRING === $type) {
+                $parsedValue = $this->urlParser->parseString($param);
+            } elseif (TypeHelper::ENUM_TYPE === $type) {
                 $parsedValue = $this->urlParser->parseString($param);
             }
         } elseif (Type::BUILTIN_TYPE_ARRAY === $type) {

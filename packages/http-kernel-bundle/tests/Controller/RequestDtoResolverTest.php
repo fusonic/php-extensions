@@ -15,15 +15,13 @@ use Fusonic\HttpKernelBundle\ConstraintViolation\MissingConstructorArgumentsCons
 use Fusonic\HttpKernelBundle\ConstraintViolation\NotNormalizableValueConstraintViolation;
 use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
-use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
-use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Fusonic\HttpKernelBundle\Tests\Dto\ArrayDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\DummyClassA;
 use Fusonic\HttpKernelBundle\Tests\Dto\EmptyDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\EnumDto;
-use Fusonic\HttpKernelBundle\Tests\Dto\ExampleEnum;
+use Fusonic\HttpKernelBundle\Tests\Dto\ExampleStringBackedEnum;
 use Fusonic\HttpKernelBundle\Tests\Dto\IntArrayDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\NestedDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\NotADto;
@@ -86,7 +84,7 @@ class RequestDtoResolverTest extends TestCase
             ]
         );
 
-        $request = new Request([], [], [], [], [], [], $data);
+        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
 
@@ -197,7 +195,7 @@ class RequestDtoResolverTest extends TestCase
         $dto = $generator->current();
 
         self::assertInstanceOf(EnumDto::class, $dto);
-        self::assertSame(ExampleEnum::CHOICE_1, $dto->exampleEnum);
+        self::assertSame(ExampleStringBackedEnum::CHOICE_1, $dto->exampleEnum);
     }
 
     public function testInvalidEnumFormRequestBody(): void
@@ -282,10 +280,7 @@ class RequestDtoResolverTest extends TestCase
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
-        $x = $generator->current();
-        
-        var_dump($x);
-        self::assertFalse(true);
+        $generator->current();
     }
 
     public function testInvalidRequestBodyHandling(): void

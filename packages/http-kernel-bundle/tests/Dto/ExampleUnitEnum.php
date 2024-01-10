@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Dto;
 
-class EnumDto
+enum ExampleUnitEnum
 {
-    public function __construct(
-        public ExampleStringBackedEnum $exampleEnum
-    ) {
-    }
+    case VALUE_1;
+    case VALUE_2;
 }

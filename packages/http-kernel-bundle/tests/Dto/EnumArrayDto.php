@@ -9,10 +9,18 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Dto;
 
-class EnumDto
+class EnumArrayDto
 {
     public function __construct(
-        public ExampleStringBackedEnum $exampleEnum
+        /**
+         * @var ExampleStringBackedEnum[]
+         */
+        public array $stringEnums,
+
+        /**
+         * @var ExampleIntBackedEnum[]
+         */
+        public array $intEnums
     ) {
     }
 }
