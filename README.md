@@ -8,7 +8,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 ### Available packages
 
 - [csv-reader](packages/csv-reader/README.md)
-- [http-kernel-extensions](packages/http-kernel-extensions/README.md)
+- [http-kernel-bundle](packages/http-kernel-bundle/README.md)
 - [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
 - [ddd-extensions](packages/ddd-extensions/README.md)
 - [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
