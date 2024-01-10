@@ -17,11 +17,14 @@ use Fusonic\HttpKernelBundle\ConstraintViolation\TypeConstraintViolation;
 use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
+use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Fusonic\HttpKernelBundle\Tests\Dto\ArrayDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\DummyClassA;
 use Fusonic\HttpKernelBundle\Tests\Dto\EmptyDto;
+use Fusonic\HttpKernelBundle\Tests\Dto\EnumDto;
+use Fusonic\HttpKernelBundle\Tests\Dto\ExampleEnum;
 use Fusonic\HttpKernelBundle\Tests\Dto\IntArrayDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\NestedDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\NotADto;
@@ -197,6 +200,85 @@ class RequestDtoResolverTest extends TestCase
         self::assertTrue($dto->isBool());
 
         self::assertSame('barfoo', $dto->getSubType()->getTest());
+    }
+
+    public function testValidEnumFormRequestBody(): void
+    {
+        $data = [
+            'exampleEnum' => 'CHOICE_1',
+        ];
+
+        $request = new Request([], $data, [], [], [], []);
+        $request->setMethod(Request::METHOD_POST);
+        $argument = $this->createArgumentMetadata(EnumDto::class, [new FromRequest()]);
+
+        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $generator = $resolver->resolve($request, $argument);
+
+        $dto = $generator->current();
+
+        self::assertInstanceOf(EnumDto::class, $dto);
+        self::assertSame(ExampleEnum::CHOICE_1, $dto->exampleEnum);
+    }
+
+    public function testInvalidEnumFormRequestBody(): void
+    {
+        $data = [
+            'exampleEnum' => 'WRONG_CHOICE',
+        ];
+
+        $request = new Request([], $data, [], [], [], []);
+        $request->setMethod(Request::METHOD_POST);
+        $argument = $this->createArgumentMetadata(EnumDto::class, [new FromRequest()]);
+
+        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $generator = $resolver->resolve($request, $argument);
+
+        $this->expectException(ConstraintViolationException::class);
+        $this->expectExceptionMessage(
+            'The value you selected is not a valid choice.'
+        );
+
+        $generator->current();
+    }
+
+    public function testInvalidEnumFormQuery(): void
+    {
+        $request = new Request([
+            'exampleEnum' => 'WRONG_CHOICE',
+        ]);
+        $request->setMethod(Request::METHOD_GET);
+        $argument = $this->createArgumentMetadata(EnumDto::class, [new FromRequest()]);
+
+        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $generator = $resolver->resolve($request, $argument);
+
+        $this->expectException(ConstraintViolationException::class);
+        $this->expectExceptionMessage(
+            'The value you selected is not a valid choice.'
+        );
+
+        $generator->current();
+    }
+
+    public function testInvalidEnumTypeFormBody(): void
+    {
+        $data = [
+            'exampleEnum' => [],
+        ];
+
+        $request = new Request([], $data, [], [], [], []);
+        $request->setMethod(Request::METHOD_POST);
+        $argument = $this->createArgumentMetadata(EnumDto::class, [new FromRequest()]);
+
+        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator());
+        $generator = $resolver->resolve($request, $argument);
+
+        $this->expectException(ConstraintViolationException::class);
+        $this->expectExceptionMessage(
+            'ConstraintViolation: This value should be of type int|string.'
+        );
+        $generator->current();
     }
 
     public function testSkippingBodyGetRequest(): void
@@ -505,7 +587,7 @@ class RequestDtoResolverTest extends TestCase
         );
         $generator = $resolver->resolve($request, $argument);
 
-        self::expectExceptionMessage('ConstraintViolation: This value should be of type int.');
+        $this->expectExceptionMessage('ConstraintViolation: This value should be of type int.');
 
         /* @var DummyClassA $dto */
         $generator->current();
@@ -632,6 +714,7 @@ class RequestDtoResolverTest extends TestCase
         $normalizers = [
             new UnwrappingDenormalizer(),
             new ConstraintViolationExceptionNormalizer($constraintViolationListNormalizer),
+            new DecoratedBackedEnumNormalizer(new BackedEnumNormalizer()),
             new ProblemNormalizer(),
             new UidNormalizer(),
             new JsonSerializableNormalizer(),
