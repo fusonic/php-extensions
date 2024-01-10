@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Exception;
 
+use Symfony\Component\PropertyInfo\Type;
+
 class UnionTypeNotSupportedException extends \RuntimeException
 {
     public function __construct(string $type)
@@ -18,7 +20,10 @@ class UnionTypeNotSupportedException extends \RuntimeException
         parent::__construct(sprintf('Using union types in the url is not supported. Type: %s', $type));
     }
 
-    public static function fromReflectionUnionType(\ReflectionUnionType $reflectionUnionType): self
+    /**
+     * @param Type[] $types
+     */
+    public static function fromTypes(array $types): self
     {
         return new self(
             sprintf(
@@ -26,13 +31,11 @@ class UnionTypeNotSupportedException extends \RuntimeException
                 implode(
                     '|',
                     array_map(
-                        static function (\ReflectionNamedType $type) {
-                            return $type->getName();
+                        static function (Type $type) {
+                            return $type->getBuiltinType();
                         },
                         array_filter(
-                            $reflectionUnionType->getTypes(),
-                            static fn (\ReflectionNamedType|\ReflectionIntersectionType $type
-                            ) => $type instanceof \ReflectionNamedType
+                            $types,
                         )
                     )
                 )

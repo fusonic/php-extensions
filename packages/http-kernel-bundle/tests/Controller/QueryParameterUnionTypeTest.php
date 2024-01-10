@@ -32,7 +32,7 @@ final class QueryParameterUnionTypeTest extends TestCase
         $resolver = $this->getRequestDtoResolver();
         $generator = $resolver->resolve($request, $argument);
 
-        $this->expectExceptionMessage('Using union types in the url is not supported. Type: (Fusonic\HttpKernelBundle\Tests\Dto\StringIdDto|int|null)');
+        $this->expectExceptionMessage('Using union types in the url is not supported. Type: (object|int)');
 
         $generator->current();
     }

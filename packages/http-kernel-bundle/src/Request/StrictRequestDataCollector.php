@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Request;
 
-use Fusonic\HttpKernelBundle\Cache\ReflectionClassCache;
 use Fusonic\HttpKernelBundle\Exception\ObjectTypeNotSupportedException;
 use Fusonic\HttpKernelBundle\Exception\UnionTypeNotSupportedException;
 use Fusonic\HttpKernelBundle\Request\BodyParser\FormRequestBodyParser;
@@ -128,43 +127,40 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
      */
     private function parseUrlProperties(array $params, string $className, ?string $propertyPath = null): array
     {
-        $reflectionClass = ReflectionClassCache::getReflectionClass($className);
-
         foreach ($params as $name => $param) {
-            if ($reflectionClass->hasProperty($name)) {
-                $property = $reflectionClass->getProperty($name);
+            $types = $this->getPropertyInfoExtractor()->getTypes($className, $name);
 
-                /** @var \ReflectionNamedType|\ReflectionUnionType|null $propertyType */
-                $propertyType = $property->getType();
-
-                if ($propertyType instanceof \ReflectionUnionType) {
-                    throw UnionTypeNotSupportedException::fromReflectionUnionType($propertyType);
+            if (null !== $types) {
+                if (\count($types) > 1) {
+                    throw UnionTypeNotSupportedException::fromTypes($types);
                 }
 
-                /** @var string|class-string|null $type */
-                $type = $propertyType?->getName();
+                $type = $types[0];
+                $typeName = $type->getBuiltinType();
 
-                if ('object' === $type || !\in_array($type, Type::$builtinTypes, true)) {
-                    if (null !== $type && TypeHelper::isTypeEnum($type)) {
-                        $type = TypeHelper::ENUM_TYPE;
+                if ('object' === $typeName) {
+                    $typeClassName = $type->getClassName();
+
+                    if (null !== $typeClassName && TypeHelper::isUnionType($typeClassName)) {
+                        throw new UnionTypeNotSupportedException($typeClassName);
+                    }
+
+                    if (null !== $typeClassName && TypeHelper::isTypeEnum($typeClassName)) {
+                        $typeName = TypeHelper::ENUM_TYPE;
                     } else {
                         throw new ObjectTypeNotSupportedException();
                     }
                 }
 
-                if (null !== $propertyType) {
-                    if (\in_array($type, Type::$builtinTypes, true)) {
-                        if (\is_string($param) || \is_array($param)) {
-                            $params[$name] = $this->parseUrlProperty(
-                                $className,
-                                $name,
-                                $type,
-                                $propertyType->allowsNull(),
-                                $param,
-                                $this->appendPropertyPath($propertyPath, $name)
-                            );
-                        }
-                    }
+                if (\is_string($param) || \is_array($param)) {
+                    $params[$name] = $this->parseUrlProperty(
+                        $className,
+                        $name,
+                        $typeName,
+                        $type->isNullable(),
+                        $param,
+                        $this->appendPropertyPath($propertyPath, $name)
+                    );
                 }
             }
         }
