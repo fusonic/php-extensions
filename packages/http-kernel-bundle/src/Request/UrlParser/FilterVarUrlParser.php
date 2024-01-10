@@ -30,6 +30,20 @@ final class FilterVarUrlParser implements UrlParserInterface
         return filter_var($value, \FILTER_VALIDATE_FLOAT, \FILTER_NULL_ON_FAILURE);
     }
 
+    /**
+     * @param string|array<string> $value
+     *
+     * @return array<string>
+     */
+    public function handleArrayParameter(string|array $value): array
+    {
+        if (\is_string($value)) {
+            return [$value];
+        }
+
+        return $value;
+    }
+
     public function parseBoolean(string $value): ?bool
     {
         return filter_var($value, \FILTER_VALIDATE_BOOL, \FILTER_NULL_ON_FAILURE);

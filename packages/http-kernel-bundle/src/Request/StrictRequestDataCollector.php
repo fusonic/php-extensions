@@ -275,7 +275,8 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
                 $parsedValue = $this->urlParser->parseString($param);
             }
         } elseif (Type::BUILTIN_TYPE_ARRAY === $type) {
-            $parsedValue = $this->parseArrayProperty($className, $name, $param, $propertyPath);
+            $arrayValues = $this->urlParser->handleArrayParameter($param);
+            $parsedValue = $this->parseArrayProperty($className, $name, $arrayValues, $propertyPath);
         }
 
         if (null === $parsedValue) {

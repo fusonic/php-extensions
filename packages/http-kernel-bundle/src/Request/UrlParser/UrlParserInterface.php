@@ -31,4 +31,14 @@ interface UrlParserInterface
      * @param class-string $className
      */
     public function handleFailure(string $attribute, string $className, string $expectedType, string $value, string $propertyPath): void;
+
+    /**
+     * Implement how an array is handled. You might need this if you are not using regular url parameter arrays and are
+     * using comma separated values.
+     *
+     * @param string|array<string> $value
+     *
+     * @return array<string>
+     */
+    public function handleArrayParameter(string|array $value): array;
 }
