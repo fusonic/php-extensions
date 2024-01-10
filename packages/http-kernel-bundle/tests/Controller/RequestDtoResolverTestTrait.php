@@ -14,6 +14,7 @@ use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
 use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -77,8 +78,15 @@ trait RequestDtoResolverTestTrait
 
     private function getValidator(): ValidatorInterface
     {
-        return Validation::createValidatorBuilder()
-            ->enableAttributeMapping()
-            ->getValidator();
+        $validatorBuilder = Validation::createValidatorBuilder();
+        if (Kernel::VERSION_ID < 70000) {
+            if (method_exists($validatorBuilder, 'enableAnnotationMapping')) {
+                $validatorBuilder->enableAnnotationMapping();
+            }
+        } else {
+            $validatorBuilder->enableAttributeMapping();
+        }
+
+        return $validatorBuilder->getValidator();
     }
 }
