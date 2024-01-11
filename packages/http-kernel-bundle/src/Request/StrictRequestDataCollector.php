@@ -149,6 +149,9 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
 
                     if (null !== $typeClassName && TypeHelper::isTypeEnum($typeClassName)) {
                         $typeName = TypeHelper::ENUM_TYPE;
+                    } elseif (null !== $typeClassName && is_a($typeClassName, \DateTimeInterface::class, true)) {
+                        // Handle DateTimeInterface as a string
+                        $typeName = 'string';
                     } else {
                         throw new ObjectTypeNotSupportedException();
                     }
@@ -219,6 +222,9 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
 
                         if (null !== $collectionValueClassName && TypeHelper::isTypeEnum($collectionValueClassName)) {
                             $typeName = TypeHelper::ENUM_TYPE;
+                        } elseif (null !== $collectionValueClassName && is_a($collectionValueClassName, \DateTimeInterface::class, true)) {
+                            // Handle DateTimeInterface as a string
+                            $typeName = 'string';
                         } else {
                             throw new ObjectTypeNotSupportedException();
                         }
