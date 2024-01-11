@@ -19,16 +19,16 @@ final class ReflectionClassCache
     private static array $reflectionClassCache = [];
 
     /**
-     * @return \ReflectionClass<object>
+     * @return \ReflectionClass<object>|null
      */
-    public static function getReflectionClass(string $className): \ReflectionClass
+    public static function getReflectionClass(string $className): ?\ReflectionClass
     {
         if (isset(self::$reflectionClassCache[$className])) {
             return self::$reflectionClassCache[$className];
         }
 
         if (!class_exists($className)) {
-            throw new \LogicException(sprintf('Class %s does not exist.', $className));
+            return null;
         }
 
         $reflectionClass = new \ReflectionClass($className);

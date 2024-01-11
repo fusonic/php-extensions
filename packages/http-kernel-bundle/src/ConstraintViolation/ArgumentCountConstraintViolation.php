@@ -45,7 +45,7 @@ class ArgumentCountConstraintViolation extends ConstraintViolation
 
         $class = ReflectionClassCache::getReflectionClass($matches[1]);
 
-        $constructor = $class->getConstructor();
+        $constructor = $class?->getConstructor();
         $parameters = $constructor?->getParameters() ?? [];
 
         $propertyPath = null;

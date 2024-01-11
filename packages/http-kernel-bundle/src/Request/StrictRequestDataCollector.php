@@ -233,6 +233,10 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
                 }
             }
         }
+        // Use the original value if no types can be parsed
+        if (0 === \count($parsedValues)) {
+            $parsedValues = $param;
+        }
 
         return $parsedValues;
     }
