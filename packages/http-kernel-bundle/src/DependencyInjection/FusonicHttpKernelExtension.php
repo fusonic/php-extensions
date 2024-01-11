@@ -38,11 +38,17 @@ class FusonicHttpKernelExtension extends Extension
             $config['strict_route_params'] ?? null
         );
 
-        $definition = $container->getDefinition(RequestDtoResolver::class);
-        $definition->replaceArgument('$strictQueryParams', $config['strict_query_params']);
-        $definition->replaceArgument('$strictRouteParams', $config['strict_route_params']);
-
         $loader->load('services.php');
+
+        $definition = $container->getDefinition(RequestDtoResolver::class);
+
+        if (isset($config['strict_query_params'])) {
+            $definition->replaceArgument('$strictQueryParams', $config['strict_query_params']);
+        }
+
+        if (isset($config['strict_route_params'])) {
+            $definition->replaceArgument('$strictRouteParams', $config['strict_route_params']);
+        }
 
         $container->registerForAutoconfiguration(ContextAwareProviderInterface::class)
             ->addTag(ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER);
