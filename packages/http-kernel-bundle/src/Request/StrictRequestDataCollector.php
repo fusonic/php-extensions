@@ -70,6 +70,8 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
         }
 
         if (\in_array($request->getMethod(), self::METHODS_WITH_STRICT_TYPE_CHECKS, true)) {
+            // FIXME if the BodyParser is the FormRequestBodyParser types are not converted
+            //  we could use the same logic as parseUrlProperties to do this
             return $this->mergeRequestData($this->parseRequestBody($request), $routeParameters);
         }
 
