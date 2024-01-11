@@ -22,6 +22,6 @@ class TypeHelper
 
     public static function isTypeEnum(string $type): bool
     {
-        return ReflectionClassCache::getReflectionClass($type)?->isEnum();
+        return ReflectionClassCache::getReflectionClass($type)?->isEnum() ?? false;
     }
 }

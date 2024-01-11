@@ -262,7 +262,7 @@ class StrictRequestDataCollector implements RequestDataCollectorInterface
 
         if (Type::BUILTIN_TYPE_ARRAY !== $type && \is_array($param)) {
             $this->urlParser->handleFailure($name, $className, $type, '[]', $propertyPath);
-        } elseif (\is_string($param)) {
+        } elseif (Type::BUILTIN_TYPE_ARRAY !== $type && \is_string($param)) {
             if (Type::BUILTIN_TYPE_INT === $type) {
                 $parsedValue = $this->urlParser->parseInteger($param);
             } elseif (Type::BUILTIN_TYPE_FLOAT === $type) {
