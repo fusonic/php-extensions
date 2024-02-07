@@ -665,7 +665,7 @@ class RequestDtoResolverTest extends TestCase
     /**
      * @return array<array<mixed>>
      */
-    public function errorTestData(): array
+    public static function errorTestData(): array
     {
         return [
             [
