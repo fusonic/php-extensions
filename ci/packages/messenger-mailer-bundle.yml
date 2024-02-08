@@ -15,7 +15,7 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
         PACKAGE: messenger-mailer-bundle
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit
+        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
     artifacts:
         paths: []
 
