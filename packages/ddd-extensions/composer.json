@@ -21,8 +21,6 @@
         }
     },
     "replace":  {
-        "symfony/polyfill-intl-grapheme": "*",
-        "symfony/polyfill-intl-normalizer": "*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-mbstring": "*"
     },
@@ -31,7 +29,6 @@
         "beberlei/assert": "^3.3"
     },
     "require-dev": {
-        "ext-intl": "*",
         "ext-ctype": "*",
         "ext-mbstring": "*",
         "doctrine/orm": "^2.17",
