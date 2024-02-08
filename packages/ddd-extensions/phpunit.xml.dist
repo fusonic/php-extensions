@@ -25,6 +25,7 @@
         <ini name="display_errors" value="1"/>
         <ini name="error_reporting" value="-1"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999"/>
+        <env name="APP_DEBUG" value="false" />
     </php>
 
     <testsuites>

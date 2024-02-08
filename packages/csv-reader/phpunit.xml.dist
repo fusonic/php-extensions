@@ -12,6 +12,7 @@
 
     <php>
         <ini name="error_reporting" value="-1"/>
+        <env name="APP_DEBUG" value="false" />
     </php>
 
     <source ignoreSuppressionOfDeprecations="true"
