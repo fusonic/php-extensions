@@ -22,14 +22,11 @@
         }
     },
     "replace":  {
-        "symfony/polyfill-intl-grapheme": "*",
-        "symfony/polyfill-intl-normalizer": "*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-mbstring": "*"
     },
     "require": {
         "php": "^8.2",
-        "ext-intl": "*",
         "ext-ctype": "*",
         "ext-mbstring": "*",
         "phpdocumentor/reflection-docblock": "^5.3",

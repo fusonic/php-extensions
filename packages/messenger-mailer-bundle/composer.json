@@ -24,9 +24,6 @@
         ]
     },
     "replace":  {
-        "symfony/polyfill-intl-grapheme": "*",
-        "symfony/polyfill-intl-normalizer": "*",
-        "symfony/polyfill-intl-idn": "*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-mbstring": "*"
     },
@@ -43,7 +40,6 @@
     },
     "require": {
         "php": ">=8.2",
-        "ext-intl": "*",
         "ext-ctype": "*",
         "ext-mbstring": "*",
         "symfony/mime": "^6.2 || ^7.0",
