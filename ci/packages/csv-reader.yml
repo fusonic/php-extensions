@@ -8,6 +8,14 @@ phpunit:csv-reader:
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
 
 csv-reader:publish-branch:
     extends: .publish-branch
