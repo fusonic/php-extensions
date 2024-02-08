@@ -6,7 +6,15 @@ phpunit:api-documentation-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+        - vendor/bin/phpunit
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
 
 phpunit:api-documentation-bundle:symfony-lowest:
     extends: .phpunit-test
@@ -15,9 +23,7 @@ phpunit:api-documentation-bundle:symfony-lowest:
         PACKAGE: api-documentation-bundle
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
-    artifacts:
-        paths: []
+        - vendor/bin/phpunit
 
 api-documentation-bundle:publish-branch:
     extends: .publish-branch

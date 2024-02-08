@@ -7,6 +7,14 @@ phpunit:http-kernel-extensions:symfony:
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
 
 phpunit:http-kernel-extensions:symfony-lowest:
     extends: .phpunit-test
@@ -15,9 +23,7 @@ phpunit:http-kernel-extensions:symfony-lowest:
         PACKAGE: http-kernel-extensions
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
-    artifacts:
-        paths: []
+        - vendor/bin/phpunit
 
 http-kernel-extensions:publish-branch:
     extends: .publish-branch
