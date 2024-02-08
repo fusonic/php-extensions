@@ -7,6 +7,14 @@ phpunit:messenger-mailer-bundle:symfony:
         - composer phpstan
         - composer phpcs-check
         - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
 
 phpunit:messenger-mailer-bundle:symfony-lowest:
     extends: .phpunit-test
@@ -16,9 +24,6 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
     script:
         - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
         - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        when: never
 
 messenger-mailer-bundle:publish-branch:
     extends: .publish-branch
