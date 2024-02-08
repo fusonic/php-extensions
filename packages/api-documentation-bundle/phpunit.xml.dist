@@ -26,6 +26,7 @@
         <ini name="display_errors" value="1"/>
         <server name="KERNEL_CLASS" value="Fusonic\ApiDocumentationBundle\Tests\App\TestKernel"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+        <env name="APP_DEBUG" value="false" />
     </php>
 
     <testsuites>
