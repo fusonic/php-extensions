@@ -66,6 +66,14 @@
         name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}
         url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/html/index.html?job=${CI_JOB_NAME}
         auto_stop_in: 1 week
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
     rules:
         - when: always
