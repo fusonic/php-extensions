@@ -23,6 +23,13 @@
             "tests/app/TestKernel.php"
         ]
     },
+    "replace":  {
+        "symfony/polyfill-intl-grapheme": "*",
+        "symfony/polyfill-intl-normalizer": "*",
+        "symfony/polyfill-intl-idn": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-mbstring": "*"
+    },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.40",
         "phpstan/phpstan": "^1.10",
@@ -36,6 +43,9 @@
     },
     "require": {
         "php": ">=8.2",
+        "ext-intl": "*",
+        "ext-ctype": "*",
+        "ext-mbstring": "*",
         "symfony/mime": "^6.2 || ^7.0",
         "symfony/http-kernel": "^6.2 || ^7.0",
         "symfony/config": "^6.2 || ^7.0",
