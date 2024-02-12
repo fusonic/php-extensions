@@ -6,7 +6,7 @@ phpunit:http-kernel-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - composer test-coverage
+        - composer test-coverage --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
 
 phpunit:http-kernel-bundle:symfony-lowest:
     extends: .phpunit-test
