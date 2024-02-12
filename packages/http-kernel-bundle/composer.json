@@ -21,8 +21,14 @@
             "Fusonic\\HttpKernelBundle\\Tests\\": "tests/"
         }
     },
+    "replace":  {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-mbstring": "*"
+    },
     "require": {
         "php": "^8.2",
+        "ext-ctype": "*",
+        "ext-mbstring": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "symfony/config": "^6.3 || ^7.0",
         "symfony/dependency-injection": "^6.3 || ^7.0",
