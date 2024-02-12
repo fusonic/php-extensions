@@ -6,7 +6,7 @@ phpunit:api-documentation-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit
+        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
 
 phpunit:api-documentation-bundle:symfony-lowest:
     extends: .phpunit-test
