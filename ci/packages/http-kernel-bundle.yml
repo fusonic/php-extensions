@@ -6,7 +6,7 @@ phpunit:http-kernel-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - composer test-coverage
+        - composer test-coverage --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
 
 phpunit:http-kernel-bundle:symfony-lowest:
     extends: .phpunit-test
@@ -18,6 +18,7 @@ phpunit:http-kernel-bundle:symfony-lowest:
         - vendor/bin/phpunit
     artifacts:
         paths: []
+        reports: null
 
 http-kernel-bundle:publish-branch:
     extends: .publish-branch

@@ -18,6 +18,7 @@ phpunit:messenger-mailer-bundle:symfony-lowest:
         - vendor/bin/phpunit
     artifacts:
         paths: []
+        reports: null
 
 messenger-mailer-bundle:publish-branch:
     extends: .publish-branch

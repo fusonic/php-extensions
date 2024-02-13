@@ -18,6 +18,7 @@ phpunit:http-kernel-extensions:symfony-lowest:
         - vendor/bin/phpunit
     artifacts:
         paths: []
+        reports: null
 
 http-kernel-extensions:publish-branch:
     extends: .publish-branch
