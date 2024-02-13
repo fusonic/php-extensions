@@ -20,9 +20,15 @@
             "Fusonic\\DDDExtensions\\Tests\\": "tests/"
         }
     },
+    "replace":  {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-mbstring": "*"
+    },
     "require": {
         "php": ">=8.2",
-        "beberlei/assert": "^3.3"
+        "beberlei/assert": "^3.3",
+        "ext-ctype": "*",
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "doctrine/orm": "^2.17",
