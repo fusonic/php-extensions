@@ -59,7 +59,7 @@
             [ -n "${INSTALL_PHP_EXTENSIONS}" ] && install-php-extensions ${INSTALL_PHP_EXTENSIONS}
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
-        - composer install --no-progress --no-interaction
+        - composer install --no-progress --no-interaction --audit
     script:
         - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
     environment:
