@@ -1,0 +1,19 @@
+{
+  "$schema": "vendor/infection/infection/resources/schema.json",
+  "source": {
+    "directories": [
+      "src"
+    ],
+    "excludes": [
+      "Framework/"
+    ]
+  },
+  "mutators": {
+    "@default": true
+  },
+  "logs": {
+    "html": "coverage/infection/infection.html"
+  },
+  "testFramework":"phpunit",
+  "testFrameworkOptions": "--testsuite=unit"
+}
