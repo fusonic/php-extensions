@@ -104,7 +104,6 @@
     environment:
         name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/infection
         url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/infection/infection.html?job=${CI_JOB_NAME}
-
         auto_stop_in: 1 week
     artifacts:
         paths:

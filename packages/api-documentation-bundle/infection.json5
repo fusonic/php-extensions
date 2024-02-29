@@ -3,9 +3,6 @@
   "source": {
     "directories": [
       "src"
-    ],
-    "excludes": [
-      "Framework/"
     ]
   },
   "mutators": {
@@ -15,5 +12,5 @@
     "html": "coverage/infection/infection.html"
   },
   "testFramework":"phpunit",
-  "testFrameworkOptions": "--testsuite=unit"
+  "testFrameworkOptions": "--testsuite=Fusonic ApiDocumentationBundle Test Suite"
 }
