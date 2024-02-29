@@ -112,5 +112,6 @@
     needs: [ ]
     rules:
         -   changes:
-                - packages/${PACKAGE}/**/*
+                - packages/${PACKAGE}/src/**/*
+                - packages/${PACKAGE}/tests/**/*
             when: manual
