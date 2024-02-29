@@ -14,6 +14,7 @@ infection:csv-reader:symfony:
     needs: []
     variables:
         PACKAGE: csv-reader
+        INSTALL_PHP_EXTENSIONS: intl
 
 csv-reader:publish-branch:
     extends: .publish-branch
