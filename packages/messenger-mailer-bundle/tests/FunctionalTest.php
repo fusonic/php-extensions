@@ -69,4 +69,6 @@ class FunctionalTest extends KernelTestCase
         self::assertFileExists($attachmentDirectory.'/'.$email->getId().'/path-file.txt');
         self::assertFileExists($attachmentDirectory.'/'.$email->getId().'/inline-file.txt');
     }
+
+    // DUMMY CHANGE - remove before merge
 }

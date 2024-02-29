@@ -55,4 +55,6 @@ class NormalizerTest extends TestCase
         self::assertSame('urn:uuid:9ff3fdc4-b214-49db-8718-39c315e33d45', $result['violations'][0]['type']);
         self::assertSame('TOO_SHORT_ERROR', $result['violations'][0]['errorName']);
     }
+
+    // DUMMY CHANGE - remove before merge
 }

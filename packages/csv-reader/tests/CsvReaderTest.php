@@ -135,4 +135,6 @@ class CsvReaderTest extends TestCase
 
         new CsvReader(new \stdClass());
     }
+
+    // DUMMY CHANGE - remove before merge
 }
