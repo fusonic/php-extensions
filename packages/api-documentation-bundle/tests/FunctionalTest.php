@@ -32,6 +32,4 @@ final class FunctionalTest extends KernelTestCase
 
         self::assertNotNull($service);
     }
-
-    // DUMMY CHANGE - remove before merge
 }
