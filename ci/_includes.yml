@@ -112,6 +112,6 @@
         expire_in: 1 week
     needs: [ ]
     rules:
-        changes:
-            - packages/${PACKAGE}/**/*
-        when: manual
+        -   changes:
+                - packages/${PACKAGE}/**/*
+            when: manual
