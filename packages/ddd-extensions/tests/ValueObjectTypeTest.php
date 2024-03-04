@@ -184,6 +184,5 @@ final class ValueObjectTypeTest extends AbstractTestCase
 
         self::assertInstanceOf(ValueObjectSerializationException::class, $exception);
         self::assertSame('Type is not supported', $exception->getMessage());
-        // Dummy change - remove before merge
     }
 }
