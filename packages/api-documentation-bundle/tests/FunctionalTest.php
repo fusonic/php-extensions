@@ -31,5 +31,6 @@ final class FunctionalTest extends KernelTestCase
         $service = self::getContainer()->get('fusonic_api_documentation.describers.openapi_php.default');
 
         self::assertNotNull($service);
+        // Dummy change - remove before merge
     }
 }

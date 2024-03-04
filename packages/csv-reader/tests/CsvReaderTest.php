@@ -134,5 +134,6 @@ class CsvReaderTest extends TestCase
         $this->expectException(\TypeError::class);
 
         new CsvReader(new \stdClass());
+        // Dummy change - remove before merge
     }
 }
