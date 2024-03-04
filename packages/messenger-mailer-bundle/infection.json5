@@ -12,5 +12,4 @@
     "html": "coverage/infection/infection.html"
   },
   "testFramework":"phpunit",
-  "testFrameworkOptions": "--testsuite=Fusonic MessengerMailerBundle Test Suite"
 }

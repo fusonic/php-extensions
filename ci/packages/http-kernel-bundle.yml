@@ -6,7 +6,7 @@ phpunit:http-kernel-bundle:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - composer test-coverage --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+        - composer test-coverage --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text
 
 infection:http-kernel-bundle:symfony:
     extends: .php-infection

@@ -50,7 +50,7 @@
         "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v",
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
-        "test-coverage" : "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html"
+        "test-coverage" : "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
     },
     "config": {
         "sort-packages": true,

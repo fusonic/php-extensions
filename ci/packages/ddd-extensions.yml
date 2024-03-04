@@ -6,7 +6,7 @@ phpunit:ddd-extensions:symfony:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html
 
 infection:ddd-extensions:symfony:
     extends: .php-infection

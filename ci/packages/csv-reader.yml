@@ -7,7 +7,7 @@ phpunit:csv-reader:
     script:
         - composer phpstan
         - composer phpcs-check
-        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+        - vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text
 
 infection:csv-reader:symfony:
     extends: .php-infection
