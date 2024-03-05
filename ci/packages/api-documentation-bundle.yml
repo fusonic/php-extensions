@@ -3,10 +3,6 @@ phpunit:api-documentation-bundle:symfony:
     needs: []
     variables:
         PACKAGE: api-documentation-bundle
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text
 
 infection:api-documentation-bundle:symfony:
     extends: .php-infection
