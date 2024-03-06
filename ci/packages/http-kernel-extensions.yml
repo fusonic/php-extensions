@@ -3,10 +3,6 @@ phpunit:http-kernel-extensions:symfony:
     needs: []
     variables:
         PACKAGE: http-kernel-extensions
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
 
 phpunit:http-kernel-extensions:symfony-lowest:
     extends: .phpunit-test

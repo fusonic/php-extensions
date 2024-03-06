@@ -61,19 +61,59 @@
         - composer validate --no-check-all
         - composer install --no-progress --no-interaction
     script:
-        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+        - composer phpstan
+        - composer phpcs-check
+        - vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text
     environment:
-        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}
-        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/html/index.html?job=${CI_JOB_NAME}
+        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/phpunit
+        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/phpunit/html/index.html?job=${CI_JOB_NAME}
         auto_stop_in: 1 week
     artifacts:
         paths:
-            - packages/${PACKAGE}/coverage
+            - packages/${PACKAGE}/coverage/phpunit
         expire_in: 1 week
         reports:
             coverage_report:
                 coverage_format: cobertura
-                path: packages/${PACKAGE}/coverage/cobertura.xml
+                path: packages/${PACKAGE}/coverage/phpunit/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
     rules:
         - when: always
+
+.php-infection:
+    stage: test
+    image: php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
+    interruptible: true
+    variables:
+        APP_ENV: prod
+        XDEBUG_MODE: coverage
+        XDEBUG_CONFIG: "log_level=0"
+        INSTALL_PHP_EXTENSIONS: ''
+    before_script:
+        - |
+            curl -sSLf \
+              -o /usr/local/bin/install-php-extensions \
+              https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+              chmod +x /usr/local/bin/install-php-extensions
+        - install-php-extensions @composer-2 xdebug zip
+        - |
+            [ -n "${INSTALL_PHP_EXTENSIONS}" ] && install-php-extensions ${INSTALL_PHP_EXTENSIONS}
+        - cd packages/${PACKAGE}
+        - composer validate --no-check-all
+        - composer install --no-progress --no-interaction
+    script:
+        - composer infection
+    environment:
+        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/infection
+        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/artifacts/${CI_COMMIT_REF_NAME}/file/packages/${PACKAGE}/coverage/infection/infection.html?job=${CI_JOB_NAME}
+        auto_stop_in: 1 week
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage/infection
+        expire_in: 1 week
+    needs: [ ]
+    rules:
+        -   changes:
+                - packages/${PACKAGE}/src/**/*
+                - packages/${PACKAGE}/tests/**/*
+            when: manual

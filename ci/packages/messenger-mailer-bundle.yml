@@ -3,10 +3,12 @@ phpunit:messenger-mailer-bundle:symfony:
     needs: []
     variables:
         PACKAGE: messenger-mailer-bundle
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+
+infection:messenger-mailer-bundle:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: messenger-mailer-bundle
 
 phpunit:messenger-mailer-bundle:symfony-lowest:
     extends: .phpunit-test

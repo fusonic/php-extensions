@@ -3,10 +3,12 @@ phpunit:api-documentation-bundle:symfony:
     needs: []
     variables:
         PACKAGE: api-documentation-bundle
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+
+infection:api-documentation-bundle:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: api-documentation-bundle
 
 phpunit:api-documentation-bundle:symfony-lowest:
     extends: .phpunit-test

@@ -3,10 +3,12 @@ phpunit:ddd-extensions:symfony:
     needs: []
     variables:
         PACKAGE: ddd-extensions
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html
+
+infection:ddd-extensions:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: ddd-extensions
 
 phpunit:ddd-extensions:symfony-lowest:
     extends: .phpunit-test

@@ -4,10 +4,13 @@ phpunit:csv-reader:
     variables:
         PACKAGE: csv-reader
         INSTALL_PHP_EXTENSIONS: intl
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - vendor/bin/phpunit --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+
+infection:csv-reader:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: csv-reader
+        INSTALL_PHP_EXTENSIONS: intl
 
 csv-reader:publish-branch:
     extends: .publish-branch

@@ -3,10 +3,12 @@ phpunit:http-kernel-bundle:symfony:
     needs: []
     variables:
         PACKAGE: http-kernel-bundle
-    script:
-        - composer phpstan
-        - composer phpcs-check
-        - composer test-coverage --coverage-cobertura=coverage/cobertura.xml --coverage-html=coverage/html --coverage-text
+
+infection:http-kernel-bundle:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: http-kernel-bundle
 
 phpunit:http-kernel-bundle:symfony-lowest:
     extends: .phpunit-test
