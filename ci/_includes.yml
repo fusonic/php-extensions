@@ -1,6 +1,7 @@
 .publish-tag:
     image: ruby:2
     stage: publish
+    needs: []
     script:
         - ./bin/publish-package.sh tag
     rules:
@@ -13,6 +14,9 @@
     stage: publish
     script:
         - ./bin/publish-package.sh branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: .delete-branch
     allow_failure: true # allow to avoid blocking the pipeline
     needs: []
     rules:

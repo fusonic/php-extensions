@@ -15,24 +15,3 @@ phpunit:http-kernel-extensions:symfony-lowest:
     artifacts:
         paths: []
         reports: null
-
-http-kernel-extensions:publish-branch:
-    extends: .publish-branch
-    environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: http-kernel-extensions:delete-branch
-    variables:
-        PACKAGE: http-kernel-extensions
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
-
-http-kernel-extensions:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: http-kernel-extensions
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
-
-http-kernel-extensions:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: http-kernel-extensions
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-extensions.git
