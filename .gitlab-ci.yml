@@ -14,8 +14,8 @@ stages:
     - cleanup
 
 variables:
-    DOCKER_IMAGE: docker:20.10
-    DOCKER_DIND_IMAGE: docker:20.10-dind
+    DOCKER_IMAGE: docker:26.1
+    DOCKER_DIND_IMAGE: docker:26.1-dind-rootless
     PHP_VERSION: '8.2'
     PHP_DOCKER_RELEASE: 'bullseye'
 
