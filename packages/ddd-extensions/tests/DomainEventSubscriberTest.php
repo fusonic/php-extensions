@@ -9,23 +9,28 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Tests;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Fusonic\DDDExtensions\Doctrine\EventSubscriber\DomainEventSubscriber;
 use Fusonic\DDDExtensions\Tests\Domain\Event\RegisterUserEvent;
 use Fusonic\DDDExtensions\Tests\Domain\Job;
 use Fusonic\DDDExtensions\Tests\Domain\User;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 
 final class DomainEventSubscriberTest extends AbstractTestCase
 {
+    #[IgnoreDeprecations]
     public function testRaisingEventsOnAggregateRoot(): void
     {
+        if (!class_exists(\Doctrine\ORM\Event\LifecycleEventArgs::class)) {
+            self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs has been removed as of doctrine/orm^3.0');
+        }
+
         $messageBus = $this->getMessageBus();
-        $subscriber = new DomainEventSubscriber($messageBus);
+        $subscriber = new DomainEventSubscriber($messageBus);  // @phpstan-ignore new.deprecated
         $user = new User('John');
         $user->register();
 
-        $lifeCycleEvent = new LifecycleEventArgs($user, $this->getEntityManager());
+        $lifeCycleEvent = new \Doctrine\ORM\Event\LifecycleEventArgs($user, $this->getEntityManager());
 
         $subscriber->postPersist($lifeCycleEvent);
         $subscriber->postUpdate($lifeCycleEvent);
@@ -40,13 +45,18 @@ final class DomainEventSubscriberTest extends AbstractTestCase
         self::assertInstanceOf(RegisterUserEvent::class, $messages[0]['message']);
     }
 
+    #[IgnoreDeprecations]
     public function testRaisingEventsOnNonAggregateRoot(): void
     {
+        if (!class_exists(\Doctrine\ORM\Event\LifecycleEventArgs::class)) {
+            self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs has been removed as of doctrine/orm^3.0');
+        }
+
         $messageBus = $this->getMessageBus();
-        $subscriber = new DomainEventSubscriber($messageBus);
+        $subscriber = new DomainEventSubscriber($messageBus); // @phpstan-ignore new.deprecated
         $job = new Job('Project Manager');
 
-        $lifeCycleEvent = new LifecycleEventArgs($job, $this->getEntityManager());
+        $lifeCycleEvent = new \Doctrine\ORM\Event\LifecycleEventArgs($job, $this->getEntityManager());
 
         $subscriber->postPersist($lifeCycleEvent);
 
@@ -58,10 +68,15 @@ final class DomainEventSubscriberTest extends AbstractTestCase
         self::assertCount(0, $messages);
     }
 
+    #[IgnoreDeprecations]
     public function testSubscribedEvents(): void
     {
+        if (!class_exists(\Doctrine\ORM\Event\LifecycleEventArgs::class)) {
+            self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs has been removed as of doctrine/orm^3.0');
+        }
+
         $messageBus = $this->getMessageBus();
-        $subscriber = new DomainEventSubscriber($messageBus);
+        $subscriber = new DomainEventSubscriber($messageBus);  // @phpstan-ignore new.deprecated
 
         self::assertSame([
             'postPersist',

@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"Fusonic\\ApiDocumentationBundle\\Tests\\FunctionalTest::testBootKernel":0.109,"Fusonic\\ApiDocumentationBundle\\Tests\\FunctionalTest::testService":0.002,"Fusonic\\ApiDocumentationBundle\\Tests\\NelmioApiDocsTest::testGetJsonDocs":0.025}}

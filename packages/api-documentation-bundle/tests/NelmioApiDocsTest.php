@@ -110,6 +110,9 @@ final class NelmioApiDocsTest extends WebTestCase
         }
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyManualOutputRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -131,6 +134,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyStatusCodeRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -145,6 +151,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyIgnoredReturnType(string $path, array $content): void
     {
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
@@ -157,6 +166,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyVoidReturnType(string $path, array $content): void
     {
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
@@ -169,6 +181,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyManualCollectionOutputRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -197,6 +212,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyReturnTypeRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -218,6 +236,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths']['/test-return-type/{id}']['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyBuiltinReturnTypeRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -239,6 +260,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyAnnotationBuiltinArrayReturnTypeRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -263,6 +287,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyAnnotationCustomArrayReturnTypeRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectQuery($path, $content);
@@ -287,6 +314,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyTestRequestObjectQuery(string $path, array $content): void
     {
         self::assertArrayHasKey('get', $content['paths'][$path]);
@@ -312,6 +342,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['get']['parameters'][1]);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyTestRequestObjectBody(string $path, array $content): void
     {
         self::assertArrayHasKey('post', $content['paths'][$path]);
@@ -333,17 +366,20 @@ final class NelmioApiDocsTest extends WebTestCase
             [
                 'required' => true,
                 'content' => [
-                        'application/json' => [
-                                'schema' => [
-                                        '$ref' => '#/components/schemas/TestRequest',
-                                    ],
-                            ],
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/TestRequest',
+                        ],
                     ],
+                ],
             ],
             $content['paths'][$path]['post']['requestBody']
         );
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyPostRouteWithTag(string $path, array $content): void
     {
         $this->verifyTestRequestObjectBody($path, $content);
@@ -370,6 +406,9 @@ final class NelmioApiDocsTest extends WebTestCase
         ], $content['paths'][$path]['post']['responses']);
     }
 
+    /**
+     * @param array<string, mixed> $content
+     */
     private function verifyCombinedAttributesRoute(string $path, array $content): void
     {
         $this->verifyTestRequestObjectBody($path, $content);

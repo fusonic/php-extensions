@@ -40,8 +40,6 @@ final class EntityIdNormalizerTest extends AbstractTestCase
         self::assertFalse($normalizer->supportsDenormalization($value, AddressValueObject::class));
 
         $denormalized = $normalizer->denormalize($value, JobId::class);
-
-        self::assertInstanceOf(JobId::class, $denormalized);
         self::assertSame(1, $denormalized->getValue());
     }
 }

@@ -43,7 +43,7 @@ final class RequestDtoResolver implements ValueResolverInterface
         /**
          * @var iterable<ContextAwareProviderInterface>
          */
-        #[TaggedIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)]
+        #[TaggedIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)] // @phpstan-ignore attribute.deprecated
         private readonly iterable $providers = [],
         ?RequestDataCollectorInterface $modelDataParser = null,
     ) {

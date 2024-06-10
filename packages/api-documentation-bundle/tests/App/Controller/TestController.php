@@ -53,19 +53,19 @@ final class TestController extends AbstractController
         return new Response();
     }
 
-    #[DocumentedRoute(path: '/annotation-builtin-type-array/{id}', methods: ['GET'])]
     /**
      * @return string[]
      */
+    #[DocumentedRoute(path: '/annotation-builtin-type-array/{id}', methods: ['GET'])]
     public function testAnnotationBuiltinTypeArray(#[FromRequest] TestRequest $query): array
     {
         return [(string) $query->id];
     }
 
-    #[DocumentedRoute(path: '/test-annotation-custom-return-type/{id}', methods: ['GET'])]
     /**
      * @return TestResponse[]
      */
+    #[DocumentedRoute(path: '/test-annotation-custom-return-type/{id}', methods: ['GET'])]
     public function testAnnotationCustomReturnTypeArray(#[FromRequest] TestRequest $query): array
     {
         return [new TestResponse($query->id)];

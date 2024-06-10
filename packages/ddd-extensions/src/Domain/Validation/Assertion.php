@@ -14,8 +14,16 @@ use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
 
 class Assertion extends BaseAssertion
 {
-    protected static function createException(mixed $value, mixed $message, mixed $code, mixed $propertyPath = null, array $constraints = []): void
-    {
+    /**
+     * @param array<mixed> $constraints
+     */
+    protected static function createException(
+        mixed $value,
+        mixed $message,
+        mixed $code,
+        mixed $propertyPath = null,
+        array $constraints = []
+    ): void {
         $exception = parent::createException(
             $value,
             $message,

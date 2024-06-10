@@ -144,7 +144,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
                 'columnDefinition' => null,
                 'comment' => null,
                 'version' => false,
-        ];
+            ];
 
         $sqlDeclaration = $valueObjectType->getSQLDeclaration($fieldDeclarationStub, $platformStub);
 

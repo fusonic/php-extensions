@@ -18,11 +18,25 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractorInterface
 {
+    /**
+     * @param array<mixed> $context
+     */
+    public function getType(string $class, string $property, array $context = []): ?Type
+    {
+        return $this->getTypes($class, $property, $context)[0] ?? null;
+    }
+
+    /**
+     * @param array<mixed> $context
+     */
     public function getTypes(string $class, string $property, array $context = []): ?array
     {
         return $this->extractFromAccessor($class, $property);
     }
 
+    /**
+     * @return Type[]|null
+     */
     private function extractFromAccessor(string $class, string $property): ?array
     {
         $reflectionMethod = new \ReflectionMethod($class, $property);

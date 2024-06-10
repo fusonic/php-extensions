@@ -12,6 +12,7 @@ namespace Fusonic\ApiDocumentationBundle\Extractor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -37,7 +38,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
     private array $docBlocks = [];
 
     private ContextFactory $contextFactory;
-    private DocBlockFactory $docBlockFactory;
+    private DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct()
     {
@@ -46,6 +47,17 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
         $this->contextFactory = new ContextFactory();
     }
 
+    /**
+     * @param array<mixed> $context
+     */
+    public function getType(string $class, string $property, array $context = []): ?Type
+    {
+        return $this->getTypes($class, $property, $context)[0] ?? null;
+    }
+
+    /**
+     * @param array<mixed> $context
+     */
     public function getTypes(string $class, string $property, array $context = []): ?array
     {
         $docBlock = $this->getDocBlock($class, $property);

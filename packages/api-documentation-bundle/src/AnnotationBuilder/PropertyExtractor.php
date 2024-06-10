@@ -28,6 +28,9 @@ final class PropertyExtractor
         );
     }
 
+    /**
+     * @return string[]|null
+     */
     public function extractClassProperties(string $className): ?array
     {
         return $this->propertyInfoExtractor->getProperties($className);

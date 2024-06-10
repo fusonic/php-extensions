@@ -31,6 +31,7 @@ use Fusonic\HttpKernelBundle\Tests\Dto\NotADto;
 use Fusonic\HttpKernelBundle\Tests\Dto\RouteParameterDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\StringIdDto;
 use Fusonic\HttpKernelBundle\Tests\Dto\TestDto;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -516,9 +517,8 @@ class RequestDtoResolverTest extends TestCase
      * @param array<mixed> $data
      * @param class-string $dtoClass
      * @param class-string $expectedViolationClass
-     *
-     * @dataProvider errorTestData
      */
+    #[DataProvider('errorTestData')]
     public function testConstraintViolationErrors(array $data, string $dtoClass, string $expectedViolationClass): void
     {
         /** @var string $data */

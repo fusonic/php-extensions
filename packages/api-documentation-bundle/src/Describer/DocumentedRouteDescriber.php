@@ -111,6 +111,9 @@ final class DocumentedRouteDescriber implements DescriberInterface
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function getSupportedHttpMethods(Route $route): array
     {
         $allMethods = Util::OPERATIONS;
