@@ -1,4 +1,5 @@
 .publish-tag:
+    image: ruby:2
     stage: publish
     script:
         - ./bin/publish-package.sh tag
@@ -8,6 +9,7 @@
         - when: never
 
 .publish-branch:
+    image: ruby:2
     stage: publish
     script:
         - ./bin/publish-package.sh branch
@@ -24,6 +26,7 @@
           when: manual
 
 .delete-branch:
+    image: ruby:2
     stage: cleanup
     script:
         - ./bin/publish-package.sh delete-branch
