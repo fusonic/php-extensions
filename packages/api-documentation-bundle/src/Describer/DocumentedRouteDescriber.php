@@ -42,7 +42,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         private readonly LoggerInterface $logger,
         ?string $requestObjectClass = null,
     ) {
-        if (null !== $requestObjectClass && !class_exists($requestObjectClass)) {
+        if (null !== $requestObjectClass && !(class_exists($requestObjectClass) || interface_exists($requestObjectClass))) {
             throw new \InvalidArgumentException(sprintf('Class %s does not exist.', $requestObjectClass));
         } elseif (null !== $requestObjectClass) {
             $this->requestObjectReflectionClass = new \ReflectionClass($requestObjectClass);
