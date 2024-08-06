@@ -64,6 +64,9 @@ final class NelmioApiDocsTest extends WebTestCase
             self::assertSame([
                 'schemas' => [
                     'TestRequest' => [
+                        'required' => [
+                            'id',
+                        ],
                         'properties' => [
                             'id' => [
                                 'type' => 'integer',
@@ -72,6 +75,9 @@ final class NelmioApiDocsTest extends WebTestCase
                         'type' => 'object',
                     ],
                     'TestResponse' => [
+                        'required' => [
+                            'id',
+                        ],
                         'properties' => [
                             'id' => [
                                 'type' => 'integer',
