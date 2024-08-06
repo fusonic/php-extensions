@@ -1,7 +1,7 @@
 {
     "name": "fusonic/http-kernel-bundle",
     "description": "Symfony bundle with extensions for Symfony's HttpKernel",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -32,7 +32,7 @@ final class AnnotationBuilder
     public function __construct(
         private readonly DocumentedRoute $route,
         private readonly \ReflectionMethod $method,
-        private readonly ?\ReflectionClass $requestObjectReflectionClass
+        private readonly ?\ReflectionClass $requestObjectReflectionClass,
     ) {
         $this->propertyExtractor = new PropertyExtractor();
 

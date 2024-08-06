@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class DecoratedBackedEnumNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public function __construct(
-        private readonly BackedEnumNormalizer $inner
+        private readonly BackedEnumNormalizer $inner,
     ) {
     }
 

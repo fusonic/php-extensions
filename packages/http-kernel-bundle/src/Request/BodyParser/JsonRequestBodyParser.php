@@ -18,7 +18,7 @@ class JsonRequestBodyParser implements RequestBodyParserInterface
         /**
          * @var int<1, 512>
          */
-        private readonly int $maxJsonDepth = 512
+        private readonly int $maxJsonDepth = 512,
     ) {
     }
 

@@ -41,7 +41,7 @@ class DocumentedRoute extends Route
         private readonly ?string $output = null,
         private readonly ?bool $outputIsCollection = null,
         private readonly ?int $statusCode = null,
-        private readonly ?string $description = null
+        private readonly ?string $description = null,
     ) {
         parent::__construct(
             path: $path,

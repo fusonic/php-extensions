@@ -26,7 +26,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class RequestDtoResolver implements ValueResolverInterface
 {
-    public const METHODS_WITH_STRICT_TYPE_CHECKS = [
+    /**
+     * @var array<string>
+     */
+    public const array METHODS_WITH_STRICT_TYPE_CHECKS = [
         Request::METHOD_PUT,
         Request::METHOD_POST,
         Request::METHOD_DELETE,

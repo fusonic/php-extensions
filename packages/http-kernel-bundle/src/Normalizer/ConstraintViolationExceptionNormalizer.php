@@ -23,7 +23,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 final readonly class ConstraintViolationExceptionNormalizer implements NormalizerInterface
 {
     public function __construct(
-        private NormalizerInterface $normalizer
+        private NormalizerInterface $normalizer,
     ) {
     }
 

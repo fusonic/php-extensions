@@ -1,7 +1,10 @@
 #!/bin/bash -e
 
-cp -n .env.dist .env
 source .env
+
+if [ -f .env.local ]; then
+    source .env.local
+fi
 
 DIRECTORY="${1:-packages}"
 
