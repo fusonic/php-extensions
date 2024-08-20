@@ -47,6 +47,6 @@ final class AddressValueObject extends ValueObject
 
     public function __toString(): string
     {
-        return sprintf('%s, %s', $this->street, $this->number);
+        return \sprintf('%s, %s', $this->street, $this->number);
     }
 }

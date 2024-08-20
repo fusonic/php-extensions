@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "php": "^8.2",
+        "php": ">=8.2",
         "phpdocumentor/reflection-docblock": "^5.3",
         "symfony/config": "^6.3 || ^7.0",
         "symfony/dependency-injection": "^6.3 || ^7.0",

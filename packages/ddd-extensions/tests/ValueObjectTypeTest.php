@@ -51,7 +51,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         }
 
         self::assertNotNull($exception);
-        self::assertSame(sprintf('Value should be of type `%s`.', ValueObject::class), $exception->getMessage());
+        self::assertSame(\sprintf('Value should be of type `%s`.', ValueObject::class), $exception->getMessage());
     }
 
     public function testInvalidJsonToPhpConversion(): void

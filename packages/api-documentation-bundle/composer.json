@@ -38,7 +38,7 @@
         "tomasvotruba/type-coverage": "^0.3"
     },
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "nelmio/api-doc-bundle": "^4.11",
         "symfony/config": "^5.4 || ^6.0 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",

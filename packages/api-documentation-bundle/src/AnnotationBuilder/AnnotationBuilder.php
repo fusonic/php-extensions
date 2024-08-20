@@ -221,7 +221,7 @@ final class AnnotationBuilder
 
     private function builtinTypeDescription(string $httpMethod): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s%s',
             $httpMethod,
             $this->output,
@@ -235,7 +235,7 @@ final class AnnotationBuilder
         $output = $this->output;
         $outputClassBasename = (new \ReflectionClass($output))->getShortName();
 
-        return sprintf(
+        return \sprintf(
             '%s %s%s',
             $httpMethod,
             $outputClassBasename,

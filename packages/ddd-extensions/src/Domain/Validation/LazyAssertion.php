@@ -25,7 +25,7 @@ class LazyAssertion extends BaseLazyAssertion
      */
     public function that(mixed $value, ?string $propertyPath = null, mixed $defaultMessage = null): static
     {
-        $propertyPath = null === $propertyPath ? $this->rootPath : sprintf('%s.%s', $this->rootPath, $propertyPath);
+        $propertyPath = null === $propertyPath ? $this->rootPath : \sprintf('%s.%s', $this->rootPath, $propertyPath);
 
         parent::that($value, $propertyPath, $defaultMessage);
 

@@ -19,6 +19,6 @@ class InvalidEnumException extends \InvalidArgumentException
         public readonly mixed $data,
         public readonly ?string $propertyPath
     ) {
-        parent::__construct(sprintf('Invalid enum value for %s: %s', $enumClass, $data));
+        parent::__construct(\sprintf('Invalid enum value for %s: %s', $enumClass, $data));
     }
 }
