@@ -104,7 +104,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
 
     private function getDocBlock(string $class, string $property): ?DocBlock
     {
-        $propertyHash = sprintf('%s::%s', $class, $property);
+        $propertyHash = \sprintf('%s::%s', $class, $property);
 
         if (isset($this->docBlocks[$propertyHash])) {
             return $this->docBlocks[$propertyHash];

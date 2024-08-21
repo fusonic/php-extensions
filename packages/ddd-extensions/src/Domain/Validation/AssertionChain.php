@@ -17,6 +17,6 @@ class AssertionChain extends BaseAssertionChain
 
     public function __construct(mixed $value, string $rootPath, string $propertyPath, mixed $defaultMessage = null)
     {
-        parent::__construct($value, $defaultMessage, sprintf('%s.%s', $rootPath, $propertyPath));
+        parent::__construct($value, $defaultMessage, \sprintf('%s.%s', $rootPath, $propertyPath));
     }
 }

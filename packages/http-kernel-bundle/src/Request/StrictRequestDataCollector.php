@@ -80,7 +80,7 @@ readonly class StrictRequestDataCollector implements RequestDataCollectorInterfa
     protected function mergeRequestData(array $data, array $routeParameters): array
     {
         if (\count($keys = array_intersect_key($data, $routeParameters)) > 0) {
-            throw new BadRequestHttpException(sprintf('Parameters (%s) used as route attributes can not be used in the request body or query parameters.', implode(', ', array_keys($keys))));
+            throw new BadRequestHttpException(\sprintf('Parameters (%s) used as route attributes can not be used in the request body or query parameters.', implode(', ', array_keys($keys))));
         }
 
         return array_merge($data, $routeParameters);

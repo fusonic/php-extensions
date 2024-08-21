@@ -13,6 +13,6 @@ final class DuplicateAttributesException extends \LogicException
 {
     public function __construct(string $attributeClass)
     {
-        parent::__construct(sprintf('Attribute `%s` can only be set once.', $attributeClass));
+        parent::__construct(\sprintf('Attribute `%s` can only be set once.', $attributeClass));
     }
 }

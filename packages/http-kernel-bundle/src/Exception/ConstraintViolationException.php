@@ -32,7 +32,7 @@ class ConstraintViolationException extends \RuntimeException
             $messages[] = $constraintViolation->getMessage();
         }
 
-        parent::__construct(sprintf('%s: %s', self::NAME, implode('; ', $messages)));
+        parent::__construct(\sprintf('%s: %s', self::NAME, implode('; ', $messages)));
     }
 
     public function getConstraintViolationList(): ConstraintViolationListInterface

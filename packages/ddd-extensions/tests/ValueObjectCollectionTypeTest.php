@@ -57,7 +57,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         }
 
         self::assertNotNull($exception);
-        self::assertSame(sprintf('Values in array should be of type `%s`.', ValueObject::class), $exception->getMessage());
+        self::assertSame(\sprintf('Values in array should be of type `%s`.', ValueObject::class), $exception->getMessage());
     }
 
     public function testInvalidJsonToPhpConversion(): void
@@ -103,7 +103,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
 
         self::assertNotNull($exception);
         self::assertSame(
-            sprintf('Value must be an array of type `%s[]`', ValueObject::class),
+            \sprintf('Value must be an array of type `%s[]`', ValueObject::class),
             $exception->getMessage()
         );
     }

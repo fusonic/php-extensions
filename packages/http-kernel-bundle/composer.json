@@ -1,7 +1,7 @@
 {
     "name": "fusonic/http-kernel-bundle",
     "description": "Symfony bundle with extensions for Symfony's HttpKernel",
-    "version": "1.3.3",
+    "version": "1.4.0",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "php": "^8.2",
+        "php": ">=8.2",
         "phpdocumentor/reflection-docblock": "^5.3",
         "symfony/config": "^6.3 || ^7.0",
         "symfony/dependency-injection": "^6.3 || ^7.0",
