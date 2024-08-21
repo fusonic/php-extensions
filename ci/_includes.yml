@@ -2,6 +2,8 @@
     image: ruby:2
     stage: publish
     needs: []
+    variables:
+        GIT_FETCH_EXTRA_FLAGS: '--tags -f'
     script:
         - ./bin/publish-package.sh tag
     rules:
