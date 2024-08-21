@@ -2,14 +2,12 @@
     image: ruby:2
     stage: publish
     needs: []
-    variables:
-        GIT_FETCH_EXTRA_FLAGS: '--tags -f'
     script:
         - ./bin/publish-package.sh tag
     rules:
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           when: manual
-        - when: never
+        - when: manual
 
 .publish-branch:
     image: ruby:2
