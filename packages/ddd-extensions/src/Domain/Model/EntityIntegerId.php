@@ -13,7 +13,7 @@ namespace Fusonic\DDDExtensions\Domain\Model;
  * A base class for id value objects that use an integer internally.
  * If you are using Doctrine with integers as ids you can use this as a base class.
  */
-abstract class EntityIntegerId extends EntityId
+abstract readonly class EntityIntegerId extends EntityId
 {
     public const DEFAULT_VALUE = 0;
     private int $id;

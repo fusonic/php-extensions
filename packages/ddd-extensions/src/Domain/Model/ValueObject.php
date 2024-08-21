@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Model;
 
-abstract class ValueObject
+abstract readonly class ValueObject
 {
     /**
      * Compare the ValueObject with another ValueObject.

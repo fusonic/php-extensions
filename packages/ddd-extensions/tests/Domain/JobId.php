@@ -11,6 +11,6 @@ namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\EntityIntegerId;
 
-final class JobId extends EntityIntegerId
+final readonly class JobId extends EntityIntegerId
 {
 }
