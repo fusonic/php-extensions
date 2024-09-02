@@ -1,5 +1,9 @@
 # UPGRADE
 
+## UPGRADE FROM 1.5.0 to 2.0.0
+
+- `ValueObject` and the extending classes `EntityId` and `EntityIntegerId` are now readonly (new PHP 8.2 feature)
+
 ## UPGRADE FROM 1.0.1 to 1.1.0
 
 - `DomainEventSubscriber` has been marked as deprecated, `DomainEventLifecycleListener` has been introduced as

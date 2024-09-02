@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Model;
 
-abstract class EntityId extends ValueObject
+abstract readonly class EntityId extends ValueObject
 {
     abstract public function __toString(): string;
 

@@ -12,7 +12,7 @@ namespace Fusonic\DDDExtensions\Tests\Domain;
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
 use Fusonic\DDDExtensions\Domain\Validation\Assert;
 
-final class AddressValueObject extends ValueObject
+final readonly class AddressValueObject extends ValueObject
 {
     private string $street;
     private string $number;
