@@ -22,7 +22,7 @@ class Assertion extends BaseAssertion
         mixed $message,
         mixed $code,
         mixed $propertyPath = null,
-        array $constraints = []
+        array $constraints = [],
     ): void {
         $exception = parent::createException(
             $value,

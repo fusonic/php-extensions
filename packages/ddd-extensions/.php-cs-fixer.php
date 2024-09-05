@@ -15,7 +15,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setParallelConfig(ParallelConfigFactory::detect())
     ->setRules([
-        '@PHP82Migration' => true,
+        '@PHP83Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'declare_strict_types' => true,
