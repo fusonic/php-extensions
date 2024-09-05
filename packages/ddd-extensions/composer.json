@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.2",
         "beberlei/assert": "^3.2"
     },
     "require-dev": {

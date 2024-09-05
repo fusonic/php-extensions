@@ -2,7 +2,6 @@
 
 ## Upgrade from `1.5.0` to `2.0.0`
 
-- New minimum required PHP version is now PHP 8.3
 - Support for Symfony 5.4, 6.1, 6.2 and 6.3 has been discontinued. New required minimum version is now either Symfony
   6.4 or 7.0
 - `ValueObject` and the extending classes `EntityId` and `EntityIntegerId` are now readonly (new PHP 8.2 feature)

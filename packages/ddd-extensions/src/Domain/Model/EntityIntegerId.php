@@ -15,7 +15,7 @@ namespace Fusonic\DDDExtensions\Domain\Model;
  */
 abstract readonly class EntityIntegerId extends EntityId
 {
-    public const int DEFAULT_VALUE = 0;
+    public const DEFAULT_VALUE = 0;
     private int $id;
 
     public function __construct(?int $id)
