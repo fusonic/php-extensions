@@ -1,10 +1,13 @@
 # UPGRADE
 
-## UPGRADE FROM 1.5.0 to 2.0.0
+## Upgrade from `1.5.0` to `2.0.0`
 
+- Support for Symfony 5.4, 6.1, 6.2 and 6.3 has been discontinued. New required minimum version is now either Symfony
+  6.4 or 7.0
 - `ValueObject` and the extending classes `EntityId` and `EntityIntegerId` are now readonly (new PHP 8.2 feature)
+- `DomainEventSubscriber` has been removed, use the `DomainEventLifecycleListener` functionality instead
 
-## UPGRADE FROM 1.0.1 to 1.1.0
+## Upgrade from `1.0.1` to `1.1.0`
 
 - `DomainEventSubscriber` has been marked as deprecated, `DomainEventLifecycleListener` has been introduced as
   replacement
@@ -14,7 +17,7 @@
 Lifecycle subscribers are deprecated starting from Symfony 6.3 and will be removed in Symfony 7.0 (see
 https://symfony.com/doc/6.3/doctrine/events.html#doctrine-lifecycle-listeners).
 
-## UPGRADE FROM 0.0.7 to 0.0.8
+## Upgrade from `0.0.7` to `0.0.8`
 
 - `IdTrait` got renamed to `IntegerIdTrait`
 - `AggregateRoot` does not implement the `IdTrait` anymore

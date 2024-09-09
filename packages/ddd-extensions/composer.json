@@ -22,30 +22,30 @@
     },
     "require": {
         "php": ">=8.2",
-        "beberlei/assert": "^3.3"
+        "beberlei/assert": "^3.2"
     },
     "require-dev": {
-        "doctrine/orm": "^2.19 || ^3.2",
-        "friendsofphp/php-cs-fixer": "^3.58",
+        "doctrine/orm": "^3.2",
+        "friendsofphp/php-cs-fixer": "^3.64",
         "infection/infection": "^0.29",
-        "nelmio/api-doc-bundle": "^v4.26",
-        "nikic/php-parser": "^4.17 || ^5.0",
-        "phpstan/phpstan": "^1.11",
+        "nelmio/api-doc-bundle": "^v4.29",
+        "nikic/php-parser": "^5.1",
+        "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-deprecation-rules": "^1.2",
         "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-strict-rules": "^1.6",
         "phpstan/phpstan-symfony": "^1.4",
-        "phpunit/phpunit": "^11.2",
-        "symfony/cache": "^5.4 || ^6.0 || ^7.0",
-        "symfony/messenger": "^5.4 || ^6.0 || ^7.0",
-        "symfony/serializer": "^5.4 || ^6.0 || ^7.0",
+        "phpunit/phpunit": "^11.3",
+        "symfony/cache": "^6.4 || ^7.0",
+        "symfony/messenger": "^6.4 || ^7.0",
+        "symfony/serializer": "^6.4 || ^7.0",
         "tomasvotruba/type-coverage": "^0.3"
     },
     "suggest": {
-        "doctrine/orm": "^2.19 || ^3.2",
-        "symfony/messenger": "^5.4 || ^6.0 || ^7.0",
-        "symfony/serializer": "^5.4 || ^6.0 || ^7.0",
-        "nelmio/api-doc-bundle": "^4.26"
+        "doctrine/orm": "^3.2",
+        "symfony/messenger": "^^6.4 || ^7.0",
+        "symfony/serializer": "^6.4 || ^7.0",
+        "nelmio/api-doc-bundle": "^4.29"
     },
     "scripts": {
         "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
@@ -53,7 +53,7 @@
         "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
-        "test-coverage" : "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
     },
     "config": {
         "sort-packages": true,
