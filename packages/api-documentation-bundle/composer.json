@@ -39,7 +39,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "nelmio/api-doc-bundle": "^4.26",
+        "nelmio/api-doc-bundle": "^4.29",
         "symfony/config": "^5.4 || ^6.0 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
         "symfony/dom-crawler": "^5.4 || ^6.0 || ^7.0",
