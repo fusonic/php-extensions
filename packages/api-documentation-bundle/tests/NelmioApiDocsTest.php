@@ -12,7 +12,6 @@ namespace Fusonic\ApiDocumentationBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 
 final class NelmioApiDocsTest extends WebTestCase
 {
@@ -59,62 +58,32 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyVoidReturnType('/test-void-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
-
-        if (Kernel::VERSION_ID < 70000) {
-            self::assertSame([
-                'schemas' => [
-                    'TestRequest' => [
-                        'required' => [
-                            'id',
-                        ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
+        self::assertSame([
+            'schemas' => [
+                'TestRequest' => [
+                    'required' => [
+                        'id',
                     ],
-                    'TestResponse' => [
-                        'required' => [
-                            'id',
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
                         ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
                     ],
+                    'type' => 'object',
                 ],
-            ], $content['components']);
-        } else {
-            self::assertSame([
-                'schemas' => [
-                    'TestRequest' => [
-                        'required' => [
-                            'id',
-                        ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
+                'TestResponse' => [
+                    'required' => [
+                        'id',
                     ],
-                    'TestResponse' => [
-                        'required' => [
-                            'id',
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
                         ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
                     ],
+                    'type' => 'object',
                 ],
-            ], $content['components']);
-        }
+            ],
+        ], $content['components']);
     }
 
     /**
