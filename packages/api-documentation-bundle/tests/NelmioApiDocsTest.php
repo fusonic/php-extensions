@@ -12,7 +12,6 @@ namespace Fusonic\ApiDocumentationBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 
 final class NelmioApiDocsTest extends WebTestCase
 {
@@ -50,6 +49,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyReturnTypeRoute('/test-return-type/{id}', $content);
         $this->verifyBuiltinReturnTypeRoute('/test-builtin-return-type/{id}', $content);
         $this->verifyAnnotationBuiltinArrayReturnTypeRoute('/annotation-builtin-type-array/{id}', $content);
+        $this->verifyAnnotationGenericReturnTypeRoute('/test-generic-return-type/{id}', $content);
         $this->verifyAnnotationCustomArrayReturnTypeRoute('/test-annotation-custom-return-type/{id}', $content);
         $this->verifyPostRouteWithTag('/test-post-route-with-tag/{id}', $content);
         $this->verifyCombinedAttributesRoute('/test-combined-attributes/{id}', $content);
@@ -58,56 +58,32 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyVoidReturnType('/test-void-return-type', $content);
 
         self::assertArrayHasKey('components', $content);
-
-        if (Kernel::VERSION_ID < 70000) {
-            self::assertSame([
-                'schemas' => [
-                    'TestRequest' => [
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
+        self::assertSame([
+            'schemas' => [
+                'TestRequest' => [
+                    'required' => [
+                        'id',
                     ],
-                    'TestResponse' => [
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
                         ],
-                        'type' => 'object',
                     ],
+                    'type' => 'object',
                 ],
-            ], $content['components']);
-        } else {
-            self::assertSame([
-                'schemas' => [
-                    'TestRequest' => [
-                        'required' => [
-                            'id',
-                        ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
+                'TestResponse' => [
+                    'required' => [
+                        'id',
                     ],
-                    'TestResponse' => [
-                        'required' => [
-                            'id',
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
                         ],
-                        'properties' => [
-                            'id' => [
-                                'type' => 'integer',
-                            ],
-                        ],
-                        'type' => 'object',
                     ],
+                    'type' => 'object',
                 ],
-            ], $content['components']);
-        }
+            ],
+        ], $content['components']);
     }
 
     /**
@@ -253,6 +229,33 @@ final class NelmioApiDocsTest extends WebTestCase
                     'application/json' => [
                         'schema' => [
                             'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyAnnotationGenericReturnTypeRoute(string $path, array $content): void
+    {
+        $this->verifyTestRequestObjectQuery($path, $content);
+
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'get TestResponse collection',
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/TestResponse',
+                            ],
                         ],
                     ],
                 ],

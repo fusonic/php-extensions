@@ -56,10 +56,6 @@ final class PropertyExtractor
 
     public function extractCollectionReturnType(Type $returnType): ?Type
     {
-        if (!$returnType->isCollection()) {
-            return null;
-        }
-
         $collectionTypes = $returnType->getCollectionValueTypes();
 
         if (\count($collectionTypes) > 0) {

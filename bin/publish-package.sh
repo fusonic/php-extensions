@@ -23,8 +23,6 @@ checkout_subtree () {
 }
 
 cleanup () {
-  # Delete the tag locally to avoid conflicts
-  git tag -d ${PACKAGE_VERSION}
   git checkout origin/${CI_COMMIT_REF_NAME}
   git branch -D ${TEMP_BRANCH}
 }
@@ -35,6 +33,9 @@ publish_tag () {
 
   git tag -a ${PACKAGE_VERSION} -m "Version ${PACKAGE_VERSION}"
   git push -f ${PACKAGE} refs/tags/${PACKAGE_VERSION}:refs/tags/${PACKAGE_VERSION}
+
+  # Delete the tag locally to avoid conflicts
+  git tag -d ${PACKAGE_VERSION}
 
   cleanup
 }

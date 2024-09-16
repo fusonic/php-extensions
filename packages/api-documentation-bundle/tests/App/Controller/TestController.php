@@ -12,6 +12,7 @@ namespace Fusonic\ApiDocumentationBundle\Tests\App\Controller;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
 use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequest;
+use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestGenericResponse;
 use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestResponse;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,6 +70,15 @@ final class TestController extends AbstractController
     public function testAnnotationCustomReturnTypeArray(#[FromRequest] TestRequest $query): array
     {
         return [new TestResponse($query->id)];
+    }
+
+    /**
+     * @return TestGenericResponse<TestResponse>
+     */
+    #[DocumentedRoute(path: '/test-generic-return-type/{id}', methods: ['GET'])]
+    public function testGenericReturnType(#[FromRequest] TestRequest $query): TestGenericResponse
+    {
+        return new TestGenericResponse([new TestResponse($query->id)]);
     }
 
     #[DocumentedRoute(path: '/test-combined-attributes/{id}', methods: ['POST'], description: 'Object found')]
