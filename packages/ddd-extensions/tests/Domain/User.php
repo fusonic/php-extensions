@@ -11,7 +11,6 @@ namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\AggregateRoot;
 use Fusonic\DDDExtensions\Domain\Model\Traits\IntegerIdTrait;
-use Fusonic\DDDExtensions\Domain\Validation\Assert;
 use Fusonic\DDDExtensions\Tests\Domain\Event\RegisterUserEvent;
 
 final class User extends AggregateRoot
@@ -23,10 +22,6 @@ final class User extends AggregateRoot
 
     public function __construct(string $name, ?string $jobName = null)
     {
-        Assert::that($this, 'name', $name)
-            ->notEmpty()
-            ->alnum();
-
         $this->name = $name;
         $this->job = null !== $jobName ? new Job($jobName) : null;
     }

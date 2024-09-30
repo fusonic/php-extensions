@@ -91,12 +91,6 @@ public function getId(): UserId
 }
 ```
 
-### Assertions
-
-The domain layer does not depend on any validation services. Validation logic has to be inside the models themselves.
-For assertions in the domain there is a static helper class with common assertion functions.
-See: `Fusonic\DDDExtensions\Domain\Validation\Assert`.
-
 ### Domain exceptions
 
 Domain exceptions can only be thrown from within the domain. All domain exceptions must implement
