@@ -12,7 +12,7 @@
 ## About
 
 This assertion library extends [beberlei/assert](https://github.com/beberlei/assert) with features
-to make assertion errors clearer for usage inside of models.
+to improve error message details.
 
 * Wraps all chained and non-chained assertion errors in the same exception object.
 * Lazy validation with a defined root path (e.g. an object class name)
@@ -44,4 +44,12 @@ Assert::lazy('User')
         ->minLength(8)
         ->maxLength(30)
     ->verifyNow();
+```
+
+Example output:
+
+```
+The following 2 assertions failed:
+1) User.username: Value "" is empty, but non empty value was expected.
+2) User.password: Value "1123" is too short, it should have at least 8 characters, but only has 4 characters.
 ```

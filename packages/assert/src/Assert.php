@@ -13,6 +13,9 @@ use Assert\Assert as BaseAssert;
 
 class Assert
 {
+    /**
+     * This methods executes the assertion directly and throws an exception if the assertion fails.
+     */
     public static function that(object|string $rootPath, string $propertyPath, mixed $value, ?string $defaultMessage = null): AssertionChain
     {
         $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
@@ -21,6 +24,10 @@ class Assert
         return $assertionChain->setAssertionClassName(self::getAssertionClass());
     }
 
+    /**
+     * This method will execute the assertions when the {@see LazyAssertion::verifyNow()} method is called.
+     * This allows chaining of assertions.
+     */
     public static function lazy(object|string $rootPath): LazyAssertion
     {
         $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);

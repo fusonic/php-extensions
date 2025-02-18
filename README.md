@@ -12,6 +12,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 - [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
 - [ddd-extensions](packages/ddd-extensions/README.md)
 - [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
+- [assert](packages/assert/README.md)
 
 ## Development
 

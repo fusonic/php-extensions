@@ -5,6 +5,7 @@ include:
     - local: 'ci/packages/messenger-mailer-bundle.yml'
     - local: 'ci/packages/csv-reader.yml'
     - local: 'ci/packages/api-documentation-bundle.yml'
+    - local: 'ci/packages/assert.yml'
 
 stages:
     - install
