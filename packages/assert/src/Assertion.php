@@ -23,6 +23,7 @@ class Assertion extends BaseAssertion
         mixed $propertyPath = null,
         array $constraints = [],
     ): void {
+        /** @var \Assert\InvalidArgumentException $exception */
         $exception = parent::createException(
             $value,
             $message,
