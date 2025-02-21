@@ -11,7 +11,7 @@
 
 ## About
 
-This assertion library extends [beberlei/assert](https://github.com/beberlei/assert) with features
+This assertion library extends [beberlei/assert](https://github.com/beberlei/assert) with convenient chaining functionality
 to improve error message details.
 
 * Wraps all chained and non-chained assertion errors in the same exception object.
@@ -30,13 +30,13 @@ composer require fusonic/assert
 
 Regular assertion with root path:
 
-```
+```php
 Assert::that('User', 'username', $username)->notEmpty()->length(10);
 ```
 
 Chained lazy assertion with root path example:
 
-```
+```php
 Assert::lazy('User')
     ->that($username, 'username')
         ->notEmpty()

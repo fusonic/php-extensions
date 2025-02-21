@@ -2,7 +2,7 @@
     "name": "fusonic/assert",
     "license": "MIT",
     "version": "0.0.1",
-    "description": "Extends beberlei/assert with a convenient chaining functionally",
+    "description": "Extends beberlei/assert with a convenient chaining functionality",
     "type": "library",
     "authors": [
         {

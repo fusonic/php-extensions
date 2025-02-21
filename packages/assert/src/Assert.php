@@ -18,8 +18,7 @@ class Assert
      */
     public static function that(object|string $rootPath, string $propertyPath, mixed $value, ?string $defaultMessage = null): AssertionChain
     {
-        $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
-        $assertionChain = new AssertionChain($value, $rootPropertyPath, $propertyPath, $defaultMessage);
+        $assertionChain = new AssertionChain($value, self::getRootPropertyPath($rootPath), $propertyPath, $defaultMessage);
 
         return $assertionChain->setAssertionClassName(self::getAssertionClass());
     }
@@ -30,12 +29,11 @@ class Assert
      */
     public static function lazy(object|string $rootPath): LazyAssertion
     {
-        $rootPropertyPath = \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
-        $lazyAssertion = new LazyAssertion($rootPropertyPath);
+        $lazyAssertion = new LazyAssertion(self::getRootPropertyPath($rootPath));
 
         return $lazyAssertion
             ->setAssertClass(BaseAssert::class)
-            ->setExceptionClass(self::getAssertionClass()::getExceptionClass());
+            ->setExceptionClass(AssertionFailedException::class);
     }
 
     /**
@@ -44,6 +42,11 @@ class Assert
     private static function getAssertionClass(): string
     {
         return Assertion::class;
+    }
+
+    private static function getRootPropertyPath(object|string $rootPath): string
+    {
+        return \is_string($rootPath) ? $rootPath : self::getClassBasename($rootPath::class);
     }
 
     private static function getClassBasename(string $className): string

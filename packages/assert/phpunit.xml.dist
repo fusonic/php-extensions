@@ -24,7 +24,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Fusonic Domain Driven Doctrine Test Suite">
+        <testsuite name="Fusonic Assert Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
