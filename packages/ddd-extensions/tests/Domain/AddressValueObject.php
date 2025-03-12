@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
-use Fusonic\DDDExtensions\Domain\Validation\Assert;
 
 final readonly class AddressValueObject extends ValueObject
 {
@@ -19,11 +18,6 @@ final readonly class AddressValueObject extends ValueObject
 
     public function __construct(string $street, string $number)
     {
-        Assert::lazy($this)
-            ->that($street, 'street')->notEmpty()
-            ->that($number, 'number')->notEmpty()
-            ->verifyNow();
-
         $this->street = $street;
         $this->number = $number;
     }

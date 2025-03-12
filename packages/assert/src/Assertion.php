@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\DDDExtensions\Domain\Validation;
+namespace Fusonic\Assert;
 
 use Assert\Assertion as BaseAssertion;
-use Fusonic\DDDExtensions\Domain\Exception\DomainAssertionFailedException;
 
 class Assertion extends BaseAssertion
 {
@@ -24,6 +23,7 @@ class Assertion extends BaseAssertion
         mixed $propertyPath = null,
         array $constraints = [],
     ): void {
+        /** @var \Assert\InvalidArgumentException $exception */
         $exception = parent::createException(
             $value,
             $message,
@@ -32,6 +32,14 @@ class Assertion extends BaseAssertion
             $constraints
         );
 
-        throw DomainAssertionFailedException::fromErrors([$exception]);
+        throw self::getExceptionClass()::fromErrors([$exception]);
+    }
+
+    /**
+     * @return class-string<AssertionFailedException>
+     */
+    public static function getExceptionClass(): string
+    {
+        return AssertionFailedException::class;
     }
 }

@@ -1,5 +1,8 @@
 # UPGRADE
 
+## Upgrade from `2.0.0` to `3.0.0`
+- Assert/validation has been extracted from this bundle and has been moved to https://github.com/fusonic/php-assert.
+
 ## Upgrade from `1.5.0` to `2.0.0`
 
 - Support for Symfony 5.4, 6.1, 6.2 and 6.3 has been discontinued. New required minimum version is now either Symfony

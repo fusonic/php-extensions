@@ -1,0 +1,44 @@
+phpunit:assert:symfony:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: assert
+
+infection:assert:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: assert
+
+phpunit:assert:symfony-lowest:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: assert
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - vendor/bin/phpunit
+    artifacts:
+        paths: []
+        reports: null
+
+assert:publish-branch:
+    extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: assert:delete-branch
+    variables:
+        PACKAGE: assert
+        REPOSITORY: git@github.com:fusonic/php-assert.git
+
+assert:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: assert
+        REPOSITORY: git@github.com:fusonic/php-assert.git
+
+assert:delete-branch:
+    extends: .delete-branch
+    variables:
+        PACKAGE: assert
+        REPOSITORY: git@github.com:fusonic/php-assert.git

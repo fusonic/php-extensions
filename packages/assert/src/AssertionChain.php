@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\DDDExtensions\Domain\Validation;
+namespace Fusonic\Assert;
 
 use Assert\AssertionChain as BaseAssertionChain;
 
