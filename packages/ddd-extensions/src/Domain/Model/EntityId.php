@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Fusonic\DDDExtensions\Domain\Model;
 
-abstract readonly class EntityId extends ValueObject
+abstract readonly class EntityId extends ValueObject implements \Stringable
 {
-    abstract public function __toString(): string;
-
     abstract public function isDefined(): bool;
 
     abstract public function getValue(): mixed;
