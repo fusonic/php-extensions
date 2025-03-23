@@ -1,7 +1,8 @@
 {
     "name": "fusonic/framework-bundle",
+    "description": "Opinionated collection of classes and functionality used throughout Fusonic Symfony projects",
     "version": "0.1.0",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -11,18 +12,34 @@
         }
     ],
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "doctrine/dbal": "^3.9 || ^4.2",
+        "doctrine/doctrine-fixtures-bundle": "^4.0",
+        "fakerphp/faker": "^1.24",
+        "fusonic/ddd-extensions": "^3.0",
+        "symfony/dependency-injection": "^6.4 || ^7.2",
+        "symfony/framework-bundle": "^6.4 || ^7.2",
+        "symfony/http-kernel": "^6.4 || ^7.2",
+        "symfony/messenger": "^6.4 || ^7.2",
+        "symfony/serializer": "^6.4 || ^7.2",
+        "symfony/uid": "^6.4 || ^7.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.73",
         "infection/infection": "^0.29",
+        "nelmio/api-doc-bundle": "^5.0",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^12.0",
         "rector/rector": "^2.0",
+        "roave/security-advisories": "dev-latest",
         "tomasvotruba/type-coverage": "^2.0"
+    },
+    "suggest": {
+        "fusonic/api-documentation-bundle": "If the application needs to provide API documentation",
+        "nelmio/api-doc-bundle": "If the application needs to provide API documentation"
     },
     "autoload": {
         "psr-4": {

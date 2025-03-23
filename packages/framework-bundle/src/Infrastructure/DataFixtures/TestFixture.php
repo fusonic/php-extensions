@@ -1,0 +1,24 @@
+<?php
+
+/*
+ * Copyright (c) Fusonic GmbH. All rights reserved.
+ * Licensed under the MIT License. See LICENSE file in the project root for license information.
+ */
+
+declare(strict_types=1);
+
+namespace Fusonic\FrameworkBundle\Infrastructure\DataFixtures;
+
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+
+abstract class TestFixture extends Fixture implements FixtureGroupInterface
+{
+    public static function getGroups(): array
+    {
+        return [
+            'test',
+            static::class,
+        ];
+    }
+}

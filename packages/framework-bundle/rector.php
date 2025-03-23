@@ -9,9 +9,12 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertCountWithZeroToAssertEmptyRector;
 
 return RectorConfig::configure()
     ->withPaths([
+        __DIR__.'/config',
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
@@ -31,5 +34,10 @@ return RectorConfig::configure()
     )
     ->withSets([
         // Doctrine
-        DoctrineSetList::DOCTRINE_ORM_214,
+        DoctrineSetList::DOCTRINE_DBAL_30,
+    ])
+    ->withSkip([
+        // https://github.com/rectorphp/rector-phpunit/pull/467
+        AssertCountWithZeroToAssertEmptyRector::class,
+        PreferPHPUnitThisCallRector::class,
     ]);
