@@ -1,0 +1,25 @@
+parameters:
+    level: 8
+    paths:
+        - src/
+        - tests/
+#    symfony:
+#        consoleApplicationLoader: tests/console-application.php
+#        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+#    scanDirectories:
+#        - var/cache/dev/Symfony/Config
+#    scanFiles:
+#        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+    type_coverage:
+        return: 100
+        param: 100
+        property: 100
+        constant: 100
+        declare: 100
+
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/tomasvotruba/type-coverage/config/extension.neon
