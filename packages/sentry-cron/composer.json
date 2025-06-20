@@ -1,0 +1,55 @@
+{
+    "name": "fusonic/sentry-cron",
+    "license": "MIT",
+    "version": "0.0.1",
+    "description": "Automatic Sentry Cron check-ins with Symfony Scheduler",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Fusonic GmbH",
+            "email": "office@fusonic.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Fusonic\\SentryCron\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fusonic\\SentryCron\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "dragonmantank/cron-expression": "^3.4",
+        "sentry/sentry": "^4.14",
+        "symfony/messenger": "^7.3",
+        "symfony/scheduler": "^7.3",
+        "symfony/string": "^7.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "infection/infection": "^0.29",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6",
+        "phpunit/phpunit": "^11.3",
+        "tomasvotruba/type-coverage": "^0.3"
+    },
+    "scripts": {
+        "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
+        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
+        "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
+        "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    }
+}

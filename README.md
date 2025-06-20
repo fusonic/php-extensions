@@ -13,6 +13,7 @@ to the public (For example Gitlab CI related files or internal documentation mus
 - [ddd-extensions](packages/ddd-extensions/README.md)
 - [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
 - [assert](packages/assert/README.md)
+- [sentry-cron](packages/sentry-cron/README.md)
 
 ## Development
 

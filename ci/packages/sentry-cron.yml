@@ -1,0 +1,44 @@
+phpunit:sentry-cron:symfony:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: sentry-cron
+
+infection:sentry-cron:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: sentry-cron
+
+phpunit:sentry-cron:symfony-lowest:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: sentry-cron
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - vendor/bin/phpunit
+    artifacts:
+        paths: []
+        reports: null
+
+sentry-cron:publish-branch:
+    extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: sentry-cron:delete-branch
+    variables:
+        PACKAGE: sentry-cron
+        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
+
+sentry-cron:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: sentry-cron
+        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
+
+sentry-cron:delete-branch:
+    extends: .delete-branch
+    variables:
+        PACKAGE: sentry-cron
+        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git

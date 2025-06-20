@@ -6,6 +6,7 @@ include:
     - local: 'ci/packages/csv-reader.yml'
     - local: 'ci/packages/api-documentation-bundle.yml'
     - local: 'ci/packages/assert.yml'
+    - local: 'ci/packages/sentry-cron.yml'
 
 stages:
     - install
