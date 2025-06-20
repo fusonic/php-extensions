@@ -21,12 +21,16 @@ class Test extends TestCase
     {
         $sentrySchedulerEventSubscriber = new SentrySchedulerEventSubscriber(true, 10);
 
+        /* @phpstan-ignore-next-line */
         self::assertTrue(method_exists($sentrySchedulerEventSubscriber, 'onFailure'));
+        /* @phpstan-ignore-next-line */
         self::assertTrue(method_exists($sentrySchedulerEventSubscriber, 'onPreRun'));
+        /* @phpstan-ignore-next-line */
         self::assertTrue(method_exists($sentrySchedulerEventSubscriber, 'onPostRun'));
-        
+
         $sentrySchedulerEventSubscriber = new SentrySchedulerEventSubscriber(false);
-        
+
+        /* @phpstan-ignore-next-line */
         self::assertNotNull($sentrySchedulerEventSubscriber);
     }
 }

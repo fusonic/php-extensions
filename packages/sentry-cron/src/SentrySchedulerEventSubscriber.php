@@ -38,6 +38,9 @@ class SentrySchedulerEventSubscriber
     ) {
     }
 
+    /**
+     * @return array<class-string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -132,6 +135,6 @@ class SentrySchedulerEventSubscriber
         /** @var string $basename */
         $basename = strrchr($message::class, '\\');
 
-        return (string) u(substr($basename, 1))->kebab();
+        return (string) u(substr($basename, 1))->snake();
     }
 }

@@ -24,9 +24,9 @@
         "php": ">=8.2",
         "dragonmantank/cron-expression": "^3.4",
         "sentry/sentry": "^4.14",
-        "symfony/messenger": "^7.3",
-        "symfony/scheduler": "^7.3",
-        "symfony/string": "^7.3"
+        "symfony/messenger": "^6.4 || ^7.0",
+        "symfony/scheduler": "^6.4 || ^7.0",
+        "symfony/string": "^6.4 || ^7.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.64",
