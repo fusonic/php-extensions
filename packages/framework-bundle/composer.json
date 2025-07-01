@@ -12,11 +12,22 @@
         }
     ],
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "doctrine/dbal": "^3.9 || ^4.2",
+        "doctrine/doctrine-fixtures-bundle": "^4.1",
+        "fakerphp/faker": "^1.24",
+        "fusonic/ddd-extensions": "^3.0",
+        "symfony/dependency-injection": "^6.4 || ^7.2",
+        "symfony/framework-bundle": "^6.4 || ^7.2",
+        "symfony/http-kernel": "^6.4 || ^7.2",
+        "symfony/messenger": "^6.4 || ^7.2",
+        "symfony/serializer": "^6.4 || ^7.2",
+        "symfony/uid": "^6.4 || ^7.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.76",
         "infection/infection": "^0.29",
+        "nelmio/api-doc-bundle": "^5.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
@@ -24,6 +35,10 @@
         "phpunit/phpunit": "^12.2",
         "rector/rector": "^2.1",
         "tomasvotruba/type-coverage": "^2.0"
+    },
+    "suggest": {
+        "fusonic/api-documentation-bundle": "If the application needs to provide API documentation",
+        "nelmio/api-doc-bundle": "If the application needs to provide API documentation"
     },
     "autoload": {
         "psr-4": {

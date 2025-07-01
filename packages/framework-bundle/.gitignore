@@ -1,6 +1,5 @@
 # Misc
 /coverage
-/var/
 /vendor/
 composer.lock
 

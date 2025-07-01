@@ -28,4 +28,5 @@ return (new PhpCsFixer\Config())
         ],
     ])
     ->setFinder($finder)
-    ->setRiskyAllowed(true);
+    ->setRiskyAllowed(true)
+    ->setUnsupportedPhpVersionAllowed(true);
