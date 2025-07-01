@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Fusonic\FrameworkBundle\Application\Messenger\Bus;
 
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -18,7 +17,6 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 final readonly class EventBus implements EventBusInterface
 {
     public function __construct(
-        #[Autowire(service: 'event.bus')]
         private MessageBusInterface $bus,
     ) {
     }
