@@ -13,10 +13,6 @@ parameters:
         # Set to 100 once PHP 8.3 is minimum required PHP version
         constant: 0
         declare: 100
-    ignoreErrors:
-        -
-            message: '#^Trait Fusonic\\FrameworkBundle\\Infrastructure\\DataFixtures\\ReferenceTrait is used zero times and is not analysed\.$#'
-            identifier: trait.unused
 
 includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
