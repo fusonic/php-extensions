@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/packagist/l/fusonic/sentry-cron?color=blue)](https://github.com/fusonic/php-sentry-cron/blob/master/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-sentry-cron.svg?color=blue)](https://github.com/fusonic/php-sentry-cron/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/sentry-cron.svg?color=blue)](https://packagist.org/packages/fusonic/sentry-cron)
-[![php 8.2+](https://img.shields.io/badge/php-min%208.2-blue.svg)](https://gitlab.com/fusonic/devops/php/extensions/-/blob/12-open-source-preparations/packages/sentry-cron/composer.json)
+[![php 8.2+](https://img.shields.io/badge/php-min%208.2-blue.svg)](https://github.com/fusonic/php-sentry-cron/blob/master/composer.json)
 
 * [About](#about)
 * [Install](#install)

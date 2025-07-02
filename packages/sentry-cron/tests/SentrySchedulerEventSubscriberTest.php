@@ -12,7 +12,7 @@ namespace Fusonic\SentryCron\Tests;
 use Fusonic\SentryCron\SentrySchedulerEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
-class Test extends TestCase
+final class SentrySchedulerEventSubscriberTest extends TestCase
 {
     /**
      * This doesn't actually test anything.

@@ -12,6 +12,7 @@ namespace Fusonic\SentryCron;
 use Sentry\CheckInStatus;
 use Sentry\MonitorConfig;
 use Sentry\MonitorSchedule;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Scheduler\Event\FailureEvent;
 use Symfony\Component\Scheduler\Event\PostRunEvent;
 use Symfony\Component\Scheduler\Event\PreRunEvent;
@@ -25,7 +26,7 @@ use function Symfony\Component\String\u;
 /**
  * Event subscriber that triggers Sentry monitoring status checks for scheduled jobs.
  */
-class SentrySchedulerEventSubscriber
+class SentrySchedulerEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @var array<string, string>
