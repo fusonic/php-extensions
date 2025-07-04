@@ -23,7 +23,7 @@ trait ControllerResponseTrait
     /**
      * @throws ExceptionInterface
      */
-    public function createUncachedJsonResponse(mixed $result, int $status = Response::HTTP_OK): JsonResponse
+    public function createJsonResponse(mixed $result, int $status = Response::HTTP_OK): JsonResponse
     {
         $data = $this->serializer->serialize(
             data: $result,

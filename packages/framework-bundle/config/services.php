@@ -30,9 +30,8 @@ return static function (ContainerConfigurator $container): void {
         ->tag('nelmio_api_doc.model_describer', ['priority' => 150]);
 
     $services->set(UuidEntityIdNormalizer::class)
-        ->autoconfigure()
         // Priority -850 is important so that the custom normalizer is called before Symfonys's UidNormalizer
-        ->tag('serializer.normalizer.uuid_entity_id', ['priority' => -850]);
+        ->tag('serializer.normalizer', ['priority' => -850]);
 
     $services->set(UuidEntityIdValueResolver::class)
         // Priority 150 is important so that the custom resolver is called before Symfony's RequestValueResolver
