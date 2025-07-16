@@ -56,8 +56,8 @@
     },
     "scripts": {
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
-        "phpcs:check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
-        "phpcs:fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
+        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
         "phpstan": "XDEBUG_MODE=off vendor/bin/phpstan analyse --memory-limit=512M",
         "rector:check": "XDEBUG_MODE=off vendor/bin/rector --dry-run",
         "rector:fix": "XDEBUG_MODE=off vendor/bin/rector",
