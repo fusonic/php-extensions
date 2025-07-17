@@ -1,6 +1,6 @@
 {
     "name": "fusonic/framework-bundle",
-    "description": "Opinionated collection of classes and functionality used throughout Fusonic Symfony projects",
+    "description": "Opinionated collection of classes and functionalities used throughout Fusonic's Symfony projects",
     "version": "0.1.0",
     "type": "symfony-bundle",
     "license": "MIT",

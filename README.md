@@ -3,16 +3,17 @@
 ## Packages
 
 The `packages` directory contains the source code for the packages. Everything in here will be published and available
-to the public (For example Gitlab CI related files or internal documentation must not be in here!)
+to the public (For example, Gitlab CI related files or internal documentation must not be in here!)
 
 ### Available packages
 
+- [assert](packages/assert/README.md)
+- [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
 - [csv-reader](packages/csv-reader/README.md)
+- [ddd-extensions](packages/ddd-extensions/README.md)
+- [framework-bundle](packages/framework-bundle/README.md)
 - [http-kernel-bundle](packages/http-kernel-bundle/README.md)
 - [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
-- [ddd-extensions](packages/ddd-extensions/README.md)
-- [api-documentation-bundle-bundle](packages/api-documentation-bundle/README.md)
-- [assert](packages/assert/README.md)
 
 ## Development
 
