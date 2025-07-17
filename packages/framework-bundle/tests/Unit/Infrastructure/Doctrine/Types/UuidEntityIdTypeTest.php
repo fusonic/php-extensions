@@ -13,7 +13,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Fusonic\FrameworkBundle\Domain\Id\UuidEntityId;
@@ -53,7 +53,7 @@ final class UuidEntityIdTypeTest extends TestCase
                 return self::$uuidEntityIdClass;
             }
 
-            protected function getName(): string
+            public function getDoctrineTypeName(): string
             {
                 return self::NAME;
             }
@@ -93,8 +93,13 @@ final class UuidEntityIdTypeTest extends TestCase
     public function testNotSupportedTypeDatabaseConversionThrowsException(): void
     {
         // assert
-        $this->expectException(InvalidType::class);
-        $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.');
+        if (class_exists(InvalidType::class)) { // Compatibility layer for doctrine/dbal 3.x
+            $this->expectException(InvalidType::class);
+            $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.');
+        } else {
+            $this->expectException(ConversionException::class);
+            $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId');
+        }
 
         // act
         $this->type->convertToDatabaseValue(new \stdClass(), new PostgreSQLPlatform());
@@ -115,13 +120,23 @@ final class UuidEntityIdTypeTest extends TestCase
         $invalidUuidString = 'abcdefg';
 
         // assert
-        $this->expectException(ValueNotConvertible::class);
-        $this->expectExceptionMessage(
-            \sprintf(
-                'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
-                $invalidUuidString
-            )
-        );
+        if (class_exists(ValueNotConvertible::class)) { // Compatibility layer for doctrine/dbal 3.x
+            $this->expectException(ValueNotConvertible::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
+                    $invalidUuidString
+                )
+            );
+        } else {
+            $this->expectException(ConversionException::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'Could not convert database value "%s" to Doctrine Type sample_uuid',
+                    $invalidUuidString
+                )
+            );
+        }
 
         // act
         $this->type->convertToDatabaseValue($invalidUuidString, new PostgreSQLPlatform());
@@ -143,7 +158,7 @@ final class UuidEntityIdTypeTest extends TestCase
     public function testNullConvertsToPhpValue(): void
     {
         // act
-        $convertedPHPValue = $this->type->convertToPHPValue(null, new SQLitePlatform());
+        $convertedPHPValue = $this->type->convertToPHPValue(null, self::getSqlitePlatform());
 
         // assert
         self::assertNull($convertedPHPValue);
@@ -152,7 +167,7 @@ final class UuidEntityIdTypeTest extends TestCase
     public function testUuidStringConvertsToPhpValue(): void
     {
         // act
-        $convertedPHPValue = $this->type->convertToPHPValue(self::DUMMY_UUID, new SQLitePlatform());
+        $convertedPHPValue = $this->type->convertToPHPValue(self::DUMMY_UUID, self::getSqlitePlatform());
 
         // assert
         self::assertInstanceOf(UuidEntityId::class, $convertedPHPValue);
@@ -165,7 +180,7 @@ final class UuidEntityIdTypeTest extends TestCase
         $binaryUuidString = Uuid::fromString(self::DUMMY_UUID)->toBinary();
 
         // act
-        $convertedPHPValue = $this->type->convertToPHPValue($binaryUuidString, new SQLitePlatform());
+        $convertedPHPValue = $this->type->convertToPHPValue($binaryUuidString, self::getSqlitePlatform());
 
         // assert
         self::assertInstanceOf(UuidEntityId::class, $convertedPHPValue);
@@ -178,16 +193,22 @@ final class UuidEntityIdTypeTest extends TestCase
         $unsupportedTypeValue = 123456;
 
         // assert
-        $this->expectException(InvalidType::class);
-        $this->expectExceptionMessage(
-            \sprintf(
+        if (class_exists(InvalidType::class)) { // Compatibility layer for doctrine/dbal 3.x
+            $this->expectException(InvalidType::class);
+            $this->expectExceptionMessage(\sprintf(
                 'Could not convert PHP value %d to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.',
                 $unsupportedTypeValue
-            )
-        );
+            ));
+        } else {
+            $this->expectException(ConversionException::class);
+            $this->expectExceptionMessage(\sprintf(
+                'Could not convert PHP value %d to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId',
+                $unsupportedTypeValue
+            ));
+        }
 
         // act
-        $this->type->convertToPHPValue($unsupportedTypeValue, new SQLitePlatform());
+        $this->type->convertToPHPValue($unsupportedTypeValue, self::getSqlitePlatform());
     }
 
     public function testInvalidUuidStringPhpConversionThrowsException(): void
@@ -196,16 +217,26 @@ final class UuidEntityIdTypeTest extends TestCase
         $invalidUuidString = 'abcdefg';
 
         // assert
-        $this->expectException(ValueNotConvertible::class);
-        $this->expectExceptionMessage(
-            \sprintf(
-                'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
-                $invalidUuidString
-            )
-        );
+        if (class_exists(ValueNotConvertible::class)) { // Compatibility layer for doctrine/dbal 3.x
+            $this->expectException(ValueNotConvertible::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
+                    $invalidUuidString
+                )
+            );
+        } else {
+            $this->expectException(ConversionException::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'Could not convert database value "%s" to Doctrine Type sample_uuid',
+                    $invalidUuidString
+                )
+            );
+        }
 
         // act
-        $this->type->convertToPHPValue($invalidUuidString, new SQLitePlatform());
+        $this->type->convertToPHPValue($invalidUuidString, self::getSqlitePlatform());
     }
 
     #[DataProvider('provideSqlDeclarations')]
@@ -221,8 +252,20 @@ final class UuidEntityIdTypeTest extends TestCase
     public static function provideSqlDeclarations(): \Generator
     {
         yield [new PostgreSQLPlatform(), 'UUID'];
-        yield [new SQLitePlatform(), 'CHAR(36)'];
+        yield [self::getSqlitePlatform(), 'CHAR(36)'];
         yield [new MySQLPlatform(), 'CHAR(36)'];
         yield [new MariaDBPlatform(), 'CHAR(36)'];
+    }
+
+    /**
+     * Compatibility layer for doctrine/dbal 3.x.
+     */
+    private static function getSqlitePlatform(): AbstractPlatform
+    {
+        // We cannot import the class at the top of the file as usual, as the different casing of 'SQL' causes problems
+        // when autoloading.
+        return class_exists(\Doctrine\DBAL\Platforms\SQLitePlatform::class)
+            ? new \Doctrine\DBAL\Platforms\SQLitePlatform()
+            : new \Doctrine\DBAL\Platforms\SqlitePlatform(); // @phpstan-ignore class.nameCase
     }
 }

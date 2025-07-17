@@ -23,7 +23,15 @@ abstract class UuidEntityIdType extends Type
      */
     abstract protected function getUuidEntityIdClass(): string;
 
-    abstract protected function getName(): string;
+    abstract protected function getDoctrineTypeName(): string;
+
+    /**
+     * @deprecated Compatibility layer for doctrine/dbal 3.x
+     */
+    final public function getName(): string
+    {
+        return static::getDoctrineTypeName();
+    }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -77,19 +85,19 @@ abstract class UuidEntityIdType extends Type
      */
     private function throwInvalidType(mixed $value): never
     {
-        // Compatibility layer for older doctrine/dbal versions
+        // Compatibility layer for doctrine/dbal 3.x
         if (!class_exists(InvalidType::class)) {
             /* @phpstan-ignore staticMethod.notFound */
             throw ConversionException::conversionFailedInvalidType(
                 value: $value,
-                toType: $this->getName(),
+                toType: $this->getDoctrineTypeName(),
                 possibleTypes: ['null', 'string', UuidEntityId::class]
             );
         }
 
         throw InvalidType::new(
             value: $value,
-            toType: $this->getName(),
+            toType: $this->getDoctrineTypeName(),
             possibleTypes: ['null', 'string', UuidEntityId::class]
         );
     }
@@ -99,19 +107,19 @@ abstract class UuidEntityIdType extends Type
      */
     private function throwValueNotConvertible(mixed $value, \Throwable $previous): never
     {
-        // Compatibility layer for older doctrine/dbal versions
+        // Compatibility layer for doctrine/dbal 3.x
         if (!class_exists(ValueNotConvertible::class)) {
             /* @phpstan-ignore staticMethod.notFound */
             throw ConversionException::conversionFailed(
                 value: $value,
-                toType: $this->getName(),
+                toType: $this->getDoctrineTypeName(),
                 previous: $previous,
             );
         }
 
         throw ValueNotConvertible::new(
             value: $value,
-            toType: $this->getName(),
+            toType: $this->getDoctrineTypeName(),
             previous: $previous
         );
     }

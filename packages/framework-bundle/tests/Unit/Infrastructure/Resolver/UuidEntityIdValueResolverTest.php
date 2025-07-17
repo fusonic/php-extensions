@@ -139,8 +139,8 @@ final class UuidEntityIdValueResolverTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideResolveOK')]
-    public function testResolveOK(UuidEntityId $expected, string $requestUuid): void
+    #[DataProvider('provideResolve')]
+    public function testResolve(UuidEntityId $expected, string $requestUuid): void
     {
         self::assertEqualsCanonicalizing(
             [$expected],
@@ -160,7 +160,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
     /**
      * @return \Iterator<string, array<mixed>>
      */
-    public static function provideResolveOK(): \Iterator
+    public static function provideResolve(): \Iterator
     {
         $uuidEntityId = new readonly class extends UuidEntityId {};
 
