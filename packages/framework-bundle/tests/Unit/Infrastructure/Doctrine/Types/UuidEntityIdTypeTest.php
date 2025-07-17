@@ -53,7 +53,7 @@ final class UuidEntityIdTypeTest extends TestCase
                 return self::$uuidEntityIdClass;
             }
 
-            public function getDoctrineTypeName(): string
+            protected function getDoctrineTypeName(): string
             {
                 return self::NAME;
             }

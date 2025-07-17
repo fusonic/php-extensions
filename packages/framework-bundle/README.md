@@ -55,8 +55,8 @@ command, event, and query buses are as follows:
 - `event.bus`
 - `query.bus`
 
-If this is not the case, you can freely configure the service IDs by creating a new `config/fusonic_framework.php` file
-(or an equivalent YAML file) as follows:
+If this is not the case, you can freely configure the service IDs by creating a new
+`config/packages/fusonic_framework.php` file (or an equivalent YAML file) as follows:
 
 ```php
 <?php
