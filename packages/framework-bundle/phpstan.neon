@@ -1,0 +1,22 @@
+parameters:
+    level: 8
+    paths:
+        - config/
+        - src/
+        - tests/
+    scanFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+    type_coverage:
+        return: 100
+        param: 100
+        property: 100
+        # Set to 100 once PHP 8.3 is minimum required PHP version
+        constant: 0
+        declare: 100
+
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/tomasvotruba/type-coverage/config/extension.neon

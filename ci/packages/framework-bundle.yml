@@ -1,0 +1,44 @@
+phpunit:framework-bundle:symfony:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: framework-bundle
+
+infection:framework-bundle:symfony:
+    extends: .php-infection
+    needs: []
+    variables:
+        PACKAGE: framework-bundle
+
+phpunit:framework-bundle:symfony-lowest:
+    extends: .phpunit-test
+    needs: []
+    variables:
+        PACKAGE: framework-bundle
+    script:
+        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
+        - vendor/bin/phpunit
+    artifacts:
+        paths: []
+        reports: null
+
+framework-bundle:publish-branch:
+    extends: .publish-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        on_stop: framework-bundle:delete-branch
+    variables:
+        PACKAGE: framework-bundle
+        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
+
+framework-bundle:publish-tag:
+    extends: .publish-tag
+    variables:
+        PACKAGE: framework-bundle
+        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
+
+framework-bundle:delete-branch:
+    extends: .delete-branch
+    variables:
+        PACKAGE: framework-bundle
+        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git

@@ -6,6 +6,7 @@ include:
     - local: 'ci/packages/csv-reader.yml'
     - local: 'ci/packages/api-documentation-bundle.yml'
     - local: 'ci/packages/assert.yml'
+    - local: 'ci/packages/framework-bundle.yml'
 
 stages:
     - install
@@ -16,7 +17,7 @@ stages:
 variables:
     DOCKER_IMAGE: docker:27.1
     DOCKER_DIND_IMAGE: docker:27.1-dind-rootless
-    PHP_VERSION: '8.3'
+    PHP_VERSION: '8.4'
     PHP_DOCKER_RELEASE: 'bookworm'
 
 workflow:
