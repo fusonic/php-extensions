@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -40,7 +40,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "nelmio/api-doc-bundle": "^4.29",
+        "nelmio/api-doc-bundle": "^4.38",
         "symfony/config": "^5.4 || ^6.0 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
         "symfony/dom-crawler": "^5.4 || ^6.0 || ^7.0",

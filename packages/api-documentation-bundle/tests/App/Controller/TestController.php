@@ -12,6 +12,8 @@ namespace Fusonic\ApiDocumentationBundle\Tests\App\Controller;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
 use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequest;
+use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequestWithIgnoredProperty;
+use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequestWithIgnoredPropertyOnly;
 use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestGenericResponse;
 use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestResponse;
 use OpenApi\Attributes as OA;
@@ -90,6 +92,26 @@ final class TestController extends AbstractController
 
     #[DocumentedRoute(path: '/test-void-return-type', methods: ['GET'])]
     public function testVoidReturnType(#[FromRequest] TestRequest $query): void
+    {
+    }
+
+    #[DocumentedRoute(path: '/test-get-input-with-ignored-property/{id}', methods: ['GET'])]
+    public function testGetInputWithIgnoredProperty(#[FromRequest] TestRequestWithIgnoredProperty $query): void
+    {
+    }
+
+    #[DocumentedRoute(path: '/test-get-input-with-ignored-property-only/{id}', methods: ['GET'])]
+    public function testGetInputWithIgnoredPropertyOnly(#[FromRequest] TestRequestWithIgnoredPropertyOnly $query): void
+    {
+    }
+
+    #[DocumentedRoute(path: '/test-post-input-with-ignored-property/{id}', methods: ['POST'])]
+    public function testPostInputWithIgnoredProperty(#[FromRequest] TestRequestWithIgnoredProperty $query): void
+    {
+    }
+
+    #[DocumentedRoute(path: '/test-post-input-with-ignored-property-only/{id}', methods: ['POST'])]
+    public function testPostInputWithIgnoredPropertyOnly(#[FromRequest] TestRequestWithIgnoredPropertyOnly $query): void
     {
     }
 }

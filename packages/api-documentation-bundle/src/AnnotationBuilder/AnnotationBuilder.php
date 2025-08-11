@@ -162,20 +162,20 @@ final class AnnotationBuilder
         $input = $this->input;
         $inputModel = new Model(type: $input);
 
-        if ('get' === strtolower($httpMethod)) {
-            $inputClassBasename = (new \ReflectionClass($input))->getShortName();
-            $propertyInfoProperties = $this->propertyExtractor->extractClassProperties($input);
+        $inputClassBasename = (new \ReflectionClass($input))->getShortName();
+        $propertyInfoProperties = $this->propertyExtractor->extractClassProperties($input);
 
-            if (null !== $propertyInfoProperties && \count($propertyInfoProperties) > 0) {
-                return new OA\Parameter([
-                    'name' => $inputClassBasename,
-                    'in' => 'query',
-                    'explode' => true,
-                    'value' => $inputModel,
-                ]);
-            }
-
+        if ([] === $propertyInfoProperties) {
             return null;
+        }
+
+        if ('get' === strtolower($httpMethod)) {
+            return new OA\Parameter([
+                'name' => $inputClassBasename,
+                'in' => 'query',
+                'explode' => true,
+                'value' => $inputModel,
+            ]);
         }
 
         return new OA\RequestBody([
