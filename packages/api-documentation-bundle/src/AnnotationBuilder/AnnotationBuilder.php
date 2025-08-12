@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\ApiDocumentationBundle\AnnotationBuilder;
 
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;

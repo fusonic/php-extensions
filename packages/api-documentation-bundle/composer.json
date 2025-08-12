@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -24,29 +24,29 @@
         ]
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.58",
-        "infection/infection": "^0.29",
-        "phpstan/phpstan": "^1.11",
-        "phpstan/phpstan-deprecation-rules": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.4",
-        "phpstan/phpstan-strict-rules": "^1.6",
-        "phpstan/phpstan-symfony": "^1.4",
-        "phpunit/phpunit": "^11.2",
-        "symfony/serializer": "^5.4 || ^6.0 || ^7.0",
-        "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0",
+        "friendsofphp/php-cs-fixer": "^3.85",
+        "infection/infection": "^0.31",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^12.3",
+        "symfony/serializer": "^6.4 || ^7.0",
+        "symfony/framework-bundle": "^6.4 || ^7.0",
         "symfony/test-pack": "^1.0",
-        "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
-        "tomasvotruba/type-coverage": "^0.3"
+        "symfony/yaml": "^6.4 || ^7.0",
+        "tomasvotruba/type-coverage": "^2.0"
     },
     "require": {
         "php": ">=8.2",
-        "nelmio/api-doc-bundle": "^4.38",
-        "symfony/config": "^5.4 || ^6.0 || ^7.0",
-        "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
-        "symfony/dom-crawler": "^5.4 || ^6.0 || ^7.0",
-        "symfony/property-info": "^5.4 || ^6.0 || ^7.0",
-        "symfony/routing": "^5.4 || ^6.0 || ^7.0",
-        "zircote/swagger-php": "^4.7"
+        "nelmio/api-doc-bundle": "^5.5",
+        "symfony/config": "^6.4 || ^7.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0",
+        "symfony/dom-crawler": "^6.4 || ^7.0",
+        "symfony/property-info": "^6.4 || ^7.0",
+        "symfony/routing": "^6.4 || ^7.0",
+        "zircote/swagger-php": "^5.1"
     },
     "scripts": {
         "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
