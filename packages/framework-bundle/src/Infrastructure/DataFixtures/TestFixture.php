@@ -14,10 +14,12 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
 abstract class TestFixture extends Fixture implements FixtureGroupInterface
 {
+    final public const FIXTURE_GROUP = 'test';
+
     public static function getGroups(): array
     {
         return [
-            'test',
+            self::FIXTURE_GROUP,
             static::class,
         ];
     }

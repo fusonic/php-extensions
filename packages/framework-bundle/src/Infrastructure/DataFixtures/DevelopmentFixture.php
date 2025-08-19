@@ -15,6 +15,8 @@ use Faker;
 
 abstract class DevelopmentFixture extends Fixture implements FixtureGroupInterface
 {
+    final public const FIXTURE_GROUP = 'development';
+
     protected Faker\Generator $faker;
 
     public function __construct()
@@ -25,7 +27,7 @@ abstract class DevelopmentFixture extends Fixture implements FixtureGroupInterfa
     public static function getGroups(): array
     {
         return [
-            'development',
+            self::FIXTURE_GROUP,
             static::class,
         ];
     }
