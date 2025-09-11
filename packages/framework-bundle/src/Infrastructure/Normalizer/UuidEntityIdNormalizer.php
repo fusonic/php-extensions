@@ -37,8 +37,16 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
     /**
      * @param array<mixed> $context
      */
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): UuidEntityId
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ?UuidEntityId
     {
+        if (null === $data || '' === $data) {
+            return null;
+        }
+
+        if (!Uuid::isValid($data)) {
+            return null;
+        }
+
         /** @var UuidEntityId $id */
         $id = new $type();
 
@@ -50,7 +58,7 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
      */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \is_string($data) && Uuid::isValid($data) && is_subclass_of($type, UuidEntityId::class);
+        return is_subclass_of($type, UuidEntityId::class);
     }
 
     /**
