@@ -14,6 +14,7 @@ to the public (For example, Gitlab CI related files or internal documentation mu
 - [framework-bundle](packages/framework-bundle/README.md)
 - [http-kernel-bundle](packages/http-kernel-bundle/README.md)
 - [messenger-mailer-bundle](packages/messenger-mailer-bundle/README.md)
+- [sentry-cron](packages/sentry-cron/README.md)
 
 ## Development
 
