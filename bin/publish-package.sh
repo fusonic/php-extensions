@@ -3,7 +3,9 @@
 if [ -n "${MAIN_BRANCH}" ] && [ "${CI_COMMIT_REF_NAME}" = "master" ]; then
   echo "Detected legacy 'master' branch, replacing with '${MAIN_BRANCH}'"
 
-  CI_COMMIT_REF_NAME="${MAIN_BRANCH}"
+  PUBLISH_BRANCH="${MAIN_BRANCH}"
+else
+  PUBLISH_BRANCH="master"
 fi
 
 setup () {
@@ -50,7 +52,7 @@ publish_branch () {
   setup
   checkout_subtree
 
-  git push -f ${PACKAGE} ${TEMP_BRANCH}:${CI_COMMIT_REF_NAME}
+  git push -f ${PACKAGE} ${TEMP_BRANCH}:${PUBLISH_BRANCH}
 
   cleanup
 }
@@ -60,7 +62,7 @@ delete_branch () {
 
   git remote add ${PACKAGE} ${REPOSITORY} | true
 
-  git push ${PACKAGE} --delete ${CI_COMMIT_REF_NAME} || true
+  git push ${PACKAGE} --delete ${PUBLISH_BRANCH} || true
 }
 
 case "$1" in
@@ -68,7 +70,7 @@ case "$1" in
     delete_branch
     ;;
   "branch")
-    PACKAGE_VERSION="dev-${CI_COMMIT_REF_NAME}"
+    PACKAGE_VERSION="dev-${PUBLISH_BRANCH}"
     publish_branch
     ;;
   "tag")
