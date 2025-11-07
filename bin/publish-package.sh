@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+if [ -n "${MAIN_BRANCH}" ] && [ "${CI_COMMIT_REF_NAME}" = "master" ]; then
+  echo "Detected legacy 'master' branch, replacing with '${MAIN_BRANCH}'"
+
+  CI_COMMIT_REF_NAME="${MAIN_BRANCH}"
+fi
+
 setup () {
   eval $(ssh-agent -s) && ssh-add <(echo "${SSH_PRIVATE_KEY}") && mkdir -p ~/.ssh
   echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
