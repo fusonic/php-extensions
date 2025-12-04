@@ -7,10 +7,13 @@
          colors="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
+         displayDetailsOnPhpunitDeprecations="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerErrors="true"
+         failOnPhpunitDeprecation="true"
+         failOnDeprecation="true"
          failOnRisky="true"
          failOnNotice="true"
          failOnWarning="true">
@@ -24,7 +27,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Fusonic SentryCron Test Suite">
+        <testsuite name="Fusonic Assert Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

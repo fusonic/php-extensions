@@ -55,6 +55,7 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
             $pattern = '/Data expected to be "(.+)", (.+) given\./';
 
             preg_match($pattern, $message, $matches);
+
             if (\count($matches) < 3) {
                 throw $exception;
             }
@@ -69,13 +70,13 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
         } elseif (str_starts_with($message, 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type')) {
             $propertyPath = $exception->getPath();
             $invalidValue = $exception->getCurrentType();
-            $expectedType = implode('|', $exception->getExpectedTypes());
+            $expectedType = implode('|', $exception->getExpectedTypes() ?? []);
         } else {
             throw $exception;
         }
 
-        $propertyPath = null === $propertyPath ? $exception->getPath() ?? '' : $propertyPath;
-        $invalidValue = null === $invalidValue ? $exception->getCurrentType() ?? null : $invalidValue;
+        $propertyPath ??= $exception->getPath() ?? '';
+        $invalidValue ??= $exception->getCurrentType() ?? null;
         $constraint = new Type($propertyPath);
 
         parent::__construct(
@@ -105,6 +106,7 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
 
         foreach ($parameters as $parameter) {
             $parameterName = $parameter->getName();
+
             /** @var \ReflectionNamedType|null $reflectionType */
             $reflectionType = $parameter->getType();
 

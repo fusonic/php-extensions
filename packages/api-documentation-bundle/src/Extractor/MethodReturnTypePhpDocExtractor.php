@@ -25,7 +25,7 @@ use Symfony\Component\PropertyInfo\Util\PhpDocTypeHelper;
  */
 final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInterface
 {
-    private PhpDocTypeHelper $phpDocTypeHelper;
+    private readonly PhpDocTypeHelper $phpDocTypeHelper;
 
     /**
      * @var Context[]
@@ -37,8 +37,8 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
      */
     private array $docBlocks = [];
 
-    private ContextFactory $contextFactory;
-    private DocBlockFactoryInterface $docBlockFactory;
+    private readonly ContextFactory $contextFactory;
+    private readonly DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct()
     {
@@ -77,6 +77,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
                         case 'self':
                         case 'static':
                             $resolvedClass = $class;
+
                             break;
 
                         case 'parent':
@@ -87,6 +88,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
 
                         default:
                             $types[] = $type;
+
                             continue 2;
                     }
 
@@ -106,11 +108,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
     {
         $propertyHash = \sprintf('%s::%s', $class, $property);
 
-        if (isset($this->docBlocks[$propertyHash])) {
-            return $this->docBlocks[$propertyHash];
-        }
-
-        return $this->docBlocks[$propertyHash] = $this->getDocBlockFromMethod($class, $property);
+        return $this->docBlocks[$propertyHash] ?? $this->docBlocks[$propertyHash] = $this->getDocBlockFromMethod($class, $property);
     }
 
     private function getDocBlockFromMethod(string $class, string $propertyName): ?DocBlock
@@ -126,7 +124,7 @@ final class MethodReturnTypePhpDocExtractor implements PropertyTypeExtractorInte
 
         try {
             return $this->docBlockFactory->create($reflectionMethod, $this->createFromReflector($reflector));
-        } catch (\InvalidArgumentException|\RuntimeException $e) {
+        } catch (\InvalidArgumentException|\RuntimeException) {
             return null;
         }
     }

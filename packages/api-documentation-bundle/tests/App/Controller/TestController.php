@@ -29,13 +29,13 @@ final class TestController extends AbstractController
     )]
     public function testManualOutput(#[FromRequest] TestRequest $query): Response
     {
-        return new Response((string) $query->id, 200);
+        return new Response((string) $query->id, Response::HTTP_OK);
     }
 
     #[DocumentedRoute(path: '/test-status-code/{id}', methods: ['GET'], statusCode: 422)]
     public function testStatusCode(#[FromRequest] TestRequest $query): Response
     {
-        return new Response((string) $query->id, 422);
+        return new Response((string) $query->id, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     #[DocumentedRoute(path: '/test-return-type/{id}', methods: ['GET'])]

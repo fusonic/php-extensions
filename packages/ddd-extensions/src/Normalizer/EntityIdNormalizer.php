@@ -22,7 +22,6 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @param mixed|EntityIntegerId $object
-     * @param array<mixed>          $context
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): int
     {
@@ -31,16 +30,12 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
 
     /**
      * @param mixed|EntityIntegerId $data
-     * @param array<mixed>          $context
      */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof EntityIntegerId;
     }
 
-    /**
-     * @param array<mixed> $context
-     */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): EntityIntegerId
     {
         /** @var EntityIntegerId $integerId */
@@ -49,9 +44,6 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
         return $integerId;
     }
 
-    /**
-     * @param array<mixed> $context
-     */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return \is_int($data) && is_a($type, EntityIntegerId::class, true);

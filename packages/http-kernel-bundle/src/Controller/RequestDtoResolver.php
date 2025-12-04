@@ -15,7 +15,7 @@ use Fusonic\HttpKernelBundle\ErrorHandler\ErrorHandlerInterface;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
 use Fusonic\HttpKernelBundle\Request\RequestDataCollectorInterface;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class RequestDtoResolver implements ValueResolverInterface
+final readonly class RequestDtoResolver implements ValueResolverInterface
 {
     public const METHODS_WITH_STRICT_TYPE_CHECKS = [
         Request::METHOD_PUT,
@@ -33,22 +33,17 @@ final class RequestDtoResolver implements ValueResolverInterface
         Request::METHOD_PATCH,
     ];
 
-    private ErrorHandlerInterface $errorHandler;
-    private RequestDataCollectorInterface $modelDataParser;
-
     public function __construct(
-        private readonly DenormalizerInterface $serializer,
-        private readonly ValidatorInterface $validator,
-        ?ErrorHandlerInterface $errorHandler = null,
+        private DenormalizerInterface $serializer,
+        private ValidatorInterface $validator,
+        private ErrorHandlerInterface $errorHandler = new ConstraintViolationErrorHandler(),
         /**
          * @var iterable<ContextAwareProviderInterface>
          */
-        #[TaggedIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)] // @phpstan-ignore attribute.deprecated
-        private readonly iterable $providers = [],
-        ?RequestDataCollectorInterface $modelDataParser = null,
+        #[AutowireIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)]
+        private iterable $providers = [],
+        private RequestDataCollectorInterface $modelDataParser = new StrictRequestDataCollector(),
     ) {
-        $this->errorHandler = $errorHandler ?? new ConstraintViolationErrorHandler();
-        $this->modelDataParser = $modelDataParser ?? new StrictRequestDataCollector();
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
@@ -125,6 +120,7 @@ final class RequestDtoResolver implements ValueResolverInterface
     private function validate(object $dto): void
     {
         $violations = $this->validator->validate($dto);
+
         if ($violations->count() > 0) {
             $this->errorHandler->handleConstraintViolations($violations);
         }

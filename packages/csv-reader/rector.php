@@ -9,21 +9,18 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
+use Rector\Php81\Rector\ClassMethod\NewInInitializerRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
-use Rector\Renaming\Rector\Name\RenameClassRector;
-use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__.'/config',
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
     ->withPHPStanConfigs([__DIR__.'/phpstan.neon'])
     ->withPhpSets(php82: true)
     ->withComposerBased(
-        doctrine: true,
         phpunit: true,
         symfony: true,
     )
@@ -39,14 +36,12 @@ return RectorConfig::configure()
     )
     ->withSkip([
         FlipTypeControlToUseExclusiveTypeRector::class,
-        NarrowObjectReturnTypeRector::class => [
-            // ↓ Rule breaks BC layer
-            __DIR__.'/tests/Unit/Infrastructure/Doctrine/Types/UuidEntityIdTypeTest.php',
+        NewInInitializerRector::class => [
+            // TODO Remove in v0.6.0 or v1.0.0
+            // ↓ This would break backwards compatibility
+            __DIR__.'/src/CsvReader.php',
         ],
         PreferPHPUnitThisCallRector::class,
-        RenameClassRector::class => [
-            // ↓ Rule breaks BC layer
-            __DIR__.'/tests/Unit/Infrastructure/Doctrine/Types/UuidEntityIdTypeTest.php',
-        ],
-        ServiceSettersToSettersAutodiscoveryRector::class,
+        // ↓ This would break backwards compatibility
+        ReadOnlyPropertyRector::class,
     ]);

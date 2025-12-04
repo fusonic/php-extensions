@@ -68,8 +68,9 @@
         - composer validate --no-check-all
         - composer install --no-progress --no-interaction
     script:
+        - composer phpcs:check
         - composer phpstan
-        - composer phpcs-check
+        - composer rector:check
         - vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text
     environment:
         name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/phpunit

@@ -13,11 +13,9 @@ use Assert\LazyAssertion as BaseLazyAssertion;
 
 class LazyAssertion extends BaseLazyAssertion
 {
-    protected string $rootPath;
-
-    public function __construct(string $rootPath)
-    {
-        $this->rootPath = $rootPath;
+    public function __construct(
+        protected string $rootPath,
+    ) {
     }
 
     /**

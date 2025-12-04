@@ -12,9 +12,9 @@ namespace Fusonic\DDDExtensions\Tests\Domain\Event;
 use Fusonic\DDDExtensions\Domain\Event\DomainEventInterface;
 use Fusonic\DDDExtensions\Tests\Domain\UserId;
 
-final class RegisterUserEvent implements DomainEventInterface
+final readonly class RegisterUserEvent implements DomainEventInterface
 {
-    public function __construct(public readonly UserId $userId)
+    public function __construct(public UserId $userId)
     {
     }
 }

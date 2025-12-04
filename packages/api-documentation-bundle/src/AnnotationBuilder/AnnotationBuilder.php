@@ -89,6 +89,7 @@ final class AnnotationBuilder
             }
 
             $parameterReflectionClass = new \ReflectionClass($typeName);
+
             if ($this->requestObjectReflectionClass->isInterface()
                 && $parameterReflectionClass->implementsInterface($this->requestObjectReflectionClass->getName())
             ) {
@@ -184,7 +185,7 @@ final class AnnotationBuilder
         ]);
     }
 
-    public function getOutputAnnotation(string $httpMethod): ?AbstractAnnotation
+    public function getOutputAnnotation(string $httpMethod): OA\Response
     {
         $statusCode = $this->route->getStatusCode() ?? ($this->outputIsVoid ? Response::HTTP_NO_CONTENT : Response::HTTP_OK);
 

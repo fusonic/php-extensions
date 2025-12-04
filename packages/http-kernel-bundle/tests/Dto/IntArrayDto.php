@@ -14,18 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class IntArrayDto
 {
     /**
-     * @var int[]
-     */
-    #[Assert\NotNull]
-    #[Assert\Valid]
-    private array $items;
-
-    /**
      * @param int[] $items
      */
-    public function __construct(array $items)
-    {
-        $this->items = $items;
+    public function __construct(
+        #[Assert\NotNull]
+        #[Assert\Valid]
+        private readonly array $items,
+    ) {
     }
 
     /**

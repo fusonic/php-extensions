@@ -18,7 +18,6 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
 {
     /**
      * @param mixed|UuidEntityId $data
-     * @param array<mixed>       $context
      */
     public function normalize(mixed $data, ?string $format = null, array $context = []): string
     {
@@ -27,16 +26,12 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
 
     /**
      * @param mixed|UuidEntityId $data
-     * @param array<mixed>       $context
      */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof UuidEntityId;
     }
 
-    /**
-     * @param array<mixed> $context
-     */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ?UuidEntityId
     {
         if (null === $data || '' === $data) {
@@ -53,9 +48,6 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
         return $id::fromString($data);
     }
 
-    /**
-     * @param array<mixed> $context
-     */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return is_subclass_of($type, UuidEntityId::class);

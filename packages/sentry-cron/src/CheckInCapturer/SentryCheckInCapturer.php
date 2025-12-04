@@ -62,10 +62,10 @@ class SentryCheckInCapturer implements CheckInCapturerInterface
      */
     protected function getMessageSlug(string $messageClass): string
     {
-        return (string) u(self::getClassBasename($messageClass))->snake();
+        return (string) u($this->getClassBasename($messageClass))->snake();
     }
 
-    private static function getClassBasename(string $className): string
+    private function getClassBasename(string $className): string
     {
         /** @var string $basename */
         $basename = strrchr($className, '\\');

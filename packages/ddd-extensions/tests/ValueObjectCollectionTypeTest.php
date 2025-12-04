@@ -16,7 +16,7 @@ use Fusonic\DDDExtensions\Tests\Doctrine\Types\AddressValueObjectCollectionType;
 use Fusonic\DDDExtensions\Tests\Domain\AddressValueObject;
 use Fusonic\DDDExtensions\Tests\Domain\User;
 
-class ValueObjectCollectionTypeTest extends AbstractTestCase
+final class ValueObjectCollectionTypeTest extends AbstractTestCase
 {
     public function testConversion(): void
     {
@@ -50,6 +50,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectCollectionType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToDatabaseValue([$user], $this->getDatabasePlatformStub());
         } catch (ValueObjectSerializationException $e) {
@@ -65,6 +66,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectCollectionType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToPHPValue('invalid json', $this->getDatabasePlatformStub());
         } catch (ValueObjectDeserializationException $e) {
@@ -79,6 +81,7 @@ class ValueObjectCollectionTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectCollectionType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToPHPValue(1, $this->getDatabasePlatformStub());
         } catch (ValueObjectDeserializationException $e) {

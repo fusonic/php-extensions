@@ -58,7 +58,7 @@ final class UuidEntityIdNormalizerTest extends TestCase
         $denormalizedResult = $normalizer->denormalize(self::DUMMY_UUID, $uuidEntityIdClass::class);
 
         // assert
-        self::assertNotNull($denormalizedResult);
+        self::assertNotNull($denormalizedResult); // @phpstan-ignore staticMethod.alreadyNarrowedType (result might be null)
         self::assertSame(self::DUMMY_UUID, $denormalizedResult->getValue()->toRfc4122());
     }
 
@@ -76,7 +76,7 @@ final class UuidEntityIdNormalizerTest extends TestCase
         $invalidUuid = $normalizer->denormalize(self::INVALID_UUID, $uuidEntityIdClass::class);
 
         // assert
-        self::assertNull($invalidUuid);
+        self::assertNull($invalidUuid); // @phpstan-ignore staticMethod.impossibleType (result might not be null)
     }
 
     public function testSupportsDenormalization(): void

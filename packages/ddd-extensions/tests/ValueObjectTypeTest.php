@@ -44,6 +44,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToDatabaseValue($user, $this->getDatabasePlatformStub());
         } catch (\InvalidArgumentException $e) {
@@ -59,6 +60,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToPHPValue('invalid json', $this->getDatabasePlatformStub());
         } catch (ValueObjectDeserializationException $e) {
@@ -73,6 +75,7 @@ final class ValueObjectTypeTest extends AbstractTestCase
         $valueObjectType = new AddressValueObjectType();
 
         $exception = null;
+
         try {
             $valueObjectType->convertToPHPValue(1, $this->getDatabasePlatformStub());
         } catch (\InvalidArgumentException $e) {
@@ -129,8 +132,9 @@ final class ValueObjectTypeTest extends AbstractTestCase
     public function testInvalidJsonDeserialization(): void
     {
         $exception = null;
+
         try {
-            ValueObjectType::deserialize('{]}', static fn (array $data) => 'test');
+            ValueObjectType::deserialize('{]}', static fn (array $data): string => 'test');
         } catch (ValueObjectDeserializationException $e) {
             $exception = $e;
         }
@@ -142,8 +146,9 @@ final class ValueObjectTypeTest extends AbstractTestCase
     public function testInvalidJsonArrayDeserialization(): void
     {
         $exception = null;
+
         try {
-            ValueObjectType::deserialize('[{]}]', static fn (array $data) => 'test');
+            ValueObjectType::deserialize('[{]}]', static fn (array $data): string => 'test');
         } catch (ValueObjectDeserializationException $e) {
             $exception = $e;
         }
@@ -157,10 +162,11 @@ final class ValueObjectTypeTest extends AbstractTestCase
         $address1 = new AddressValueObject('Street', '1');
 
         $exception = null;
+
         try {
             // Return a 'resource' array to trigger a json decoding exception
-            // @phpstan-ignore-next-line
-            ValueObjectType::serialize($address1, static fn (AddressValueObject $object) => get_resources());
+            // @phpstan-ignore argument.type
+            ValueObjectType::serialize($address1, static fn (AddressValueObject $object): array => get_resources());
         } catch (ValueObjectSerializationException $e) {
             $exception = $e;
         }
@@ -174,10 +180,11 @@ final class ValueObjectTypeTest extends AbstractTestCase
         $address1 = new AddressValueObject('Street', '1');
 
         $exception = null;
+
         try {
             // Return a 'resource' array to trigger a json decoding exception
-            // @phpstan-ignore-next-line
-            ValueObjectType::serializeArray([$address1], static fn (AddressValueObject $object) => get_resources());
+            // @phpstan-ignore argument.type
+            ValueObjectType::serializeArray([$address1], static fn (AddressValueObject $object): array => get_resources());
         } catch (ValueObjectSerializationException $e) {
             $exception = $e;
         }

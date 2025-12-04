@@ -9,21 +9,18 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\ClassMethod\RemoveEmptyClassMethodRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
-use Rector\Renaming\Rector\Name\RenameClassRector;
-use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector;
+use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__.'/config',
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
     ->withPHPStanConfigs([__DIR__.'/phpstan.neon'])
     ->withPhpSets(php82: true)
     ->withComposerBased(
-        doctrine: true,
         phpunit: true,
         symfony: true,
     )
@@ -38,15 +35,12 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
+        ControllerMethodInjectionToConstructorRector::class => [
+            __DIR__.'/tests/App/Controller/TestTaggedController.php',
+        ],
         FlipTypeControlToUseExclusiveTypeRector::class,
-        NarrowObjectReturnTypeRector::class => [
-            // ↓ Rule breaks BC layer
-            __DIR__.'/tests/Unit/Infrastructure/Doctrine/Types/UuidEntityIdTypeTest.php',
-        ],
         PreferPHPUnitThisCallRector::class,
-        RenameClassRector::class => [
-            // ↓ Rule breaks BC layer
-            __DIR__.'/tests/Unit/Infrastructure/Doctrine/Types/UuidEntityIdTypeTest.php',
+        RemoveEmptyClassMethodRector::class => [
+            __DIR__.'/tests/App/Controller/TestController.php',
         ],
-        ServiceSettersToSettersAutodiscoveryRector::class,
     ]);

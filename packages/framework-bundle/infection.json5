@@ -10,5 +10,6 @@
     },
     "logs": {
         "html": "coverage/infection/infection.html"
-    }
+    },
+    "testFramework": "phpunit"
 }

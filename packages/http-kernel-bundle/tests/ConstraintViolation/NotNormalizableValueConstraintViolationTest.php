@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class NotNormalizableValueConstraintViolationTest extends TestCase
+final class NotNormalizableValueConstraintViolationTest extends TestCase
 {
     public function testInvalidPropertyType(): void
     {
@@ -34,6 +34,7 @@ class NotNormalizableValueConstraintViolationTest extends TestCase
 
         $exception = null;
         $data = ['requiredArgument' => 1, 'secondArgument' => 'test', 'someProperty' => null];
+
         try {
             $normalizer->denormalize(
                 $data,

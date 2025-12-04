@@ -13,8 +13,10 @@ class DummyClassB
 {
     private int $someProperty;
 
-    public function __construct(public int $requiredArgument, private string $secondArgument)
-    {
+    public function __construct(
+        public int $requiredArgument,
+        private readonly string $secondArgument,
+    ) {
     }
 
     public function getSecondArgument(): string

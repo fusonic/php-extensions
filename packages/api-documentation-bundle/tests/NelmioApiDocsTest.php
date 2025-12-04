@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Tests;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class NelmioApiDocsTest extends WebTestCase
@@ -31,9 +33,10 @@ final class NelmioApiDocsTest extends WebTestCase
         file_put_contents(__DIR__.'/../var/open_api_result.json', $content);
     }
 
+    #[IgnoreDeprecations]
     public function testGetJsonDocs(): void
     {
-        $this->client->request('GET', '/docs/default.json');
+        $this->client->request(Request::METHOD_GET, '/docs/default.json');
         $response = $this->client->getResponse();
 
         $this->writeApiDocsJson((string) $response->getContent());

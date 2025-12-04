@@ -14,18 +14,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ArrayDto
 {
     /**
-     * @var DummyClassA[]
-     */
-    #[Assert\NotNull]
-    #[Assert\Valid]
-    private array $items;
-
-    /**
      * @param DummyClassA[] $items
      */
-    public function __construct(private int $requiredArgument, array $items)
-    {
-        $this->items = $items;
+    public function __construct(
+        private readonly int $requiredArgument,
+
+        #[Assert\NotNull]
+        #[Assert\Valid]
+        private readonly array $items,
+    ) {
     }
 
     public function getRequiredArgument(): int

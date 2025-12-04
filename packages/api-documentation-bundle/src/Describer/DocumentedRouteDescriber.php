@@ -31,7 +31,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
     /**
      * @var \ReflectionClass<object>|null
      */
-    private ?\ReflectionClass $requestObjectReflectionClass;
+    private ?\ReflectionClass $requestObjectReflectionClass = null;
 
     /**
      * @param class-string|null $requestObjectClass
@@ -42,7 +42,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         private readonly LoggerInterface $logger,
         ?string $requestObjectClass = null,
     ) {
-        if (null !== $requestObjectClass && !(class_exists($requestObjectClass) || interface_exists($requestObjectClass))) {
+        if (null !== $requestObjectClass && (!class_exists($requestObjectClass) && !interface_exists($requestObjectClass))) {
             throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $requestObjectClass));
         } elseif (null !== $requestObjectClass) {
             $this->requestObjectReflectionClass = new \ReflectionClass($requestObjectClass);
@@ -92,11 +92,13 @@ final class DocumentedRouteDescriber implements DescriberInterface
             }
             $controller = $route->getDefault('_controller');
             $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
+
             if (null === $reflectedMethod) {
                 continue;
             }
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
+
             if (0 === \count($supportedHttpMethods)) {
                 $this->logger->warning(
                     'None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path',
@@ -107,6 +109,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
 
                 continue;
             }
+
             yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName];
         }
     }
@@ -117,7 +120,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
     private function getSupportedHttpMethods(Route $route): array
     {
         $allMethods = Util::OPERATIONS;
-        $methods = array_map('strtolower', $route->getMethods());
+        $methods = array_map(strtolower(...), $route->getMethods());
 
         return array_intersect(\count($methods) > 0 ? $methods : $allMethods, $allMethods);
     }

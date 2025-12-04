@@ -1,7 +1,7 @@
 {
     "name": "fusonic/framework-bundle",
     "description": "Opinionated collection of classes and functionalities used throughout Fusonic's Symfony projects",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -17,23 +17,24 @@
         "doctrine/doctrine-fixtures-bundle": "^3.7 || ^4.1",
         "fakerphp/faker": "^1.24",
         "fusonic/ddd-extensions": "^3.0",
-        "symfony/dependency-injection": "^6.4 || ^7.2",
-        "symfony/framework-bundle": "^6.4 || ^7.2",
-        "symfony/http-kernel": "^6.4 || ^7.2",
-        "symfony/messenger": "^6.4 || ^7.2",
-        "symfony/serializer": "^6.4 || ^7.2",
-        "symfony/uid": "^6.4 || ^7.2"
+        "symfony/dependency-injection": "^6.4 || ^7.3 || ^8.0",
+        "symfony/framework-bundle": "^6.4 || ^7.3 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.3 || ^8.0",
+        "symfony/messenger": "^6.4 || ^7.3 || ^8.0",
+        "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
+        "symfony/uid": "^6.4 || ^7.3 || ^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.76",
-        "infection/infection": "^0.29",
-        "nelmio/api-doc-bundle": "^5.4",
+        "friendsofphp/php-cs-fixer": "^3.91",
+        "infection/infection": "^0.31",
+        "nelmio/api-doc-bundle": "^5.8",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^12.2",
-        "rector/rector": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^12.4",
+        "rector/rector": "^2.2",
         "tomasvotruba/type-coverage": "^2.0"
     },
     "suggest": {
@@ -56,13 +57,23 @@
     },
     "scripts": {
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
-        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
-        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
+        "phpcs:check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs:fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
         "phpstan": "XDEBUG_MODE=off vendor/bin/phpstan analyse --memory-limit=512M",
         "rector:check": "XDEBUG_MODE=off vendor/bin/rector --dry-run",
         "rector:fix": "XDEBUG_MODE=off vendor/bin/rector",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
         "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text",
-        "test:unit": "XDEBUG_MODE=off vendor/bin/phpunit --testdox --testsuite unit"
+        "test:unit": "XDEBUG_MODE=off vendor/bin/phpunit --testdox --testsuite unit",
+        "code:check": [
+            "@phpcs:check",
+            "@phpstan",
+            "@rector:check"
+        ],
+        "code:fix": [
+            "@phpcs:fix",
+            "@phpstan",
+            "@rector:fix"
+        ]
     }
 }

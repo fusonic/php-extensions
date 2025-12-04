@@ -1,7 +1,7 @@
 {
     "name": "fusonic/api-documentation-bundle",
     "license": "MIT",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Symfony bundle for automated documentation with NelmioApiDocBundle.",
     "type": "symfony-bundle",
     "authors": [
@@ -24,37 +24,50 @@
         ]
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.85",
+        "friendsofphp/php-cs-fixer": "^3.91",
         "infection/infection": "^0.31",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^12.3",
-        "symfony/serializer": "^6.4 || ^7.0",
-        "symfony/framework-bundle": "^6.4 || ^7.0",
-        "symfony/test-pack": "^1.0",
-        "symfony/yaml": "^6.4 || ^7.0",
+        "phpunit/phpunit": "^12.4",
+        "rector/rector": "^2.2",
+        "symfony/browser-kit": "^6.4 || ^7.3 || ^8.0",
+        "symfony/framework-bundle": "^6.4 || ^7.3 || ^8.0",
+        "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
+        "symfony/yaml": "^6.4 || ^7.3 || ^8.0",
         "tomasvotruba/type-coverage": "^2.0"
     },
     "require": {
         "php": ">=8.2",
         "nelmio/api-doc-bundle": "^5.5",
-        "symfony/config": "^6.4 || ^7.0",
-        "symfony/dependency-injection": "^6.4 || ^7.0",
-        "symfony/dom-crawler": "^6.4 || ^7.0",
-        "symfony/property-info": "^6.4 || ^7.0",
-        "symfony/routing": "^6.4 || ^7.0",
+        "symfony/config": "^6.4 || ^7.3 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.3 || ^8.0",
+        "symfony/dom-crawler": "^6.4 || ^7.3 || ^8.0",
+        "symfony/property-info": "^6.4 || ^7.3",
+        "symfony/routing": "^6.4 || ^7.3 || ^8.0",
         "zircote/swagger-php": "^5.1"
     },
     "scripts": {
-        "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
-        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
-        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
+        "phpcs:check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs:fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
+        "phpstan": "XDEBUG_MODE=off vendor/bin/phpstan analyse --memory-limit=512M",
+        "rector:check": "XDEBUG_MODE=off vendor/bin/rector --dry-run",
+        "rector:fix": "XDEBUG_MODE=off vendor/bin/rector",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
-        "test-coverage" : "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text",
+        "code:check": [
+            "@phpcs:check",
+            "@phpstan",
+            "@rector:check"
+        ],
+        "code:fix": [
+            "@phpcs:fix",
+            "@phpstan",
+            "@rector:fix"
+        ]
     },
     "config": {
         "sort-packages": true,

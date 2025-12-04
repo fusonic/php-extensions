@@ -24,8 +24,8 @@ class RouteParameterDto
     #[Assert\Valid]
     private SubTypeDto $subType;
 
-    // @phpstan-ignore-next-line
-    private string $notSetValue;
+    // @phpstan-ignore property.uninitializedReadonly, property.onlyRead
+    private readonly string $notSetValue;
 
     public function getInt(): int
     {

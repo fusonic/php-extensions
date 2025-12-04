@@ -26,9 +26,9 @@ final class AddressValueObjectCollectionType extends ValueObjectType
     /**
      * @throws \JsonException
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
-        return self::serializeArray($value, static fn (AddressValueObject $object) => AddressValueObjectType::fromObject($object));
+        return self::serializeArray($value, static fn (AddressValueObject $object): array => AddressValueObjectType::fromObject($object));
     }
 
     /**
@@ -36,6 +36,6 @@ final class AddressValueObjectCollectionType extends ValueObjectType
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
-        return self::deserializeArray($value, static fn (array $data) => AddressValueObjectType::toObject($data));
+        return self::deserializeArray($value, static fn (array $data): AddressValueObject => AddressValueObjectType::toObject($data));
     }
 }

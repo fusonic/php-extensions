@@ -16,6 +16,7 @@ use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestResponse;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 #[OA\Tag(name: 'test')]
 final class TestTaggedController extends AbstractController
@@ -35,7 +36,7 @@ final class TestTaggedController extends AbstractController
     )]
     public function testManualCollectionOutput(TestRequest $query): JsonResponse
     {
-        return new JsonResponse([(string) $query->id], 200);
+        return new JsonResponse([(string) $query->id], Response::HTTP_OK);
     }
 
     #[DocumentedRoute(path: '/test-input-with-interface/{id}', methods: ['POST'])]

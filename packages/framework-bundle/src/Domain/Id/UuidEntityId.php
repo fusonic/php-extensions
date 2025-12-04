@@ -13,7 +13,7 @@ use Fusonic\DDDExtensions\Domain\Model\EntityId;
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
 use Symfony\Component\Uid\Uuid;
 
-abstract readonly class UuidEntityId extends EntityId
+abstract readonly class UuidEntityId extends EntityId implements \Stringable
 {
     private Uuid $id;
 

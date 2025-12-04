@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class MissingConstructorArgumentsConstraintViolationTest extends TestCase
+final class MissingConstructorArgumentsConstraintViolationTest extends TestCase
 {
     public function testMessage(): void
     {
@@ -26,6 +26,7 @@ class MissingConstructorArgumentsConstraintViolationTest extends TestCase
         $class = DummyClassB::class;
 
         $error = null;
+
         try {
             $normalizer->denormalize(['requiredArgument' => 1], $class);
         } catch (MissingConstructorArgumentsException $ex) {

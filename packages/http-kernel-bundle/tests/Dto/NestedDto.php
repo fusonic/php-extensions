@@ -13,13 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NestedDto
 {
-    #[Assert\NotNull]
-    #[Assert\Valid]
-    private DummyClassA $objectArgument;
-
-    public function __construct(DummyClassA $objectArgument)
-    {
-        $this->objectArgument = $objectArgument;
+    public function __construct(
+        #[Assert\NotNull]
+        #[Assert\Valid]
+        private readonly DummyClassA $objectArgument,
+    ) {
     }
 
     public function getObjectArgument(): DummyClassA

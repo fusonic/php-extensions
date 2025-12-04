@@ -50,7 +50,7 @@ class SentrySchedulerEventSubscriber implements EventSubscriberInterface
     /**
      * @return class-string<TriggerInterface>[]
      */
-    private static function supportedTriggers(): array
+    private function supportedTriggers(): array
     {
         return [CronExpressionTrigger::class];
     }
@@ -68,7 +68,7 @@ class SentrySchedulerEventSubscriber implements EventSubscriberInterface
             $trigger = $trigger->inner();
         }
 
-        if (!\in_array($trigger::class, self::supportedTriggers(), true)) {
+        if (!\in_array($trigger::class, $this->supportedTriggers(), true)) {
             return;
         }
 

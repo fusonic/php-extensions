@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(DecoratedBackedEnumNormalizer::class)
         ->decorate('serializer.normalizer.backed_enum')
-        ->args([service('.inner')]);
+        ->arg('$inner', service('.inner'));
 
     $services->set(ConstraintViolationExceptionNormalizer::class)
         ->autoconfigure()

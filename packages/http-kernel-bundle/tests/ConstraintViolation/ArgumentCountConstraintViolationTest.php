@@ -16,7 +16,7 @@ use Fusonic\HttpKernelBundle\Tests\Dto\DummyClassA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
 
-class ArgumentCountConstraintViolationTest extends TestCase
+final class ArgumentCountConstraintViolationTest extends TestCase
 {
     public function testMessage(): void
     {
@@ -26,7 +26,7 @@ class ArgumentCountConstraintViolationTest extends TestCase
             $testClassName = DummyClassA::class;
 
             // Instantiate class without required arguments to trigger the exception
-            // @phpstan-ignore-next-line
+            // @phpstan-ignore arguments.count
             new $testClassName();
         } catch (\ArgumentCountError $ex) {
             $error = $ex;

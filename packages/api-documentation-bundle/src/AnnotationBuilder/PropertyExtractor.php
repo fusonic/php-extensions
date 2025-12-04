@@ -17,9 +17,9 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
 
-final class PropertyExtractor
+final readonly class PropertyExtractor
 {
-    private readonly PropertyInfoExtractor $propertyInfoExtractor;
+    private PropertyInfoExtractor $propertyInfoExtractor;
 
     public function __construct()
     {

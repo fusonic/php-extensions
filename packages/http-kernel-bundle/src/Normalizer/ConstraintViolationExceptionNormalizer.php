@@ -11,7 +11,6 @@ namespace Fusonic\HttpKernelBundle\Normalizer;
 
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
@@ -28,15 +27,14 @@ final readonly class ConstraintViolationExceptionNormalizer implements Normalize
     }
 
     /**
-     * @param array<mixed> $context
-     *
      * @return array<string, mixed>
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): array
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array
     {
         /** @var ConstraintViolationException $exception */
-        $exception = $object;
+        $exception = $data;
         $constraintViolationList = $exception->getConstraintViolationList();
+
         /** @var array<string, mixed> $normalized */
         $normalized = $this->normalizer->normalize($constraintViolationList, $format, $context);
 
@@ -55,9 +53,7 @@ final readonly class ConstraintViolationExceptionNormalizer implements Normalize
                     $code = $violation->getCode();
 
                     if (null !== $constraint && null !== $code) {
-                        /** @var class-string<Constraint> $constraintClass */
-                        $constraintClass = $constraint::class;
-                        $normalized['violations'][$index]['errorName'] = $constraintClass::getErrorName($code);
+                        $normalized['violations'][$index]['errorName'] = $constraint::getErrorName($code);
                     }
                 }
             }
@@ -66,18 +62,10 @@ final readonly class ConstraintViolationExceptionNormalizer implements Normalize
         return $normalized;
     }
 
-    /**
-     * @param array<mixed> $context
-     */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof ConstraintViolationException
             && $this->normalizer->supportsNormalization($data->getConstraintViolationList(), $format);
-    }
-
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return true;
     }
 
     /**

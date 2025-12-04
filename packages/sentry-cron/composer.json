@@ -1,7 +1,7 @@
 {
     "name": "fusonic/sentry-cron",
     "license": "MIT",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Automatic Sentry Cron check-ins with Symfony Scheduler",
     "type": "library",
     "authors": [
@@ -24,27 +24,40 @@
         "php": ">=8.2",
         "dragonmantank/cron-expression": "^3.4",
         "sentry/sentry": "^4.14",
-        "symfony/messenger": "^6.4 || ^7.0",
-        "symfony/scheduler": "^6.4 || ^7.0",
-        "symfony/string": "^6.4 || ^7.0"
+        "symfony/messenger": "^6.4 || ^7.3 || ^8.0",
+        "symfony/scheduler": "^6.4 || ^7.3 || ^8.0",
+        "symfony/string": "^6.4 || ^7.3 || ^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
-        "infection/infection": "^0.29",
-        "phpstan/phpstan": "^1.12",
-        "phpstan/phpstan-deprecation-rules": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.4",
-        "phpstan/phpstan-strict-rules": "^1.6",
-        "phpunit/phpunit": "^11.3",
-        "tomasvotruba/type-coverage": "^0.3"
+        "friendsofphp/php-cs-fixer": "^3.91",
+        "infection/infection": "^0.31",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^12.4",
+        "rector/rector": "^2.2",
+        "tomasvotruba/type-coverage": "^2.0"
     },
     "scripts": {
-        "phpstan": "XDEBUG_MODE=off php -d memory_limit=2048M vendor/bin/phpstan analyse",
-        "phpcs-check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
-        "phpcs-fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",
+        "phpcs:check": "XDEBUG_MODE=off vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs:fix": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix -v",
+        "phpstan": "XDEBUG_MODE=off vendor/bin/phpstan analyse --memory-limit=512M",
+        "rector:check": "XDEBUG_MODE=off vendor/bin/rector --dry-run",
+        "rector:fix": "XDEBUG_MODE=off vendor/bin/rector",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --testdox",
-        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html"
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura=coverage/phpunit/cobertura.xml --coverage-html=coverage/phpunit/html --coverage-text",
+        "code:check": [
+            "@phpcs:check",
+            "@phpstan",
+            "@rector:check"
+        ],
+        "code:fix": [
+            "@phpcs:fix",
+            "@phpstan",
+            "@rector:fix"
+        ]
     },
     "config": {
         "sort-packages": true,

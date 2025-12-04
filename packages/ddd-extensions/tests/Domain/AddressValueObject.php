@@ -11,15 +11,12 @@ namespace Fusonic\DDDExtensions\Tests\Domain;
 
 use Fusonic\DDDExtensions\Domain\Model\ValueObject;
 
-final readonly class AddressValueObject extends ValueObject
+final readonly class AddressValueObject extends ValueObject implements \Stringable
 {
-    private string $street;
-    private string $number;
-
-    public function __construct(string $street, string $number)
-    {
-        $this->street = $street;
-        $this->number = $number;
+    public function __construct(
+        private string $street,
+        private string $number,
+    ) {
     }
 
     public function getStreet(): string
@@ -35,8 +32,8 @@ final readonly class AddressValueObject extends ValueObject
     public function equals(ValueObject $object): bool
     {
         return $object instanceof self
-            && $object->getStreet() === $this->getStreet()
-            && $object->getNumber() === $this->getNumber();
+            && $object->getStreet() === $this->street
+            && $object->getNumber() === $this->number;
     }
 
     public function __toString(): string

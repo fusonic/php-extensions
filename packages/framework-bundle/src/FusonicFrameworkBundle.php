@@ -16,6 +16,8 @@ use Fusonic\FrameworkBundle\Application\Messenger\Bus\QueryBus;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\CommandHandlerInterface;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\EventHandlerInterface;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\QueryHandlerInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,8 +29,9 @@ final class FusonicFrameworkBundle extends AbstractBundle
 {
     public function configure(DefinitionConfigurator $definition): void
     {
-        // @phpstan-ignore method.notFound
-        $definition->rootNode()
+        /** @var ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode */
+        $rootNode = $definition->rootNode();
+        $rootNode
             ->children()
                 ->arrayNode('messenger')
                     ->addDefaultsIfNotSet()
@@ -37,21 +40,18 @@ final class FusonicFrameworkBundle extends AbstractBundle
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('command_bus')
-                                    ->isRequired()
                                     ->cannotBeEmpty()
                                     ->defaultValue('command.bus')
                                     ->info('Service ID for the command bus')
                                     ->example('command.bus')
                                 ->end()
                                 ->scalarNode('event_bus')
-                                    ->isRequired()
                                     ->cannotBeEmpty()
                                     ->defaultValue('event.bus')
                                     ->info('Service ID for the event bus')
                                     ->example('event.bus')
                                 ->end()
                                 ->scalarNode('query_bus')
-                                    ->isRequired()
                                     ->cannotBeEmpty()
                                     ->defaultValue('query.bus')
                                     ->info('Service ID for the query bus')

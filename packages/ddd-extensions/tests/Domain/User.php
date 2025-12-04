@@ -17,12 +17,12 @@ final class User extends AggregateRoot
 {
     use IntegerIdTrait;
 
-    private string $name;
     private ?Job $job;
 
-    public function __construct(string $name, ?string $jobName = null)
-    {
-        $this->name = $name;
+    public function __construct(
+        private string $name,
+        ?string $jobName = null,
+    ) {
         $this->job = null !== $jobName ? new Job($jobName) : null;
     }
 

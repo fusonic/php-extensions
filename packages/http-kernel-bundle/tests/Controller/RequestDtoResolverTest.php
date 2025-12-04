@@ -48,7 +48,6 @@ use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ProblemNormalizer;
@@ -58,7 +57,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RequestDtoResolverTest extends TestCase
+final class RequestDtoResolverTest extends TestCase
 {
     public function testSupportOfNotSupportedClass(): void
     {
@@ -100,13 +99,10 @@ class RequestDtoResolverTest extends TestCase
     {
         $this->expectException(ConstraintViolationException::class);
 
-        /** @var string $data */
-        $data = json_encode(
-            [
-                'float' => 9.99,
-                'bool' => true,
-            ]
-        );
+        $data = $this->encodeToJson([
+            'float' => 9.99,
+            'bool' => true,
+        ]);
 
         $request = new Request([], [], [], [], [], [], $data);
         $request->setMethod(Request::METHOD_POST);
@@ -121,16 +117,18 @@ class RequestDtoResolverTest extends TestCase
 
     public function testExpectedFloatProvidedIntStrictTypeChecking(): void
     {
-        /** @var string $data */
-        $data = json_encode([
-            'int' => 5,
-            'float' => 9,
-            'string' => 'foobar',
-            'bool' => true,
-            'subType' => [
-                'test' => 'barfoo',
+        $data = json_encode(
+            value: [
+                'int' => 5,
+                'float' => 9,
+                'string' => 'foobar',
+                'bool' => true,
+                'subType' => [
+                    'test' => 'barfoo',
+                ],
             ],
-        ], \JSON_THROW_ON_ERROR);
+            flags: \JSON_THROW_ON_ERROR
+        );
 
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
@@ -146,8 +144,7 @@ class RequestDtoResolverTest extends TestCase
 
     public function testStrictTypeMappingForPostJsonRequestBody(): void
     {
-        /** @var string $data */
-        $data = json_encode([
+        $data = $this->encodeToJson([
             'int' => 5,
             'float' => 9.99,
             'string' => 'foobar',
@@ -155,7 +152,7 @@ class RequestDtoResolverTest extends TestCase
             'subType' => [
                 'test' => 'barfoo',
             ],
-        ], \JSON_THROW_ON_ERROR);
+        ]);
 
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
@@ -286,8 +283,7 @@ class RequestDtoResolverTest extends TestCase
     {
         $this->expectException(ConstraintViolationException::class);
 
-        /** @var string $data */
-        $data = json_encode([
+        $data = $this->encodeToJson([
             'int' => 5,
             'float' => 9.99,
             'string' => 'foobar',
@@ -295,7 +291,7 @@ class RequestDtoResolverTest extends TestCase
             'subType' => [
                 'test' => 'barfoo',
             ],
-        ], \JSON_THROW_ON_ERROR);
+        ]);
 
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_GET);
@@ -450,8 +446,8 @@ class RequestDtoResolverTest extends TestCase
         $this->expectExceptionMessage(
             'ConstraintViolation: This value should be of type float.'
         );
-        /** @var string $data */
-        $data = json_encode([
+
+        $data = $this->encodeToJson([
             'int' => 5,
             'float' => 'foobar',
             'string' => 'foobar',
@@ -459,7 +455,8 @@ class RequestDtoResolverTest extends TestCase
             'subType' => [
                 'test' => 'barfoo',
             ],
-        ], \JSON_THROW_ON_ERROR);
+        ]);
+
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
         $argument = $this->createArgumentMetadata(TestDto::class, [new FromRequest()]);
@@ -484,8 +481,7 @@ class RequestDtoResolverTest extends TestCase
 
     public function testContextAwareProviderCalling(): void
     {
-        /** @var string $data */
-        $data = json_encode([
+        $data = $this->encodeToJson([
             'int' => 5,
             'float' => 9.99,
             'string' => 'foobar',
@@ -493,7 +489,7 @@ class RequestDtoResolverTest extends TestCase
             'subType' => [
                 'test' => 'barfoo',
             ],
-        ], \JSON_THROW_ON_ERROR);
+        ]);
 
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
@@ -509,7 +505,11 @@ class RequestDtoResolverTest extends TestCase
 
         $providers = [$mockProvider1, $mockProvider2];
 
-        $resolver = new RequestDtoResolver($this->getDenormalizer(), $this->getValidator(), null, $providers);
+        $resolver = new RequestDtoResolver(
+            serializer: $this->getDenormalizer(),
+            validator: $this->getValidator(),
+            providers: $providers,
+        );
         $resolver->resolve($request, $argument)->current();
     }
 
@@ -521,8 +521,7 @@ class RequestDtoResolverTest extends TestCase
     #[DataProvider('errorTestData')]
     public function testConstraintViolationErrors(array $data, string $dtoClass, string $expectedViolationClass): void
     {
-        /** @var string $data */
-        $data = json_encode($data, \JSON_THROW_ON_ERROR);
+        $data = $this->encodeToJson($data);
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json'], $data);
         $request->setMethod(Request::METHOD_POST);
 
@@ -532,6 +531,7 @@ class RequestDtoResolverTest extends TestCase
         $generator = $resolver->resolve($request, $argument);
 
         $exception = null;
+
         try {
             $generator->current();
         } catch (\Throwable $e) {
@@ -557,6 +557,7 @@ class RequestDtoResolverTest extends TestCase
         $generator = $resolver->resolve($request, $argument);
 
         $exception = null;
+
         try {
             $generator->current();
         } catch (\Throwable $e) {
@@ -579,11 +580,10 @@ class RequestDtoResolverTest extends TestCase
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
 
         $resolver = new RequestDtoResolver(
-            $this->getDenormalizer(),
-            $this->getValidator(),
-            null,
-            [],
-            new StrictRequestDataCollector(false)
+            serializer: $this->getDenormalizer(),
+            validator: $this->getValidator(),
+            providers: [],
+            modelDataParser: new StrictRequestDataCollector(false),
         );
         $generator = $resolver->resolve($request, $argument);
 
@@ -601,11 +601,10 @@ class RequestDtoResolverTest extends TestCase
         $argument = $this->createArgumentMetadata(DummyClassA::class, [new FromRequest()]);
 
         $resolver = new RequestDtoResolver(
-            $this->getDenormalizer(),
-            $this->getValidator(),
-            null,
-            [],
-            new StrictRequestDataCollector(false)
+            serializer: $this->getDenormalizer(),
+            validator: $this->getValidator(),
+            providers: [],
+            modelDataParser: new StrictRequestDataCollector(false),
         );
         $generator = $resolver->resolve($request, $argument);
 
@@ -622,11 +621,10 @@ class RequestDtoResolverTest extends TestCase
         $argument = $this->createArgumentMetadata(StringIdDto::class, [new FromRequest()]);
 
         $resolver = new RequestDtoResolver(
-            $this->getDenormalizer(),
-            $this->getValidator(),
-            null,
-            [],
-            new StrictRequestDataCollector(false)
+            serializer: $this->getDenormalizer(),
+            validator: $this->getValidator(),
+            providers: [],
+            modelDataParser: new StrictRequestDataCollector(false),
         );
 
         $this->expectException(ConstraintViolationException::class);
@@ -647,11 +645,10 @@ class RequestDtoResolverTest extends TestCase
         $argument = $this->createArgumentMetadata(StringIdDto::class, [new FromRequest()]);
 
         $resolver = new RequestDtoResolver(
-            $this->getDenormalizer(),
-            $this->getValidator(),
-            null,
-            [],
-            new StrictRequestDataCollector(false)
+            serializer: $this->getDenormalizer(),
+            validator: $this->getValidator(),
+            providers: [],
+            modelDataParser: new StrictRequestDataCollector(false),
         );
 
         $iterable = $resolver->resolve($request, $argument);
@@ -663,50 +660,54 @@ class RequestDtoResolverTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<array<mixed>>
      */
-    public static function errorTestData(): array
+    public static function errorTestData(): \Iterator
     {
-        return [
-            [
-                [],
-                DummyClassA::class,
-                ArgumentCountConstraintViolation::class,
-            ],
-            [
-                ['requiredArgument' => 'test'],
-                DummyClassA::class,
-                NotNormalizableValueConstraintViolation::class,
-            ],
-            [
-                ['nonExistingArgument' => 1],
-                DummyClassA::class,
-                MissingConstructorArgumentsConstraintViolation::class,
-            ],
-            [
-                ['requiredArgument' => 1, 'items' => null],
-                ArrayDto::class,
-                NotNormalizableValueConstraintViolation::class,
-            ],
-            [
-                ['items' => null],
-                IntArrayDto::class,
-                NotNormalizableValueConstraintViolation::class,
-            ],
-            [
-                ['objectArgument' => ['requiredArgument' => null]],
-                NestedDto::class,
-                NotNormalizableValueConstraintViolation::class,
-            ],
-            [
-                ['objectArgument' => null],
-                NestedDto::class,
-                MissingConstructorArgumentsConstraintViolation::class,
-            ],
+        yield [
+            [],
+            DummyClassA::class,
+            ArgumentCountConstraintViolation::class,
+        ];
+
+        yield [
+            ['requiredArgument' => 'test'],
+            DummyClassA::class,
+            NotNormalizableValueConstraintViolation::class,
+        ];
+
+        yield [
+            ['nonExistingArgument' => 1],
+            DummyClassA::class,
+            MissingConstructorArgumentsConstraintViolation::class,
+        ];
+
+        yield [
+            ['requiredArgument' => 1, 'items' => null],
+            ArrayDto::class,
+            NotNormalizableValueConstraintViolation::class,
+        ];
+
+        yield [
+            ['items' => null],
+            IntArrayDto::class,
+            NotNormalizableValueConstraintViolation::class,
+        ];
+
+        yield [
+            ['objectArgument' => ['requiredArgument' => null]],
+            NestedDto::class,
+            NotNormalizableValueConstraintViolation::class,
+        ];
+
+        yield [
+            ['objectArgument' => null],
+            NestedDto::class,
+            MissingConstructorArgumentsConstraintViolation::class,
         ];
     }
 
-    private function getDenormalizer(): DenormalizerInterface
+    private function getDenormalizer(): Serializer
     {
         $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
         $encoders = [new JsonEncoder()];
@@ -743,9 +744,23 @@ class RequestDtoResolverTest extends TestCase
     {
         $validatorBuilder = Validation::createValidatorBuilder();
 
-        // @phpstan-ignore-next-line
+        // @phpstan-ignore method.notFound (BC layer)
         Kernel::VERSION_ID >= 70000 ? $validatorBuilder->enableAttributeMapping() : $validatorBuilder->enableAnnotationMapping();
 
         return $validatorBuilder->getValidator();
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function encodeToJson(array $data): string
+    {
+        try {
+            $data = json_encode(value: $data, flags: \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            self::fail(\sprintf('Could not encode data to JSON string: %s', $e->getMessage()));
+        }
+
+        return $data;
     }
 }

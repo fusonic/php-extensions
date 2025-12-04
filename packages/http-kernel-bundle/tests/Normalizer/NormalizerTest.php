@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validation;
 
-class NormalizerTest extends TestCase
+final class NormalizerTest extends TestCase
 {
     public function testValidationError(): void
     {
@@ -25,7 +25,7 @@ class NormalizerTest extends TestCase
         $normalizer = new ConstraintViolationExceptionNormalizer(new ConstraintViolationListNormalizer());
 
         $violations = $validator->validate('Bernhard', [
-            new Length(['min' => 10]),
+            new Length(min: 10),
             new NotBlank(),
         ]);
 
@@ -42,12 +42,12 @@ class NormalizerTest extends TestCase
         self::assertSame('This value is too short. It should have 10 characters or more.', $result['detail']);
         self::assertSame('', $result['violations'][0]['propertyPath']);
         self::assertSame(
-            expected: 'This value is too short. It should have 10 characters or more.',
-            actual: $result['violations'][0]['title']
+            'This value is too short. It should have 10 characters or more.',
+            $result['violations'][0]['title']
         );
         self::assertSame(
-            expected: 'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.',
-            actual: $result['violations'][0]['template']
+            'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.',
+            $result['violations'][0]['template']
         );
         self::assertSame('"Bernhard"', $result['violations'][0]['parameters']['{{ value }}']);
         self::assertSame('10', $result['violations'][0]['parameters']['{{ limit }}']);

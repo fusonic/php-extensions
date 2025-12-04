@@ -69,6 +69,7 @@ final class MethodReturnTypeReflectionExtractor implements PropertyTypeExtractor
             }
 
             $phpTypeOrClass = $type->getName();
+
             if ('null' === $phpTypeOrClass || 'mixed' === $phpTypeOrClass || 'never' === $phpTypeOrClass) {
                 continue;
             }

@@ -19,10 +19,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Decorate the original BackedEnumNormalizer to be able to provide a better error message.
  */
-final class DecoratedBackedEnumNormalizer implements NormalizerInterface, DenormalizerInterface
+final readonly class DecoratedBackedEnumNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public function __construct(
-        private readonly BackedEnumNormalizer $inner,
+        private BackedEnumNormalizer $inner,
     ) {
     }
 
@@ -48,7 +48,7 @@ final class DecoratedBackedEnumNormalizer implements NormalizerInterface, Denorm
     {
         try {
             return $this->inner->denormalize($data, $type, $format, $context);
-            // @phpstan-ignore-next-line Ignore since the normalizer doesn't have the correct @throws tag
+            // @phpstan-ignore catch.neverThrown (Ignore since the normalizer doesn't have the correct @throws tag)
         } catch (InvalidArgumentException) {
             throw new InvalidEnumException($type, $data, $context['deserialization_path'] ?? null);
         }

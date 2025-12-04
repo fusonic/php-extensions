@@ -1,0 +1,178 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '''
+				#^Access to static property \$builtinTypes of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: staticProperty.deprecatedClass
+			count: 1
+			path: src/AnnotationBuilder/AnnotationBuilder.php
+
+		-
+			message: '''
+				#^Call to method getBuiltinType\(\) of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: method.deprecatedClass
+			count: 2
+			path: src/AnnotationBuilder/AnnotationBuilder.php
+
+		-
+			message: '''
+				#^Call to method getClassName\(\) of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: method.deprecatedClass
+			count: 2
+			path: src/AnnotationBuilder/AnnotationBuilder.php
+
+		-
+			message: '''
+				#^Call to deprecated method getTypes\(\) of class Symfony\\Component\\PropertyInfo\\PropertyInfoExtractor\:
+				since Symfony 7\.3, use "getType" instead$#
+			'''
+			identifier: method.deprecated
+			count: 1
+			path: src/AnnotationBuilder/PropertyExtractor.php
+
+		-
+			message: '''
+				#^Call to method getCollectionValueTypes\(\) of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: method.deprecatedClass
+			count: 1
+			path: src/AnnotationBuilder/PropertyExtractor.php
+
+		-
+			message: '''
+				#^Parameter \$returnType of method Fusonic\\ApiDocumentationBundle\\AnnotationBuilder\\PropertyExtractor\:\:extractCollectionReturnType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: parameter.deprecatedClass
+			count: 1
+			path: src/AnnotationBuilder/PropertyExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\AnnotationBuilder\\PropertyExtractor\:\:extractCollectionReturnType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/AnnotationBuilder/PropertyExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\AnnotationBuilder\\PropertyExtractor\:\:extractMethodReturnType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/AnnotationBuilder/PropertyExtractor.php
+
+		-
+			message: '''
+				#^Call to deprecated method getTypes\(\) of class Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypePhpDocExtractor\:
+				since Symfony 7\.3, use "getType" instead$#
+			'''
+			identifier: method.deprecated
+			count: 1
+			path: src/Extractor/MethodReturnTypePhpDocExtractor.php
+
+		-
+			message: '#^PHPDoc tag @var with type phpDocumentor\\Reflection\\DocBlock\\Tags\\InvalidTag\|phpDocumentor\\Reflection\\DocBlock\\Tags\\Param\|phpDocumentor\\Reflection\\DocBlock\\Tags\\Return_\|phpDocumentor\\Reflection\\DocBlock\\Tags\\Var_\|null is not subtype of type phpDocumentor\\Reflection\\DocBlock\\Tag\.$#'
+			identifier: varTag.type
+			count: 1
+			path: src/Extractor/MethodReturnTypePhpDocExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypePhpDocExtractor\:\:getType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypePhpDocExtractor.php
+
+		-
+			message: '''
+				#^Call to deprecated method getTypes\(\) of class Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypeReflectionExtractor\:
+				since Symfony 7\.3, use "getType" instead$#
+			'''
+			identifier: method.deprecated
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Call to method __construct\(\) of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: method.deprecatedClass
+			count: 4
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Fetching class constant BUILTIN_TYPE_ARRAY of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: classConstant.deprecatedClass
+			count: 2
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Fetching class constant BUILTIN_TYPE_NULL of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: classConstant.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Fetching class constant BUILTIN_TYPE_OBJECT of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: classConstant.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Instantiation of deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: new.deprecatedClass
+			count: 4
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypeReflectionExtractor\:\:extractFromAccessor\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypeReflectionExtractor\:\:extractFromReflectionType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php
+
+		-
+			message: '''
+				#^Return type of method Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypeReflectionExtractor\:\:getType\(\) has typehint with deprecated class Symfony\\Component\\PropertyInfo\\Type\:
+				since Symfony 7\.3, use "Symfony\\Component\\TypeInfo\\Type" class from "symfony/type\-info" instead$#
+			'''
+			identifier: return.deprecatedClass
+			count: 1
+			path: src/Extractor/MethodReturnTypeReflectionExtractor.php

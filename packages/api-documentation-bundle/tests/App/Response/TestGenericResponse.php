@@ -17,17 +17,12 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 class TestGenericResponse
 {
     /**
-     * @var array<T>
-     */
-    #[Ignore]
-    private array $data;
-
-    /**
      * @param array<T> $data
      */
-    public function __construct(array $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        #[Ignore]
+        private readonly array $data,
+    ) {
     }
 
     /**

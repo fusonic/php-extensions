@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\Tests;
 
+use Fusonic\ApiDocumentationBundle\Describer\DocumentedRouteDescriber;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -23,13 +24,13 @@ final class FunctionalTest extends KernelTestCase
     {
         (new Filesystem())->remove('var/cache/test');
         self::bootKernel();
-        self::assertTrue(static::$booted);
+        self::assertTrue(self::$booted);
     }
 
     public function testService(): void
     {
         $service = self::getContainer()->get('fusonic_api_documentation.describers.openapi_php.default');
 
-        self::assertNotNull($service);
+        self::assertInstanceOf(DocumentedRouteDescriber::class, $service);
     }
 }

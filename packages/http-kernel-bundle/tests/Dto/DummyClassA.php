@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Dto;
 
-class DummyClassA
+readonly class DummyClassA
 {
     public function __construct(private int $requiredArgument)
     {

@@ -252,8 +252,11 @@ final class UuidEntityIdTypeTest extends TestCase
     public static function provideSqlDeclarations(): \Generator
     {
         yield [new PostgreSQLPlatform(), 'UUID'];
+
         yield [self::getSqlitePlatform(), 'CHAR(36)'];
+
         yield [new MySQLPlatform(), 'CHAR(36)'];
+
         yield [new MariaDBPlatform(), 'CHAR(36)'];
     }
 

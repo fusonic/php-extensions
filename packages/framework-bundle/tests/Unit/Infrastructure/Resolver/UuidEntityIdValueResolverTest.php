@@ -49,6 +49,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'No attribute for argument' => [
             false,
             new Request(query: [], request: [], attributes: []),
@@ -60,6 +61,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Attribute is not a string' => [
             false,
             new Request(query: [], request: [], attributes: ['foo' => ['bar']]),
@@ -71,6 +73,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Argument has no type' => [
             false,
             new Request(query: [], request: [], attributes: ['foo' => (string) $uuidEntityId]),
@@ -82,6 +85,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Argument type is not a class' => [
             false,
             new Request(query: [], request: [], attributes: ['foo' => (string) $uuidEntityId]),
@@ -93,6 +97,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Argument type is not a subclass of AbstractUid' => [
             false,
             new Request(query: [], request: [], attributes: ['foo' => (string) $uuidEntityId]),
@@ -104,6 +109,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Abstract UuidEntityId is not supported' => [
             false,
             new Request(query: [], request: [], attributes: ['foo' => (string) $uuidEntityId]),
@@ -115,6 +121,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Known subclass' => [
             true,
             new Request(query: [], request: [], attributes: ['foo' => (string) $uuidEntityId]),
@@ -126,6 +133,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
                 defaultValue: null,
             ),
         ];
+
         yield 'Format does not matter' => [
             true,
             new Request(query: [], request: [], attributes: ['foo' => (string) Uuid::v4()]),
@@ -168,14 +176,17 @@ final class UuidEntityIdValueResolverTest extends TestCase
             $uuidEntityId,
             (string) $uuidEntityId,
         ];
+
         yield 'UUID as Rfc4122 string' => [
             $uuidEntityId,
             $uuidEntityId->getValue()->toRfc4122(),
         ];
+
         yield 'UUID as base58 string' => [
             $uuidEntityId,
             $uuidEntityId->getValue()->toBase58(),
         ];
+
         yield 'UUID as base32 string' => [
             $uuidEntityId,
             $uuidEntityId->getValue()->toBase32(),
