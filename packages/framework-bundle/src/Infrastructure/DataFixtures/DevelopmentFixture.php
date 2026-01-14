@@ -19,9 +19,25 @@ abstract class DevelopmentFixture extends Fixture implements FixtureGroupInterfa
 
     protected Faker\Generator $faker;
 
-    public function __construct()
+    public function __construct(protected ?int $seed = null, protected ?string $locale = null)
     {
-        $this->faker = Faker\Factory::create();
+    }
+
+    protected function getFaker(): Faker\Generator
+    {
+        if (isset($this->faker)) {
+            return $this->faker;
+        }
+
+        $this->faker = Faker\Factory::create(locale: $this->locale ?? Faker\Factory::DEFAULT_LOCALE);
+
+        if (null !== $this->seed) {
+            // We use crc32 to generate an integer seed unique to each fixture class, ensuring the same class always
+            // gets the same seed.
+            $this->faker->seed($this->seed + crc32(static::class));
+        }
+
+        return $this->faker;
     }
 
     public static function getGroups(): array
