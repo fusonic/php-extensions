@@ -1,19 +1,18 @@
 include:
     - local: 'ci/_includes.yml'
-    - local: 'ci/packages/http-kernel-bundle.yml'
-    - local: 'ci/packages/ddd-extensions.yml'
-    - local: 'ci/packages/messenger-mailer-bundle.yml'
-    - local: 'ci/packages/csv-reader.yml'
     - local: 'ci/packages/api-documentation-bundle.yml'
     - local: 'ci/packages/assert.yml'
-    - local: 'ci/packages/sentry-cron.yml'
+    - local: 'ci/packages/csv-reader.yml'
+    - local: 'ci/packages/ddd-extensions.yml'
     - local: 'ci/packages/framework-bundle.yml'
+    - local: 'ci/packages/http-kernel-bundle.yml'
+    - local: 'ci/packages/messenger-mailer-bundle.yml'
+    - local: 'ci/packages/sentry-cron.yml'
 
 stages:
     - install
     - test
     - publish
-    - cleanup
 
 variables:
     DOCKER_IMAGE: docker:27.1

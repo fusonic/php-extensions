@@ -28,7 +28,6 @@ sentry-cron:publish-branch:
         name: review/$CI_COMMIT_REF_SLUG
         on_stop: sentry-cron:delete-branch
     variables:
-        MAIN_BRANCH: main
         PACKAGE: sentry-cron
         REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
 

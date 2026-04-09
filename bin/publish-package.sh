@@ -1,13 +1,5 @@
 #!/bin/bash -e
 
-if [ -n "${MAIN_BRANCH}" ] && [ "${CI_COMMIT_REF_NAME}" = "master" ]; then
-  echo "Detected legacy 'master' branch, replacing with '${MAIN_BRANCH}'"
-
-  PUBLISH_BRANCH="${MAIN_BRANCH}"
-else
-  PUBLISH_BRANCH="master"
-fi
-
 setup () {
   eval $(ssh-agent -s) && ssh-add <(echo "${SSH_PRIVATE_KEY}") && mkdir -p ~/.ssh
   echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
@@ -52,7 +44,7 @@ publish_branch () {
   setup
   checkout_subtree
 
-  git push -f ${PACKAGE} ${TEMP_BRANCH}:${PUBLISH_BRANCH}
+  git push -f ${PACKAGE} ${TEMP_BRANCH}:${CI_COMMIT_REF_NAME}
 
   cleanup
 }
@@ -62,7 +54,7 @@ delete_branch () {
 
   git remote add ${PACKAGE} ${REPOSITORY} | true
 
-  git push ${PACKAGE} --delete ${PUBLISH_BRANCH} || true
+  git push ${PACKAGE} --delete ${CI_COMMIT_REF_NAME} || true
 }
 
 case "$1" in
@@ -70,7 +62,7 @@ case "$1" in
     delete_branch
     ;;
   "branch")
-    PACKAGE_VERSION="dev-${PUBLISH_BRANCH}"
+    PACKAGE_VERSION="dev-${CI_COMMIT_REF_NAME}"
     publish_branch
     ;;
   "tag")

@@ -16,7 +16,9 @@
         - ./bin/publish-package.sh branch
     environment:
         name: review/$CI_COMMIT_REF_SLUG
+        url: https://github.com/fusonic/php-${PACKAGE}/tree/${CI_COMMIT_REF_NAME}
         on_stop: .delete-branch
+        auto_stop_in: 1 month
     allow_failure: true # allow to avoid blocking the pipeline
     needs: []
     rules:
@@ -31,13 +33,14 @@
 
 .delete-branch:
     image: ruby:2
-    stage: cleanup
+    stage: publish
     script:
         - ./bin/publish-package.sh delete-branch
     environment:
         name: review/$CI_COMMIT_REF_SLUG
         action: stop
     allow_failure: true # allow to avoid blocking the pipeline
+    needs: []
     rules:
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           when: never
