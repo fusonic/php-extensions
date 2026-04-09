@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Infrastructure\Doctrine\Types;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Infrastructure\Doctrine\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;

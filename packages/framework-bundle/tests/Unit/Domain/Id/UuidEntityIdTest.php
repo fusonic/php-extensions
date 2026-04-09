@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Domain\Id;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Domain\Id;
 
 use Fusonic\FrameworkBundle\Domain\Id\UuidEntityId;
 use PHPUnit\Framework\TestCase;

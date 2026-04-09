@@ -1,7 +1,7 @@
 {
     "name": "fusonic/framework-bundle",
     "description": "Opinionated collection of classes and functionalities used throughout Fusonic's Symfony projects",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -21,6 +21,7 @@
         "symfony/framework-bundle": "^6.4 || ^7.3 || ^8.0",
         "symfony/http-kernel": "^6.4 || ^7.3 || ^8.0",
         "symfony/messenger": "^6.4 || ^7.3 || ^8.0",
+        "symfony/security-bundle": "^6.4 || ^7.3 || ^8.0",
         "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
         "symfony/uid": "^6.4 || ^7.3 || ^8.0"
     },
@@ -47,7 +48,9 @@
         }
     },
     "autoload-dev": {
-        "Fusonic\\FrameworkBundle\\Tests\\": "tests/"
+        "psr-4": {
+            "Fusonic\\FrameworkBundle\\Tests\\": "tests/"
+        }
     },
     "config": {
         "sort-packages": true,

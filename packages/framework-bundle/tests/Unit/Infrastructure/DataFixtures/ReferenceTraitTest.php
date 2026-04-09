@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Infrastructure\DataFixtures;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Infrastructure\DataFixtures;
 
 use Fusonic\FrameworkBundle\Infrastructure\DataFixtures\ReferenceTrait;
 use PHPUnit\Framework\TestCase;

@@ -14,10 +14,13 @@ use Fusonic\FrameworkBundle\Application\Messenger\Bus\EventBus;
 use Fusonic\FrameworkBundle\Application\Messenger\Bus\EventBusInterface;
 use Fusonic\FrameworkBundle\Application\Messenger\Bus\QueryBus;
 use Fusonic\FrameworkBundle\Application\Messenger\Bus\QueryBusInterface;
+use Fusonic\FrameworkBundle\Infrastructure\Normalizer\CollectionResponseNormalizer;
 use Fusonic\FrameworkBundle\Infrastructure\Normalizer\UuidEntityIdNormalizer;
 use Fusonic\FrameworkBundle\Infrastructure\Resolver\UuidEntityIdValueResolver;
 use Fusonic\FrameworkBundle\Port\Http\UuidEntityIdModelDescriber;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -30,7 +33,7 @@ return static function (ContainerConfigurator $container): void {
         ->tag('nelmio_api_doc.model_describer', ['priority' => 150]);
 
     $services->set(UuidEntityIdNormalizer::class)
-        // Priority -850 is important so that the custom normalizer is called before Symfonys's UidNormalizer
+        // Priority -850 is important so that the custom normalizer is called before Symfony's UidNormalizer
         ->tag('serializer.normalizer', ['priority' => -850]);
 
     $services->set(UuidEntityIdValueResolver::class)
@@ -57,4 +60,11 @@ return static function (ContainerConfigurator $container): void {
         ->tag('doctrine.event_listener', ['event' => 'postUpdate', 'priority' => 500])
         ->tag('doctrine.event_listener', ['event' => 'postRemove', 'priority' => 500])
         ->tag('doctrine.event_listener', ['event' => 'postFlush', 'priority' => 500]);
+
+    /*
+     * Configuration related to general features of this bundle ↓
+     */
+    $services->set(CollectionResponseNormalizer::class)
+        ->tag('serializer.normalizer')
+        ->arg('$normalizer', service('serializer.normalizer.object'));
 };

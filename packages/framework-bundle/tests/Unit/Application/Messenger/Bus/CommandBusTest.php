@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Application\Messenger\Bus;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Application\Messenger\Bus;
 
 use Fusonic\FrameworkBundle\Application\Messenger\Bus\CommandBus;
 use PHPUnit\Framework\TestCase;

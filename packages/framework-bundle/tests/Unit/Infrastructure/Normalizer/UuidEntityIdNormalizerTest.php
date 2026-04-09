@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Infrastructure\Normalizer;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Infrastructure\Normalizer;
 
 use Fusonic\FrameworkBundle\Domain\Id\UuidEntityId;
 use Fusonic\FrameworkBundle\Infrastructure\Normalizer\UuidEntityIdNormalizer;

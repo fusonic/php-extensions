@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Infrastructure\Resolver;
+namespace Fusonic\FrameworkBundle\Tests\Unit\Infrastructure\Resolver;
 
 use Fusonic\FrameworkBundle\Domain\Id\UuidEntityId;
 use Fusonic\FrameworkBundle\Infrastructure\Resolver\UuidEntityIdValueResolver;
