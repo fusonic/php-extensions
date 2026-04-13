@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace Fusonic\FrameworkBundle\Application\Security;
 
-use Fusonic\FrameworkBundle\Domain\Id\UuidEntityId;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @template TSubject of UuidEntityId|null
+ * @template TSubject
  *
  * @template-extends Voter<string, TSubject>
  */
