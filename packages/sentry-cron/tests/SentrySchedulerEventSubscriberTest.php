@@ -116,7 +116,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
         $capturer = new FakeCheckInCapturer();
         $subscriber = new SentrySchedulerEventSubscriber(true, $capturer);
         $timezone = new \DateTimeZone('Europe/Vienna');
-        $message = new #[SentryMonitorConfig(timeZone: new \DateTimeZone('Europe/Vienna'))] class() {};
+        $message = new #[SentryMonitorConfig(timeZone: $timezone)] class() {};
 
         $context = $this->createContext();
         $subscriber->onPreRun($this->mockPreRunEvent($message, $context));
