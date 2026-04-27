@@ -28,6 +28,7 @@ class SentryCheckInCapturer implements CheckInCapturerInterface
             MonitorSchedule::crontab($cronExpression),
             checkinMargin: $attribute->checkinMargin,
             maxRuntime: $attribute->maxRuntime,
+            timezone: $attribute->timeZone?->getName(),
             failureIssueThreshold: $attribute->failureIssueThreshold,
             recoveryThreshold: $attribute->maxRuntime,
         );
