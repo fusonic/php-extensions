@@ -115,8 +115,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
     {
         $capturer = new FakeCheckInCapturer();
         $subscriber = new SentrySchedulerEventSubscriber(true, $capturer);
-        $timezone = new \DateTimeZone('Europe/Vienna');
-        $message = new #[SentryMonitorConfig(timeZone: $timezone)] class() {};
+        $message = new #[SentryMonitorConfig(timeZone: new \DateTimeZone('Europe/Vienna'))] class() {};
 
         $context = $this->createContext();
         $subscriber->onPreRun($this->mockPreRunEvent($message, $context));
@@ -125,7 +124,6 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
 
         self::assertNotNull($lastConfig);
         self::assertNotNull($lastConfig->timeZone);
-        self::assertSame($timezone->getName(), $lastConfig->timeZone->getName());
         self::assertSame('Europe/Vienna', $lastConfig->timeZone->getName());
     }
 
