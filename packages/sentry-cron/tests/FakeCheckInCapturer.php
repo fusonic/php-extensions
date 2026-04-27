@@ -24,6 +24,8 @@ class FakeCheckInCapturer implements CheckInCapturerInterface
 
     private ?string $lastCheckInId = null;
 
+    private ?SentryMonitorConfig $lastConfig = null;
+
     private static int $checkInIndex = 0;
 
     public function start(string $messageClass, string $cronExpression, SentryMonitorConfig $attribute): ?string
@@ -34,6 +36,7 @@ class FakeCheckInCapturer implements CheckInCapturerInterface
 
         $this->checkIns[$checkInId] = 'started';
         $this->lastCheckInId = $checkInId;
+        $this->lastConfig = $attribute;
 
         return $checkInId;
     }
@@ -51,6 +54,11 @@ class FakeCheckInCapturer implements CheckInCapturerInterface
     public function getLastCheckInId(): ?string
     {
         return $this->lastCheckInId;
+    }
+
+    public function getLastConfig(): ?SentryMonitorConfig
+    {
+        return $this->lastConfig;
     }
 
     /**

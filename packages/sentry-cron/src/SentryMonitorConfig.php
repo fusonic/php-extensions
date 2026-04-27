@@ -17,6 +17,7 @@ final readonly class SentryMonitorConfig
         public int $maxRuntime = 30,
         public int $failureIssueThreshold = 1,
         public int $recoveryThreshold = 1,
+        public ?\DateTimeZone $timeZone = null,
     ) {
     }
 }
