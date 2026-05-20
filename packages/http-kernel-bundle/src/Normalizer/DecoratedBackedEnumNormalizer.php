@@ -49,7 +49,7 @@ final readonly class DecoratedBackedEnumNormalizer implements NormalizerInterfac
         try {
             return $this->inner->denormalize($data, $type, $format, $context);
             // @phpstan-ignore catch.neverThrown (Ignore since the normalizer doesn't have the correct @throws tag)
-        } catch (InvalidArgumentException) {
+        } catch (NotNormalizableValueException|InvalidArgumentException) {
             throw new InvalidEnumException($type, $data, $context['deserialization_path'] ?? null);
         }
     }
