@@ -42,7 +42,7 @@ final readonly class DecoratedBackedEnumNormalizer implements NormalizerInterfac
     }
 
     /**
-     * @throws NotNormalizableValueException
+     * @throws InvalidEnumException
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {

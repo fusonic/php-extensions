@@ -28,7 +28,7 @@ class ConstraintViolationErrorHandler implements ErrorHandlerInterface
      */
     public function handleDenormalizeError(\Throwable $ex, array $data, string $className): \Throwable
     {
-        if ($ex instanceof InvalidEnumException) {
+        if ($ex instanceof InvalidEnumException && enum_exists($ex->enumClass)) {
             return ConstraintViolationException::fromConstraintViolation(
                 new InvalidEnumConstraintViolation($ex->enumClass, $ex->data, $ex->propertyPath)
             );
