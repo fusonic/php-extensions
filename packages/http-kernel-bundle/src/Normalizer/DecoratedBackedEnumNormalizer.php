@@ -42,14 +42,14 @@ final readonly class DecoratedBackedEnumNormalizer implements NormalizerInterfac
     }
 
     /**
-     * @throws NotNormalizableValueException
+     * @throws InvalidEnumException
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         try {
             return $this->inner->denormalize($data, $type, $format, $context);
             // @phpstan-ignore catch.neverThrown (Ignore since the normalizer doesn't have the correct @throws tag)
-        } catch (InvalidArgumentException) {
+        } catch (NotNormalizableValueException|InvalidArgumentException) {
             throw new InvalidEnumException($type, $data, $context['deserialization_path'] ?? null);
         }
     }

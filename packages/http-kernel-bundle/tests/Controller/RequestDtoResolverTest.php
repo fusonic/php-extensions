@@ -274,7 +274,7 @@ final class RequestDtoResolverTest extends TestCase
 
         $this->expectException(ConstraintViolationException::class);
         $this->expectExceptionMessage(
-            'ConstraintViolation: This value should be of type int|string.'
+            'ConstraintViolation: The value you selected is not a valid choice.'
         );
         $generator->current();
     }
