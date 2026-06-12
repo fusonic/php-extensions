@@ -12,6 +12,8 @@ namespace Fusonic\ApiDocumentationBundle\Attribute;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class DocumentedError
 {
+    public readonly string $description;
+
     /**
      * @var string[]
      */
@@ -24,9 +26,10 @@ class DocumentedError
     public function __construct(
         public readonly string $exceptionClass,
         public readonly int $statusCode,
-        public readonly ?string $description = null,
+        ?string $description = null,
         array|string $methods = [],
     ) {
+        $this->description = $description ?? substr($exceptionClass, (int) strrpos($exceptionClass, '\\') + 1);
         $this->methods = array_map(strtolower(...), (array) $methods);
     }
 }

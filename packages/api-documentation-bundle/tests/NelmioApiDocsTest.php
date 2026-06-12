@@ -496,10 +496,10 @@ final class NelmioApiDocsTest extends WebTestCase
      */
     private function verifyDocumentedErrors(string $path, array $content): void
     {
-        // GET: success + 404 (auto-description) + 400 (manual description), no 422
+        // GET: success + 404 (auto-description) + 403 (custom description on typed exception) + 400 (manual description), no 422
         self::assertArrayHasKey('get', $content['paths'][$path]);
         self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
-        self::assertCount(3, $content['paths'][$path]['get']['responses']);
+        self::assertCount(4, $content['paths'][$path]['get']['responses']);
 
         self::assertSame([
             200 => [
@@ -510,14 +510,15 @@ final class NelmioApiDocsTest extends WebTestCase
                     ],
                 ],
             ],
-            404 => ['description' => 'Test Not Found'],
+            404 => ['description' => 'TestNotFoundException'],
+            403 => ['description' => 'Access denied'],
             400 => ['description' => 'Bad request'],
         ], $content['paths'][$path]['get']['responses']);
 
-        // POST: success + 404 + 400 + 422 (POST-only)
+        // POST: success + 404 + 403 + 400 + 422 (POST-only)
         self::assertArrayHasKey('post', $content['paths'][$path]);
         self::assertArrayHasKey('responses', $content['paths'][$path]['post']);
-        self::assertCount(4, $content['paths'][$path]['post']['responses']);
+        self::assertCount(5, $content['paths'][$path]['post']['responses']);
 
         self::assertSame([
             200 => [
@@ -528,7 +529,8 @@ final class NelmioApiDocsTest extends WebTestCase
                     ],
                 ],
             ],
-            404 => ['description' => 'Test Not Found'],
+            404 => ['description' => 'TestNotFoundException'],
+            403 => ['description' => 'Access denied'],
             400 => ['description' => 'Bad request'],
             422 => ['description' => 'Validation failed'],
         ], $content['paths'][$path]['post']['responses']);

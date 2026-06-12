@@ -11,6 +11,7 @@ namespace Fusonic\ApiDocumentationBundle\Tests\App\Controller;
 
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
+use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestForbiddenException;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestNotFoundException;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
 use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequest;
@@ -119,6 +120,7 @@ final class TestController extends AbstractController
 
     #[DocumentedRoute(path: '/test-documented-errors/{id}', methods: ['GET', 'POST'])]
     #[DocumentedError(exceptionClass: TestNotFoundException::class, statusCode: 404)]
+    #[DocumentedError(exceptionClass: TestForbiddenException::class, statusCode: 403, description: 'Access denied')]
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 400, description: 'Bad request')]
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 422, description: 'Validation failed', methods: ['POST'])]
     public function testDocumentedErrors(#[FromRequest] TestRequest $query): TestResponse

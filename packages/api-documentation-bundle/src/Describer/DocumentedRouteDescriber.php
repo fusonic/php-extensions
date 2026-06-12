@@ -77,7 +77,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
                     if ([] === $documentedError->methods || \in_array($httpMethod, $documentedError->methods, true)) {
                         $implicitAnnotations[] = new OA\Response([
                             'response' => (string) $documentedError->statusCode,
-                            'description' => $documentedError->description ?? $this->descriptionFromExceptionClass($documentedError->exceptionClass),
+                            'description' => $documentedError->description,
                         ]);
                     }
                 }
@@ -171,16 +171,5 @@ final class DocumentedRouteDescriber implements DescriberInterface
             static fn (\ReflectionAttribute $a): DocumentedError => $a->newInstance(),
             $method->getAttributes(DocumentedError::class)
         );
-    }
-
-    /**
-     * @param class-string<\Throwable> $exceptionClass
-     */
-    private function descriptionFromExceptionClass(string $exceptionClass): string
-    {
-        $shortName = (new \ReflectionClass($exceptionClass))->getShortName();
-        $name = preg_replace('/Exception$/', '', $shortName) ?? $shortName;
-
-        return trim((string) preg_replace('/([A-Z])/', ' $1', $name));
     }
 }
