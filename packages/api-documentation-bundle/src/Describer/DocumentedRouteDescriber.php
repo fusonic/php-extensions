@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\ApiDocumentationBundle\Describer;
 
 use Fusonic\ApiDocumentationBundle\AnnotationBuilder\AnnotationBuilder;
+use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Exception\DuplicateAttributesException;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
@@ -64,12 +65,22 @@ final class DocumentedRouteDescriber implements DescriberInterface
             }
 
             $annotationBuilder = (new AnnotationBuilder($documentedRoute, $method, $this->requestObjectReflectionClass));
+            $documentedErrors = $this->getDocumentedErrors($method);
 
             foreach ($httpMethods as $httpMethod) {
                 $implicitAnnotations = array_filter([
                     $annotationBuilder->getOutputAnnotation($httpMethod),
                     $annotationBuilder->getInputAnnotation($httpMethod),
                 ]);
+
+                foreach ($documentedErrors as $documentedError) {
+                    if ([] === $documentedError->methods || \in_array($httpMethod, $documentedError->methods, true)) {
+                        $implicitAnnotations[] = new OA\Response([
+                            'response' => (string) $documentedError->statusCode,
+                            'description' => $documentedError->description ?? $this->descriptionFromExceptionClass($documentedError->exceptionClass),
+                        ]);
+                    }
+                }
 
                 $operation = Util::getOperation($pathItem, $httpMethod);
                 $operation->merge($implicitAnnotations);
@@ -149,5 +160,27 @@ final class DocumentedRouteDescriber implements DescriberInterface
         }
 
         return $attributes[0]->newInstance();
+    }
+
+    /**
+     * @return DocumentedError[]
+     */
+    private function getDocumentedErrors(\ReflectionMethod $method): array
+    {
+        return array_map(
+            static fn (\ReflectionAttribute $a): DocumentedError => $a->newInstance(),
+            $method->getAttributes(DocumentedError::class)
+        );
+    }
+
+    /**
+     * @param class-string<\Throwable> $exceptionClass
+     */
+    private function descriptionFromExceptionClass(string $exceptionClass): string
+    {
+        $shortName = (new \ReflectionClass($exceptionClass))->getShortName();
+        $name = preg_replace('/Exception$/', '', $shortName) ?? $shortName;
+
+        return trim((string) preg_replace('/([A-Z])/', ' $1', $name));
     }
 }

@@ -63,6 +63,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyGetInputWithIgnoredPropertyOnly('/test-get-input-with-ignored-property-only/{id}', $content);
         $this->verifyPostInputWithIgnoredProperty('/test-post-input-with-ignored-property/{id}', $content);
         $this->verifyPostInputWithIgnoredPropertyOnly('/test-post-input-with-ignored-property-only/{id}', $content);
+        $this->verifyDocumentedErrors('/test-documented-errors/{id}', $content);
 
         self::assertArrayHasKey('components', $content);
         self::assertSame([
@@ -488,6 +489,49 @@ final class NelmioApiDocsTest extends WebTestCase
     private function verifyPostInputWithIgnoredProperty(string $path, array $content): void
     {
         $this->verifyTestRequestObjectBody($path, $content, class: 'TestRequestWithIgnoredProperty');
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyDocumentedErrors(string $path, array $content): void
+    {
+        // GET: success + 404 (auto-description) + 400 (manual description), no 422
+        self::assertArrayHasKey('get', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(3, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'get TestResponse',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['$ref' => '#/components/schemas/TestResponse'],
+                    ],
+                ],
+            ],
+            404 => ['description' => 'Test Not Found'],
+            400 => ['description' => 'Bad request'],
+        ], $content['paths'][$path]['get']['responses']);
+
+        // POST: success + 404 + 400 + 422 (POST-only)
+        self::assertArrayHasKey('post', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['post']);
+        self::assertCount(4, $content['paths'][$path]['post']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'post TestResponse',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['$ref' => '#/components/schemas/TestResponse'],
+                    ],
+                ],
+            ],
+            404 => ['description' => 'Test Not Found'],
+            400 => ['description' => 'Bad request'],
+            422 => ['description' => 'Validation failed'],
+        ], $content['paths'][$path]['post']['responses']);
     }
 
     /**
