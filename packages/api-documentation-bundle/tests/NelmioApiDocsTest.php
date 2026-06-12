@@ -64,6 +64,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyPostInputWithIgnoredProperty('/test-post-input-with-ignored-property/{id}', $content);
         $this->verifyPostInputWithIgnoredPropertyOnly('/test-post-input-with-ignored-property-only/{id}', $content);
         $this->verifyDocumentedErrors('/test-documented-errors/{id}', $content);
+        $this->verifyContextAwareError('/test-context-aware-error/{id}', $content);
 
         self::assertArrayHasKey('components', $content);
         self::assertSame([
@@ -96,6 +97,21 @@ final class NelmioApiDocsTest extends WebTestCase
                     ],
                     'properties' => [
                         'email' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                    'type' => 'object',
+                ],
+                'TestErrorContextData' => [
+                    'required' => [
+                        'solution',
+                        'problem',
+                    ],
+                    'properties' => [
+                        'solution' => [
+                            'type' => 'string',
+                        ],
+                        'problem' => [
                             'type' => 'string',
                         ],
                     ],
@@ -534,6 +550,36 @@ final class NelmioApiDocsTest extends WebTestCase
             400 => ['description' => 'Bad request'],
             422 => ['description' => 'Validation failed'],
         ], $content['paths'][$path]['post']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyContextAwareError(string $path, array $content): void
+    {
+        self::assertArrayHasKey('get', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(3, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'get TestResponse',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['$ref' => '#/components/schemas/TestResponse'],
+                    ],
+                ],
+            ],
+            422 => [
+                'description' => 'Context error',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['$ref' => '#/components/schemas/TestErrorContextData'],
+                    ],
+                ],
+            ],
+            404 => ['description' => 'TestNotFoundException'],
+        ], $content['paths'][$path]['get']['responses']);
     }
 
     /**

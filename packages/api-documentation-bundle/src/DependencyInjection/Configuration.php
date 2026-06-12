@@ -20,7 +20,13 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                    ->scalarNode('request_object_class')
+                ->scalarNode('request_object_class')
+                ->end()
+                ->arrayNode('exception_context_class')
+                    ->children()
+                        ->scalarNode('class')->end()
+                        ->scalarNode('method')->end()
+                    ->end()
                 ->end()
             ->end()
         ;

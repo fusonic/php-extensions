@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Fusonic\ApiDocumentationBundle\Tests\App\ErrorContext\TestErrorContext;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -25,6 +26,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $containerConfigurator->extension('fusonic_api_documentation', [
         'request_object_class' => FromRequest::class,
+        'exception_context_class' => [
+            'class' => TestErrorContext::class,
+            'method' => 'getContext',
+        ],
     ]);
 
     $containerConfigurator->extension('nelmio_api_doc', [

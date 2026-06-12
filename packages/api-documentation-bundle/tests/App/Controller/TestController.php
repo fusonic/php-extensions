@@ -11,6 +11,7 @@ namespace Fusonic\ApiDocumentationBundle\Tests\App\Controller;
 
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
+use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestContextAwareException;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestForbiddenException;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestNotFoundException;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
@@ -124,6 +125,14 @@ final class TestController extends AbstractController
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 400, description: 'Bad request')]
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 422, description: 'Validation failed', methods: ['POST'])]
     public function testDocumentedErrors(#[FromRequest] TestRequest $query): TestResponse
+    {
+        return new TestResponse($query->id);
+    }
+
+    #[DocumentedRoute(path: '/test-context-aware-error/{id}', methods: ['GET'])]
+    #[DocumentedError(exceptionClass: TestContextAwareException::class, statusCode: 422, description: 'Context error')]
+    #[DocumentedError(exceptionClass: TestNotFoundException::class, statusCode: 404)]
+    public function testContextAwareError(#[FromRequest] TestRequest $query): TestResponse
     {
         return new TestResponse($query->id);
     }

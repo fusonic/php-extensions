@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Fusonic\ApiDocumentationBundle\Describer;
 
 use Fusonic\ApiDocumentationBundle\AnnotationBuilder\AnnotationBuilder;
-use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Exception\DuplicateAttributesException;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
@@ -42,6 +41,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
         private readonly ControllerReflector $controllerReflector,
         private readonly LoggerInterface $logger,
         ?string $requestObjectClass = null,
+        private readonly ?DocumentedErrorDescriber $documentedErrorDescriber = null,
     ) {
         if (null !== $requestObjectClass && (!class_exists($requestObjectClass) && !interface_exists($requestObjectClass))) {
             throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $requestObjectClass));
@@ -65,7 +65,6 @@ final class DocumentedRouteDescriber implements DescriberInterface
             }
 
             $annotationBuilder = (new AnnotationBuilder($documentedRoute, $method, $this->requestObjectReflectionClass));
-            $documentedErrors = $this->getDocumentedErrors($method);
 
             foreach ($httpMethods as $httpMethod) {
                 $implicitAnnotations = array_filter([
@@ -73,13 +72,11 @@ final class DocumentedRouteDescriber implements DescriberInterface
                     $annotationBuilder->getInputAnnotation($httpMethod),
                 ]);
 
-                foreach ($documentedErrors as $documentedError) {
-                    if ([] === $documentedError->methods || \in_array($httpMethod, $documentedError->methods, true)) {
-                        $implicitAnnotations[] = new OA\Response([
-                            'response' => (string) $documentedError->statusCode,
-                            'description' => $documentedError->description,
-                        ]);
-                    }
+                if (null !== $this->documentedErrorDescriber) {
+                    $implicitAnnotations = array_merge(
+                        $implicitAnnotations,
+                        $this->documentedErrorDescriber->buildResponseAnnotations($method, $httpMethod)
+                    );
                 }
 
                 $operation = Util::getOperation($pathItem, $httpMethod);
@@ -160,16 +157,5 @@ final class DocumentedRouteDescriber implements DescriberInterface
         }
 
         return $attributes[0]->newInstance();
-    }
-
-    /**
-     * @return DocumentedError[]
-     */
-    private function getDocumentedErrors(\ReflectionMethod $method): array
-    {
-        return array_map(
-            static fn (\ReflectionAttribute $a): DocumentedError => $a->newInstance(),
-            $method->getAttributes(DocumentedError::class)
-        );
     }
 }
