@@ -28,7 +28,7 @@ trait DomainEventHandlerTrait
      */
     private function addObject(object $entity): void
     {
-        if (!($entity instanceof AggregateRoot)) {
+        if (!$entity instanceof AggregateRoot) {
             return;
         }
 
@@ -42,6 +42,8 @@ trait DomainEventHandlerTrait
                 $this->dispatchEvent($event);
             }
         }
+
+        $this->entities = [];
     }
 
     abstract protected function dispatchEvent(DomainEventInterface $event): void;
