@@ -29,7 +29,14 @@ class DocumentedError
         ?string $description = null,
         array|string $methods = [],
     ) {
-        $this->description = $description ?? substr($exceptionClass, (int) strrpos($exceptionClass, '\\') + 1);
+        $this->description = $description ?? $this->getClassBasename($exceptionClass);
         $this->methods = array_map(strtolower(...), (array) $methods);
+    }
+
+    private function getClassBasename(string $className): string
+    {
+        $basename = strrchr($className, '\\');
+
+        return \is_string($basename) ? substr($basename, 1) : $className;
     }
 }
