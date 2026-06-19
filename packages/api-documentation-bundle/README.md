@@ -113,6 +113,28 @@ If your manually defined output is a collection, you can set `outputIsCollection
 )]
 ```
 
+#### Documenting errors
+
+Use the repeatable `#[DocumentedError]` attribute to document a route's error responses. Works on `#[DocumentedRoute]`
+and plain Symfony `#[Route]`:
+
+```php
+#[DocumentedRoute(path: '/orders/{id}', methods: ['GET'])]
+#[DocumentedError(exceptionClass: OrderNotFoundException::class, statusCode: 404)]
+public function order(#[FromRequest] OrderRequest $request): OrderResponse
+```
+
+To document the error response body too, point the bundle at an exception method returning the context:
+
+```yaml
+fusonic_api_documentation:
+    exception_context_class:
+        class: Fusonic\HttpKernelBundle\Exception\ContextAwareExceptionInterface
+        method: getContext
+```
+
+The return type of `getContext()` is then used as the response schema.
+
 ## Contributing
 
 This is a subtree split of [fusonic/php-extensions](https://github.com/fusonic/php-extensions) repository. Please create

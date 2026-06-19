@@ -29,6 +29,24 @@ Please refer to the [installation and usage documentation](docs/install_usage.md
 
 Please refer to the individual extension documentation in the [docs/extensions](docs/extensions) folder.
 
+### Context-aware exceptions
+
+Implement `ContextAwareExceptionInterface` to attach structured context to an exception, e.g. for returning it in an
+API response:
+
+```php
+class OrderNotFoundException extends \RuntimeException implements ContextAwareExceptionInterface
+{
+    public function getContext(): OrderNotFoundContext
+    {
+        return new OrderNotFoundContext(/* ... */);
+    }
+}
+```
+
+Combined with the [api-documentation-bundle](https://github.com/fusonic/php-api-documentation-bundle), the context's
+shape can be documented automatically.
+
 ## Upgrading
 
 Please refer to the individual upgrade documentation in the root folder of the repository.
