@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\ApiDocumentationBundle\DependencyInjection\Compiler;
 
 use Fusonic\ApiDocumentationBundle\Describer\DocumentedErrorDescriber;
+use Fusonic\ApiDocumentationBundle\Describer\DocumentedErrorRouteDescriber;
 use Fusonic\ApiDocumentationBundle\Describer\DocumentedRouteDescriber;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -32,6 +33,13 @@ final class ConfigurationCompilerPass implements CompilerPassInterface
                 $container->getParameter('fusonic_api_documentation.exception_context_method'),
             ]);
 
+        $container->register('fusonic_api_documentation.route_describer.documented_error', DocumentedErrorRouteDescriber::class)
+            ->setPublic(false)
+            ->setArguments([
+                new Reference('fusonic_api_documentation.describer.documented_error'),
+            ])
+            ->addTag('nelmio_api_doc.route_describer');
+
         /** @var string[] $areas */
         $areas = $container->getParameter('nelmio_api_doc.areas');
 
@@ -43,7 +51,6 @@ final class ConfigurationCompilerPass implements CompilerPassInterface
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('logger'),
                     $container->getParameter('fusonic_api_documentation.request_object_class'),
-                    new Reference('fusonic_api_documentation.describer.documented_error'),
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -199]);
         }

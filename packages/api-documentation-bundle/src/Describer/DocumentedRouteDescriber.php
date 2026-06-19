@@ -41,7 +41,6 @@ final class DocumentedRouteDescriber implements DescriberInterface
         private readonly ControllerReflector $controllerReflector,
         private readonly LoggerInterface $logger,
         ?string $requestObjectClass = null,
-        private readonly ?DocumentedErrorDescriber $documentedErrorDescriber = null,
     ) {
         if (null !== $requestObjectClass && (!class_exists($requestObjectClass) && !interface_exists($requestObjectClass))) {
             throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $requestObjectClass));
@@ -71,13 +70,6 @@ final class DocumentedRouteDescriber implements DescriberInterface
                     $annotationBuilder->getOutputAnnotation($httpMethod),
                     $annotationBuilder->getInputAnnotation($httpMethod),
                 ]);
-
-                if (null !== $this->documentedErrorDescriber) {
-                    $implicitAnnotations = array_merge(
-                        $implicitAnnotations,
-                        $this->documentedErrorDescriber->buildResponseAnnotations($method, $httpMethod)
-                    );
-                }
 
                 $operation = Util::getOperation($pathItem, $httpMethod);
                 $operation->merge($implicitAnnotations);

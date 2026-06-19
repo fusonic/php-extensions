@@ -64,6 +64,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyPostInputWithIgnoredProperty('/test-post-input-with-ignored-property/{id}', $content);
         $this->verifyPostInputWithIgnoredPropertyOnly('/test-post-input-with-ignored-property-only/{id}', $content);
         $this->verifyDocumentedErrors('/test-documented-errors/{id}', $content);
+        $this->verifyDocumentedErrorsPlainRoute('/test-documented-errors-plain-route/{id}', $content);
         $this->verifyContextAwareError('/test-context-aware-error/{id}', $content);
 
         self::assertArrayHasKey('components', $content);
@@ -548,6 +549,33 @@ final class NelmioApiDocsTest extends WebTestCase
             404 => ['description' => 'TestNotFoundException'],
             403 => ['description' => 'Access denied'],
             400 => ['description' => 'Bad request'],
+            422 => ['description' => 'Validation failed'],
+        ], $content['paths'][$path]['post']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyDocumentedErrorsPlainRoute(string $path, array $content): void
+    {
+        // GET: 404 + 403, no 422
+        self::assertArrayHasKey('get', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(2, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            404 => ['description' => 'TestNotFoundException'],
+            403 => ['description' => 'Access denied'],
+        ], $content['paths'][$path]['get']['responses']);
+
+        // POST: 404 + 403 + 422 (POST-only)
+        self::assertArrayHasKey('post', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['post']);
+        self::assertCount(3, $content['paths'][$path]['post']['responses']);
+
+        self::assertSame([
+            404 => ['description' => 'TestNotFoundException'],
+            403 => ['description' => 'Access denied'],
             422 => ['description' => 'Validation failed'],
         ], $content['paths'][$path]['post']['responses']);
     }

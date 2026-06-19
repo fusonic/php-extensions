@@ -23,6 +23,7 @@ use Fusonic\ApiDocumentationBundle\Tests\App\Response\TestResponse;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class TestController extends AbstractController
 {
@@ -125,6 +126,15 @@ final class TestController extends AbstractController
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 400, description: 'Bad request')]
     #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 422, description: 'Validation failed', methods: ['POST'])]
     public function testDocumentedErrors(#[FromRequest] TestRequest $query): TestResponse
+    {
+        return new TestResponse($query->id);
+    }
+
+    #[Route(path: '/test-documented-errors-plain-route/{id}', methods: ['GET', 'POST'])]
+    #[DocumentedError(exceptionClass: TestNotFoundException::class, statusCode: 404)]
+    #[DocumentedError(exceptionClass: TestForbiddenException::class, statusCode: 403, description: 'Access denied')]
+    #[DocumentedError(exceptionClass: \RuntimeException::class, statusCode: 422, description: 'Validation failed', methods: ['POST'])]
+    public function testDocumentedErrorsPlainRoute(#[FromRequest] TestRequest $query): TestResponse
     {
         return new TestResponse($query->id);
     }
