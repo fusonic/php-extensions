@@ -15,23 +15,28 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-final class DocumentedErrorDescriber
+final readonly class DocumentedErrorDescriber
 {
-    private ?\ReflectionMethod $exceptionContextReflectionMethod = null;
+    /**
+     * @var class-string|null
+     */
+    private ?string $exceptionContextClass;
 
     /**
      * @param class-string|null $exceptionContextClass
      */
     public function __construct(
         ?string $exceptionContextClass = null,
-        ?string $exceptionContextMethod = null,
+        private ?string $exceptionContextMethod = null,
     ) {
-        if (null !== $exceptionContextClass && null !== $exceptionContextMethod) {
-            if (!class_exists($exceptionContextClass)) {
-                throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $exceptionContextClass));
-            }
-            $this->exceptionContextReflectionMethod = new \ReflectionMethod($exceptionContextClass, $exceptionContextMethod);
+        if (null !== $exceptionContextClass
+            && !class_exists($exceptionContextClass)
+            && !interface_exists($exceptionContextClass)
+        ) {
+            throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $exceptionContextClass));
         }
+
+        $this->exceptionContextClass = $exceptionContextClass;
     }
 
     /**
@@ -51,16 +56,31 @@ final class DocumentedErrorDescriber
                 'description' => $documentedError->description,
             ];
 
-            if (null !== $this->exceptionContextReflectionMethod
-                && method_exists($documentedError->exceptionClass, 'getContext')
-            ) {
-                $responseOptions['value'] = $this->buildContextResponseContent($this->exceptionContextReflectionMethod);
+            $contextMethod = $this->resolveExceptionContextMethod($documentedError->exceptionClass);
+
+            if (null !== $contextMethod) {
+                $responseOptions['value'] = $this->buildContextResponseContent($contextMethod);
             }
 
             $responses[] = new OA\Response($responseOptions);
         }
 
         return $responses;
+    }
+
+    private function resolveExceptionContextMethod(string $exceptionClass): ?\ReflectionMethod
+    {
+        if (null === $this->exceptionContextClass || null === $this->exceptionContextMethod) {
+            return null;
+        }
+
+        if (!is_a($exceptionClass, $this->exceptionContextClass, true)
+            || !method_exists($exceptionClass, $this->exceptionContextMethod)
+        ) {
+            return null;
+        }
+
+        return new \ReflectionMethod($exceptionClass, $this->exceptionContextMethod);
     }
 
     /**

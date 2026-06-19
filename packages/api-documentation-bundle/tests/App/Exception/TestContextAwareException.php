@@ -18,7 +18,7 @@ final class TestContextAwareException extends \RuntimeException implements Conte
         parent::__construct();
     }
 
-    public function getContext(): mixed
+    public function getContext(): TestErrorContextData
     {
         return $this->context;
     }
