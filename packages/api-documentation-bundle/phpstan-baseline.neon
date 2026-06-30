@@ -100,12 +100,6 @@ parameters:
 			path: src/Describer/DocumentedErrorDescriber.php
 
 		-
-			message: '#^Expression on left side of \?\? is not nullable\.$#'
-			identifier: nullCoalesce.expr
-			count: 1
-			path: src/Describer/DocumentedErrorDescriber.php
-
-		-
 			message: '''
 				#^Call to deprecated method getTypes\(\) of class Fusonic\\ApiDocumentationBundle\\Extractor\\MethodReturnTypePhpDocExtractor\:
 				since Symfony 7\.3, use "getType" instead$#

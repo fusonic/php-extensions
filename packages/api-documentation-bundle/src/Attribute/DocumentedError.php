@@ -15,13 +15,13 @@ class DocumentedError
     public readonly string $description;
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     public readonly array $methods;
 
     /**
      * @param class-string<\Throwable> $exceptionClass
-     * @param array<string>|string     $methods
+     * @param list<string>|string      $methods
      */
     public function __construct(
         public readonly string $exceptionClass,

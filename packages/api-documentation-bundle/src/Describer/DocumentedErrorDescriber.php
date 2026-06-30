@@ -17,26 +17,19 @@ use Symfony\Component\PropertyInfo\Type;
 
 final readonly class DocumentedErrorDescriber
 {
-    /**
-     * @var class-string|null
-     */
-    private ?string $exceptionContextClass;
-
-    /**
-     * @param class-string|null $exceptionContextClass
-     */
     public function __construct(
-        ?string $exceptionContextClass = null,
+        /**
+         * @var class-string|null
+         */
+        private ?string $exceptionContextClass = null,
         private ?string $exceptionContextMethod = null,
     ) {
         if (null !== $exceptionContextClass
             && !class_exists($exceptionContextClass)
             && !interface_exists($exceptionContextClass)
         ) {
-            throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $exceptionContextClass));
+            throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $this->exceptionContextClass));
         }
-
-        $this->exceptionContextClass = $exceptionContextClass;
     }
 
     /**
@@ -127,6 +120,6 @@ final readonly class DocumentedErrorDescriber
             return new Model(type: $className);
         }
 
-        return new OA\JsonContent(['type' => $returnType->getBuiltinType() ?? 'object']);
+        return new OA\JsonContent(['type' => $returnType->getBuiltinType()]);
     }
 }
