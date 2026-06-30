@@ -17,6 +17,7 @@ use Fusonic\FrameworkBundle\Application\Messenger\Bus\QueryBusInterface;
 use Fusonic\FrameworkBundle\Infrastructure\Normalizer\CollectionResponseNormalizer;
 use Fusonic\FrameworkBundle\Infrastructure\Normalizer\UuidEntityIdNormalizer;
 use Fusonic\FrameworkBundle\Infrastructure\Resolver\UuidEntityIdValueResolver;
+use Fusonic\FrameworkBundle\Infrastructure\Validator\UuidEntityIdValidationLoader;
 use Fusonic\FrameworkBundle\Port\Http\UuidEntityIdModelDescriber;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -39,6 +40,9 @@ return static function (ContainerConfigurator $container): void {
     $services->set(UuidEntityIdValueResolver::class)
         // Priority 150 is important so that the custom resolver is called before Symfony's RequestValueResolver
         ->tag('controller.argument_value_resolver', ['priority' => 150]);
+
+    // Wired into the validator's loader chain via a compiler pass in FusonicFrameworkBundle::build().
+    $services->set(UuidEntityIdValidationLoader::class);
 
     /*
      * Configuration related to Symfony Messenger bus helpers ↓

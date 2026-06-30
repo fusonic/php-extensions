@@ -16,6 +16,7 @@ use Fusonic\FrameworkBundle\Application\Messenger\Bus\QueryBus;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\CommandHandlerInterface;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\EventHandlerInterface;
 use Fusonic\FrameworkBundle\Application\Messenger\Handler\QueryHandlerInterface;
+use Fusonic\FrameworkBundle\Infrastructure\Validator\UuidEntityIdValidationLoader;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -126,6 +127,23 @@ final class FusonicFrameworkBundle extends AbstractBundle
 
                 $definition = $container->findDefinition(DomainEventLifecycleListener::class);
                 $definition->setArgument('$bus', new Reference($eventBusServiceId));
+            }
+        });
+
+        /*
+         * Register the UuidEntityId validation loader in the validator's loader chain so that UuidEntityId properties
+         * are validated as monotonic UUID v7 without a manual #[Assert\Uuid] annotation. Guarded so the bundle keeps
+         * working in applications that don't enable the validator.
+         */
+        $container->addCompilerPass(new class implements CompilerPassInterface {
+            public function process(ContainerBuilder $container): void
+            {
+                if (!$container->hasDefinition('validator.builder')) {
+                    return;
+                }
+
+                $container->getDefinition('validator.builder')
+                    ->addMethodCall('addLoader', [new Reference(UuidEntityIdValidationLoader::class)]);
             }
         });
     }

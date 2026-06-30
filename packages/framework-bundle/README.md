@@ -18,7 +18,9 @@ projects, designed to simplify and standardize common development patterns.
 Key features include:
 - **Doctrine Entity Identifier Management**: Integration of [`symfony/uid`](https://github.com/symfony/uid) alongside
   [`fusonic/ddd-extensions`](https://github.com/fusonic/php-ddd-extensions) to allow Doctrine entities to use UUIDs in
-  the form of typed classes as primary identifiers.
+  the form of typed classes as primary identifiers. Properties typed as a `UuidEntityId` are automatically validated as
+  a monotonic UUID v7, so there is no need to annotate them with `#[Assert\Uuid(versions: Assert\Uuid::V7_MONOTONIC)]`
+  by hand (an explicit `#[Assert\Uuid]` still takes precedence).
 - **Message Bus Configurations**: Simplified handling of [`symfony/messenger`](https://github.com/symfony/messenger)
   message buses using typed classes, allowing for easier message dispatching and clean separation of commands, queries,
   and events.
