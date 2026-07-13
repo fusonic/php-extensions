@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\ApiDocumentationBundle\Exception;
+namespace Fusonic\ApiDocumentationBundle\Tests\App\Exception;
 
-final class UnsupportedTypeException extends \LogicException
+final class TestNotFoundException extends \RuntimeException
 {
 }

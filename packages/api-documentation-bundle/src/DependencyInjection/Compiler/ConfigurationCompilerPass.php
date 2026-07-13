@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Fusonic\ApiDocumentationBundle\DependencyInjection\Compiler;
 
+use Fusonic\ApiDocumentationBundle\Describer\DocumentedErrorDescriber;
+use Fusonic\ApiDocumentationBundle\Describer\DocumentedErrorRouteDescriber;
 use Fusonic\ApiDocumentationBundle\Describer\DocumentedRouteDescriber;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -23,6 +25,20 @@ final class ConfigurationCompilerPass implements CompilerPassInterface
         if (!$container->hasExtension('nelmio_api_doc')) {
             throw new LogicException(\sprintf('%s is not configured.', NelmioApiDocBundle::class));
         }
+
+        $container->register('fusonic_api_documentation.describer.documented_error', DocumentedErrorDescriber::class)
+            ->setPublic(false)
+            ->setArguments([
+                $container->getParameter('fusonic_api_documentation.exception_context_class'),
+                $container->getParameter('fusonic_api_documentation.exception_context_method'),
+            ]);
+
+        $container->register('fusonic_api_documentation.route_describer.documented_error', DocumentedErrorRouteDescriber::class)
+            ->setPublic(false)
+            ->setArguments([
+                new Reference('fusonic_api_documentation.describer.documented_error'),
+            ])
+            ->addTag('nelmio_api_doc.route_describer');
 
         /** @var string[] $areas */
         $areas = $container->getParameter('nelmio_api_doc.areas');

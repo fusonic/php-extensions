@@ -14,16 +14,19 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * @return TreeBuilder<'array'>
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('fusonic_api_documentation');
 
         $treeBuilder->getRootNode()
             ->children()
-                    ->scalarNode('request_object_class')
+                ->scalarNode('request_object_class')
+                ->end()
+                ->arrayNode('exception_context_class')
+                    ->children()
+                        ->scalarNode('class')->end()
+                        ->scalarNode('method')->end()
+                    ->end()
                 ->end()
             ->end()
         ;

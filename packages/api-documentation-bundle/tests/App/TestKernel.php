@@ -13,15 +13,15 @@ use Fusonic\ApiDocumentationBundle\FusonicApiDocumentationBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\DependencyInjection\Kernel\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class TestKernel extends Kernel
 {
     /**
-     * @return BundleInterface[]
+     * @return iterable<BundleInterface>
      */
-    public function registerBundles(): array
+    public function registerBundles(): iterable
     {
         return [
             new FrameworkBundle(),

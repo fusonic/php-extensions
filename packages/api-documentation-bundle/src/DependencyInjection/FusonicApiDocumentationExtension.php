@@ -23,5 +23,15 @@ final class FusonicApiDocumentationExtension extends Extension
             'fusonic_api_documentation.request_object_class',
             $config['request_object_class'] ?? null
         );
+
+        $exceptionContext = $config['exception_context_class'] ?? [];
+        $container->setParameter(
+            'fusonic_api_documentation.exception_context_class',
+            $exceptionContext['class'] ?? null
+        );
+        $container->setParameter(
+            'fusonic_api_documentation.exception_context_method',
+            $exceptionContext['method'] ?? null
+        );
     }
 }

@@ -7,8 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\ApiDocumentationBundle\Exception;
+namespace Fusonic\ApiDocumentationBundle\Tests\App\Exception;
 
-final class UnsupportedTypeException extends \LogicException
+interface ContextAwareExceptionInterface extends \Throwable
 {
+    public function getContext(): mixed;
 }

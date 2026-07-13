@@ -7,8 +7,11 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\ApiDocumentationBundle\Exception;
+namespace Fusonic\ApiDocumentationBundle\Tests\App\ErrorContext;
 
-final class UnsupportedTypeException extends \LogicException
+class TestErrorContextData
 {
+    public function __construct(public string $solution, public string $problem)
+    {
+    }
 }
