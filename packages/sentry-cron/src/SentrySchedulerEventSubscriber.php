@@ -78,10 +78,10 @@ class SentrySchedulerEventSubscriber implements EventSubscriberInterface
         $checkInId = $this->checkInCapturer->start($message::class, (string) $trigger, $attribute);
 
         if (null !== $checkInId) {
-            $this->checkInIds[$messageId] = $checkInId;
-
             if ($message instanceof AsyncCheckInScheduleEventInterface) {
                 $message->setCheckInId($checkInId);
+            } else {
+                $this->checkInIds[$messageId] = $checkInId;
             }
         }
     }
@@ -92,18 +92,18 @@ class SentrySchedulerEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $messageId = $event->getMessageContext()->id;
         $message = $event->getMessage();
 
         if ($message instanceof AsyncCheckInScheduleEventInterface) {
-            if (!$message->isLast()) {
-                return;
-            }
-
-            $checkInId = $message->getCheckInId();
-        } else {
-            $checkInId = $this->checkInIds[$messageId] ?? null;
+            // Completion/failure for async messages is handled exclusively by
+            // {@see SentryAsyncCheckInMessengerSubscriber}, which reacts to the underlying
+            // Messenger worker events directly. Those fire for every transport hop (not just
+            // the one Scheduler itself dispatched) and are retry-aware, unlike this event.
+            return;
         }
+
+        $messageId = $event->getMessageContext()->id;
+        $checkInId = $this->checkInIds[$messageId] ?? null;
 
         if (null !== $checkInId) {
             $this->checkInCapturer->complete($message::class, $checkInId);
@@ -118,19 +118,20 @@ class SentrySchedulerEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $messageId = $event->getMessageContext()->id;
         $message = $event->getMessage();
 
         if ($message instanceof AsyncCheckInScheduleEventInterface) {
-            $checkInId = $message->getCheckInId();
-        } else {
-            $checkInId = $this->checkInIds[$messageId] ?? null;
+            // See onPostRun(): async messages are handled exclusively by
+            // SentryAsyncCheckInMessengerSubscriber, which is retry-aware (this event is not).
+            return;
         }
+
+        $messageId = $event->getMessageContext()->id;
+        $checkInId = $this->checkInIds[$messageId] ?? null;
+        unset($this->checkInIds[$messageId]);
 
         if (null !== $checkInId) {
             $this->checkInCapturer->error($message::class, $checkInId);
-
-            unset($this->checkInIds[$messageId]);
         }
     }
 

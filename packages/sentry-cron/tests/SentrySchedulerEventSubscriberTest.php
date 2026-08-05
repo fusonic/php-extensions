@@ -78,7 +78,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
         self::assertNull($capturer->getLastCheckInId());
     }
 
-    public function testAsyncMessage(): void
+    public function testAsyncMessageOnlyStartsCheckInOnPreRun(): void
     {
         $capturer = new FakeCheckInCapturer();
         $subscriber = new SentrySchedulerEventSubscriber(true, $capturer);
@@ -96,19 +96,38 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
         self::assertSame($lastCheckInId, $message->getCheckInId());
         self::assertFalse($message->isLast());
         self::assertSame('started', $capturer->getCheckInIds()[$lastCheckInId]);
+    }
 
+    /**
+     * Completion/failure for async messages is handled exclusively by
+     * {@see SentryAsyncCheckInMessengerSubscriber} (see its test suite), which reacts to the
+     * underlying Messenger worker events. PostRunEvent/FailureEvent must not touch the check-in
+     * at all for async messages, even once marked as last or failed.
+     */
+    public function testAsyncMessageIsIgnoredByPostRunAndFailure(): void
+    {
+        $capturer = new FakeCheckInCapturer();
+        $subscriber = new SentrySchedulerEventSubscriber(true, $capturer);
+
+        $message = new class implements AsyncCheckInScheduleEventInterface {
+            use AsyncCheckInScheduleEventTrait;
+        };
+
+        $context = $this->createContext();
+
+        $subscriber->onPreRun($this->mockPreRunEvent($message, $context));
+        $lastCheckInId = $capturer->getLastCheckInId();
+
+        $message->markAsLast();
         $subscriber->onPostRun($this->mockPostRunEvent($message, $context));
 
         self::assertSame('started', $capturer->getCheckInIds()[$lastCheckInId]);
-        self::assertFalse($message->isLast());
+        self::assertFalse($message->hasFailed());
 
-        $message->markAsLast();
+        $subscriber->onFailure($this->mockFailureEvent($message, $context));
 
-        self::assertTrue($message->isLast());
-
-        $subscriber->onPostRun($this->mockPostRunEvent($message, $context));
-
-        self::assertSame('completed', $capturer->getCheckInIds()[$lastCheckInId]);
+        self::assertSame('started', $capturer->getCheckInIds()[$lastCheckInId]);
+        self::assertFalse($message->hasFailed());
     }
 
     public function testMessageWithTimezone(): void

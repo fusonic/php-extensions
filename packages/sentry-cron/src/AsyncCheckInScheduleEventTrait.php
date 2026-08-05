@@ -13,6 +13,7 @@ trait AsyncCheckInScheduleEventTrait
 {
     private bool $isLast = false;
     private ?string $checkInId = null;
+    private bool $hasFailed = false;
 
     public function isLast(): bool
     {
@@ -32,5 +33,15 @@ trait AsyncCheckInScheduleEventTrait
     public function setCheckInId(?string $checkInId): void
     {
         $this->checkInId = $checkInId;
+    }
+
+    public function hasFailed(): bool
+    {
+        return $this->hasFailed;
+    }
+
+    public function markAsFailed(): void
+    {
+        $this->hasFailed = true;
     }
 }

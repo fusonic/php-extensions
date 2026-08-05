@@ -30,32 +30,45 @@ class SentryCheckInCapturer implements CheckInCapturerInterface
             maxRuntime: $attribute->maxRuntime,
             timezone: $attribute->timeZone?->getName(),
             failureIssueThreshold: $attribute->failureIssueThreshold,
-            recoveryThreshold: $attribute->maxRuntime,
+            recoveryThreshold: $attribute->recoveryThreshold,
         );
 
-        return captureCheckIn(
-            slug: $this->getMessageSlug($messageClass),
-            status: CheckInStatus::inProgress(),
-            monitorConfig: $monitorConfig,
-        );
+        try {
+            return captureCheckIn(
+                slug: $this->getMessageSlug($messageClass),
+                status: CheckInStatus::inProgress(),
+                monitorConfig: $monitorConfig,
+            );
+        } catch (\Throwable) {
+            // Reporting a check-in must never prevent the scheduled job itself from running.
+            return null;
+        }
     }
 
     public function complete(string $messageClass, string $checkInId): void
     {
-        captureCheckIn(
-            slug: $this->getMessageSlug($messageClass),
-            status: CheckInStatus::ok(),
-            checkInId: $checkInId,
-        );
+        try {
+            captureCheckIn(
+                slug: $this->getMessageSlug($messageClass),
+                status: CheckInStatus::ok(),
+                checkInId: $checkInId,
+            );
+        } catch (\Throwable) {
+            // Reporting a check-in must never prevent the scheduled job itself from running.
+        }
     }
 
     public function error(string $messageClass, string $checkInId): void
     {
-        captureCheckIn(
-            slug: $this->getMessageSlug($messageClass),
-            status: CheckInStatus::error(),
-            checkInId: $checkInId
-        );
+        try {
+            captureCheckIn(
+                slug: $this->getMessageSlug($messageClass),
+                status: CheckInStatus::error(),
+                checkInId: $checkInId
+            );
+        } catch (\Throwable) {
+            // Reporting a check-in must never prevent the scheduled job itself from running.
+        }
     }
 
     /**

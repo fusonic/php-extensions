@@ -29,6 +29,15 @@ Fusonic\SentryCron\SentrySchedulerEventSubscriber:
         $enabled: true
 ```
 
+If you use [async events](#async-events), also register the messenger subscriber (see that
+section for why it's needed in addition to the one above):
+
+```yaml
+Fusonic\SentryCron\SentryAsyncCheckInMessengerSubscriber:
+    arguments:
+        $enabled: true
+```
+
 ## Usage
 Any regular event that is triggered with a cron expression can be used.
 
@@ -49,7 +58,8 @@ class SomeEvent {
 
 ### Async Events
 
-If you have an unpredictable longer-running scheduled task, you can manually check in by implementing `AsyncCheckInScheduleEventInterface`.
+If you have an unpredictable longer-running scheduled task that batches its work and
+re-dispatches itself to continue, implement `AsyncCheckInScheduleEventInterface`.
 
 The scheduled event:
 
@@ -66,7 +76,7 @@ class SomeEvent implements AsyncCheckInScheduleEventInterface {
 }
 ```
 
-The manual check in:
+The handler, threading the check-in ID onto each follow-up batch and marking the last one:
 
 ```php
 
@@ -80,6 +90,7 @@ class SomeEventHandler {
         $entitiesToProcess = // ...
         
         $nextEvent = new SomeEvent(offset: $offset + self::BATCH_SIZE);
+        $nextEvent->setCheckInId($event->getCheckInId());
         
         if (count($entitiesToProcess) === 0) {
             $nextEvent->markAsLast();
@@ -90,4 +101,21 @@ class SomeEventHandler {
 
 }
 ```
+
+**Why this needs a second subscriber.** Symfony Scheduler's own
+`PreRunEvent`/`PostRunEvent`/`FailureEvent` only fire for the message Scheduler itself
+dispatched — once your handler re-dispatches a follow-up message onto a Messenger transport,
+Scheduler never sees it again. `SentrySchedulerEventSubscriber` therefore only *starts* the
+check-in for async events (on `PreRunEvent`); completing or failing it is handled entirely by
+`SentryAsyncCheckInMessengerSubscriber`, which listens to Messenger's own
+`WorkerMessageHandledEvent`/`WorkerMessageFailedEvent` instead — these fire for every batch,
+on every transport hop, and are retry-aware (a failure Messenger will retry is not reported as
+an error).
+
+Those Worker events are only dispatched for messages actually consumed by a real (queued)
+transport. If an async event is ever routed to `sync://`, or to a bus with no matching
+transport at all, it's handled in-process without ever going through a Worker, so neither
+subscriber can complete or fail its check-in — it will hang at `in_progress` until Sentry's
+`maxRuntime` times it out and flags it as missed. Make sure every message implementing
+`AsyncCheckInScheduleEventInterface` is routed to a transport with a real consumer.
 
