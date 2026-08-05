@@ -20,9 +20,11 @@ trait AsyncCheckInScheduleEventTrait
         return $this->isLast;
     }
 
-    public function markAsLast(): void
+    public function markAsLast(): static
     {
         $this->isLast = true;
+
+        return $this;
     }
 
     public function getCheckInId(): ?string
@@ -30,9 +32,11 @@ trait AsyncCheckInScheduleEventTrait
         return $this->checkInId;
     }
 
-    public function setCheckInId(?string $checkInId): void
+    public function setCheckInId(?string $checkInId): static
     {
         $this->checkInId = $checkInId;
+
+        return $this;
     }
 
     public function hasFailed(): bool
@@ -40,8 +44,10 @@ trait AsyncCheckInScheduleEventTrait
         return $this->hasFailed;
     }
 
-    public function markAsFailed(): void
+    public function markAsFailed(): static
     {
         $this->hasFailed = true;
+
+        return $this;
     }
 }

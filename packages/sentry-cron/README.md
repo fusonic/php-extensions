@@ -89,13 +89,12 @@ class SomeEventHandler {
         // e.g.: some slow database processing
         $entitiesToProcess = // ...
         
-        $nextEvent = new SomeEvent(offset: $offset + self::BATCH_SIZE);
-        $nextEvent->setCheckInId($event->getCheckInId());
-        
+        $nextEvent = (new SomeEvent(offset: $offset + self::BATCH_SIZE))->setCheckInId($event->getCheckInId());
+
         if (count($entitiesToProcess) === 0) {
             $nextEvent->markAsLast();
         }
-        
+
         $this->eventBus->dispatch($nextEvent);
     }
 

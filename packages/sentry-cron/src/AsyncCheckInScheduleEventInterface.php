@@ -19,7 +19,7 @@ interface AsyncCheckInScheduleEventInterface
     /**
      * Mark an async event check-in as the last one.
      */
-    public function markAsLast(): void;
+    public function markAsLast(): static;
 
     /**
      * @internal Used by {@see SentrySchedulerEventSubscriber} and {@see SentryAsyncCheckInMessengerSubscriber}
@@ -29,7 +29,7 @@ interface AsyncCheckInScheduleEventInterface
     /**
      * @internal Used by {@see SentrySchedulerEventSubscriber} and {@see SentryAsyncCheckInMessengerSubscriber}
      */
-    public function setCheckInId(?string $checkId): void;
+    public function setCheckInId(?string $checkId): static;
 
     /**
      * Check if a step of this async check-in has already reported a failure.
@@ -40,5 +40,5 @@ interface AsyncCheckInScheduleEventInterface
      * Mark this async check-in as having failed, so a later successful step
      * cannot overwrite the failure with a completed status.
      */
-    public function markAsFailed(): void;
+    public function markAsFailed(): static;
 }
