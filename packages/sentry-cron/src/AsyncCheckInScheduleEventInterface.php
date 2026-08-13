@@ -21,14 +21,8 @@ interface AsyncCheckInScheduleEventInterface
      */
     public function markAsLast(): static;
 
-    /**
-     * @internal Used by {@see SentrySchedulerEventSubscriber} and {@see SentryAsyncCheckInMessengerSubscriber}
-     */
     public function getCheckInId(): ?string;
 
-    /**
-     * @internal Used by {@see SentrySchedulerEventSubscriber} and {@see SentryAsyncCheckInMessengerSubscriber}
-     */
     public function setCheckInId(?string $checkId): static;
 
     /**
