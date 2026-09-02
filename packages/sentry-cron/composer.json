@@ -1,7 +1,7 @@
 {
     "name": "fusonic/sentry-cron",
     "license": "MIT",
-    "version": "0.0.3",
+    "version": "1.0.0",
     "description": "Automatic Sentry Cron check-ins with Symfony Scheduler",
     "type": "library",
     "authors": [
@@ -24,6 +24,7 @@
         "php": ">=8.2",
         "dragonmantank/cron-expression": "^3.4",
         "sentry/sentry": "^4.14",
+        "symfony/event-dispatcher": "^6.4 || ^7.3 || ^8.0",
         "symfony/messenger": "^6.4 || ^7.3 || ^8.0",
         "symfony/scheduler": "^6.4 || ^7.3 || ^8.0",
         "symfony/string": "^6.4 || ^7.3 || ^8.0"
