@@ -15,11 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class DocumentedRoute extends Route
 {
     /**
-     * @param class-string|string|null $input
-     * @param class-string|string|null $output
-     * @param string[]                 $requirements
-     * @param string[]|string          $methods
-     * @param string[]|string          $schemes
+     * @param string|array<string, string>|null $path
+     * @param string[]                          $requirements
+     * @param array<string, mixed>              $options
+     * @param array<string, mixed>              $defaults
+     * @param string[]|string                   $methods
+     * @param string[]|string                   $schemes
+     * @param class-string|string|null          $input
+     * @param class-string|string|null          $output
      */
     public function __construct(
         array|string|null $path = null,
@@ -72,17 +75,11 @@ class DocumentedRoute extends Route
         return $this->description;
     }
 
-    /**
-     * @return class-string|string|null
-     */
     public function getInput(): ?string
     {
         return $this->input;
     }
 
-    /**
-     * @return class-string|string|null
-     */
     public function getOutput(): ?string
     {
         return $this->output;

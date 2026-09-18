@@ -44,7 +44,9 @@ final class DocumentedRouteDescriber implements DescriberInterface
     ) {
         if (null !== $requestObjectClass && (!class_exists($requestObjectClass) && !interface_exists($requestObjectClass))) {
             throw new \InvalidArgumentException(\sprintf('Class %s does not exist.', $requestObjectClass));
-        } elseif (null !== $requestObjectClass) {
+        }
+
+        if (null !== $requestObjectClass) {
             $this->requestObjectReflectionClass = new \ReflectionClass($requestObjectClass);
         }
     }

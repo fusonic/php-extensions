@@ -13,7 +13,6 @@ parameters:
         declare: 100
 
 includes:
-    - phpstan-baseline.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
