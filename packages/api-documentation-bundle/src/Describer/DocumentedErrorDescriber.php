@@ -114,7 +114,7 @@ final readonly class DocumentedErrorDescriber
 
         $typeName = $extractor->getTypeName($returnType);
 
-        if (null === $typeName) {
+        if (null === $typeName || $extractor->isNonDocumentableTypeName($typeName)) {
             return new OA\JsonContent(['type' => 'object']);
         }
 

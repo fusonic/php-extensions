@@ -148,9 +148,13 @@ final class AnnotationBuilder
             return;
         }
 
-        if (\in_array($output, [TypeIdentifier::VOID->value, TypeIdentifier::NULL->value, TypeIdentifier::NEVER->value], true)) {
+        if (TypeIdentifier::VOID->value === $output) {
             $this->outputIsVoid = true;
 
+            return;
+        }
+
+        if ($this->propertyExtractor->isNonDocumentableTypeName($output)) {
             return;
         }
 

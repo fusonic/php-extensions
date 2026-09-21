@@ -143,6 +143,20 @@ final readonly class PropertyExtractor
         return null !== TypeIdentifier::tryFrom($name);
     }
 
+    public function isNonDocumentableTypeName(string $name): bool
+    {
+        return \in_array(
+            needle: $name,
+            haystack: [
+                TypeIdentifier::VOID->value,
+                TypeIdentifier::NULL->value,
+                TypeIdentifier::NEVER->value,
+                TypeIdentifier::MIXED->value,
+            ],
+            strict: true
+        );
+    }
+
     private function unwrapNullable(Type $type): Type
     {
         return $type instanceof NullableType ? $type->getWrappedType() : $type;
