@@ -14,7 +14,7 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 final class AnnotationBuilder
 {
@@ -41,7 +41,7 @@ final class AnnotationBuilder
         $this->outputIsCollection = $this->route->getOutputIsCollection() ?? false;
         $this->configureOutputType($this->route->getOutput());
 
-        $this->outputIsBuiltinType = \in_array($this->output, Type::$builtinTypes, true);
+        $this->outputIsBuiltinType = null !== $this->output && $this->propertyExtractor->isBuiltinTypeName($this->output);
 
         if (!$this->outputIsBuiltinType && null !== $this->output) {
             $this->outputModel = new Model(type: $this->output);
@@ -123,7 +123,11 @@ final class AnnotationBuilder
         $collectionType = $this->propertyExtractor->extractCollectionReturnType($returnType);
 
         if (null !== $collectionType) {
-            $output = $collectionType->getClassName() ?? $collectionType->getBuiltinType();
+            $output = $this->propertyExtractor->getTypeName($collectionType);
+
+            if (null === $output) {
+                return;
+            }
 
             // Ignore Symfony Response objects since they cannot be
             // rendered in the docs. If a controller returns a Response,
@@ -138,11 +142,19 @@ final class AnnotationBuilder
             return;
         }
 
-        $output = $returnType->getClassName() ?? $returnType->getBuiltinType();
+        $output = $this->propertyExtractor->getTypeName($returnType);
 
-        if ('null' === $output) {
+        if (null === $output) {
+            return;
+        }
+
+        if (TypeIdentifier::VOID->value === $output) {
             $this->outputIsVoid = true;
 
+            return;
+        }
+
+        if ($this->propertyExtractor->isNonDocumentableTypeName($output)) {
             return;
         }
 

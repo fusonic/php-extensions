@@ -13,6 +13,7 @@ use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedRoute;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestContextAwareException;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestForbiddenException;
+use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestMixedContextAwareException;
 use Fusonic\ApiDocumentationBundle\Tests\App\Exception\TestNotFoundException;
 use Fusonic\ApiDocumentationBundle\Tests\App\FromRequest;
 use Fusonic\ApiDocumentationBundle\Tests\App\Request\TestRequest;
@@ -100,6 +101,18 @@ final class TestController extends AbstractController
     {
     }
 
+    #[DocumentedRoute(path: '/test-mixed-return-type', methods: ['GET'])]
+    public function testMixedReturnType(): mixed
+    {
+        return null;
+    }
+
+    #[DocumentedRoute(path: '/test-never-return-type', methods: ['GET'])]
+    public function testNeverReturnType(): never
+    {
+        throw new \RuntimeException();
+    }
+
     #[DocumentedRoute(path: '/test-get-input-with-ignored-property/{id}', methods: ['GET'])]
     public function testGetInputWithIgnoredProperty(#[FromRequest] TestRequestWithIgnoredProperty $query): void
     {
@@ -143,6 +156,13 @@ final class TestController extends AbstractController
     #[DocumentedError(exceptionClass: TestContextAwareException::class, statusCode: 422, description: 'Context error')]
     #[DocumentedError(exceptionClass: TestNotFoundException::class, statusCode: 404)]
     public function testContextAwareError(#[FromRequest] TestRequest $query): TestResponse
+    {
+        return new TestResponse($query->id);
+    }
+
+    #[DocumentedRoute(path: '/test-mixed-context-aware-error/{id}', methods: ['GET'])]
+    #[DocumentedError(exceptionClass: TestMixedContextAwareException::class, statusCode: 422, description: 'Context error')]
+    public function testMixedContextAwareError(#[FromRequest] TestRequest $query): TestResponse
     {
         return new TestResponse($query->id);
     }

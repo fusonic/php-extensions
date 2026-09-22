@@ -13,7 +13,6 @@ use Fusonic\ApiDocumentationBundle\AnnotationBuilder\PropertyExtractor;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 final readonly class DocumentedErrorDescriber
 {
@@ -99,27 +98,30 @@ final readonly class DocumentedErrorDescriber
         $collectionType = $extractor->extractCollectionReturnType($returnType);
 
         if (null !== $collectionType) {
-            $itemType = $collectionType->getClassName() ?? $collectionType->getBuiltinType();
+            $itemType = $extractor->getTypeName($collectionType);
 
-            if (null !== $collectionType->getClassName()) {
-                return new OA\JsonContent([
-                    'type' => 'array',
-                    'items' => new OA\Items(['ref' => new Model(type: $collectionType->getClassName())]),
-                ]);
+            if (null === $itemType) {
+                return new OA\JsonContent(['type' => 'object']);
             }
 
             return new OA\JsonContent([
                 'type' => 'array',
-                'items' => new OA\Items(['type' => $itemType]),
+                'items' => $extractor->isBuiltinTypeName($itemType)
+                    ? new OA\Items(['type' => $itemType])
+                    : new OA\Items(['ref' => new Model(type: $itemType)]),
             ]);
         }
 
-        $className = $returnType->getClassName();
+        $typeName = $extractor->getTypeName($returnType);
 
-        if (null !== $className && !\in_array($className, Type::$builtinTypes, true)) {
-            return new Model(type: $className);
+        if (null === $typeName || $extractor->isNonDocumentableTypeName($typeName)) {
+            return new OA\JsonContent(['type' => 'object']);
         }
 
-        return new OA\JsonContent(['type' => $returnType->getBuiltinType()]);
+        if (!$extractor->isBuiltinTypeName($typeName)) {
+            return new Model(type: $typeName);
+        }
+
+        return new OA\JsonContent(['type' => $typeName]);
     }
 }

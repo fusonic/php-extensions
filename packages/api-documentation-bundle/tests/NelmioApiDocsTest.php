@@ -59,6 +59,8 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyManualCollectionOutputRoute('/test-manual-collection-output/{id}', $content);
         $this->verifyIgnoredReturnType('/test-ignored-return-type', $content);
         $this->verifyVoidReturnType('/test-void-return-type', $content);
+        $this->verifyMixedReturnType('/test-mixed-return-type', $content);
+        $this->verifyNeverReturnType('/test-never-return-type', $content);
         $this->verifyGetInputWithIgnoredProperty('/test-get-input-with-ignored-property/{id}', $content);
         $this->verifyGetInputWithIgnoredPropertyOnly('/test-get-input-with-ignored-property-only/{id}', $content);
         $this->verifyPostInputWithIgnoredProperty('/test-post-input-with-ignored-property/{id}', $content);
@@ -66,6 +68,7 @@ final class NelmioApiDocsTest extends WebTestCase
         $this->verifyDocumentedErrors('/test-documented-errors/{id}', $content);
         $this->verifyDocumentedErrorsPlainRoute('/test-documented-errors-plain-route/{id}', $content);
         $this->verifyContextAwareError('/test-context-aware-error/{id}', $content);
+        $this->verifyMixedContextAwareError('/test-mixed-context-aware-error/{id}', $content);
 
         self::assertArrayHasKey('components', $content);
         self::assertSame([
@@ -189,6 +192,36 @@ final class NelmioApiDocsTest extends WebTestCase
         self::assertSame([
             204 => [
                 'description' => 'No Content',
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyMixedReturnType(string $path, array $content): void
+    {
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'OK',
+            ],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyNeverReturnType(string $path, array $content): void
+    {
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(1, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'OK',
             ],
         ], $content['paths'][$path]['get']['responses']);
     }
@@ -607,6 +640,35 @@ final class NelmioApiDocsTest extends WebTestCase
                 ],
             ],
             404 => ['description' => 'TestNotFoundException'],
+        ], $content['paths'][$path]['get']['responses']);
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function verifyMixedContextAwareError(string $path, array $content): void
+    {
+        self::assertArrayHasKey('get', $content['paths'][$path]);
+        self::assertArrayHasKey('responses', $content['paths'][$path]['get']);
+        self::assertCount(2, $content['paths'][$path]['get']['responses']);
+
+        self::assertSame([
+            200 => [
+                'description' => 'get TestResponse',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['$ref' => '#/components/schemas/TestResponse'],
+                    ],
+                ],
+            ],
+            422 => [
+                'description' => 'Context error',
+                'content' => [
+                    'application/json' => [
+                        'schema' => ['type' => 'object'],
+                    ],
+                ],
+            ],
         ], $content['paths'][$path]['get']['responses']);
     }
 

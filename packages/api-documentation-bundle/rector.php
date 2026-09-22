@@ -11,7 +11,6 @@ use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveEmptyClassMethodRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
-use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -35,9 +34,6 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
-        ControllerMethodInjectionToConstructorRector::class => [
-            __DIR__.'/tests/App/Controller/TestTaggedController.php',
-        ],
         FlipTypeControlToUseExclusiveTypeRector::class,
         PreferPHPUnitThisCallRector::class,
         RemoveEmptyClassMethodRector::class => [
