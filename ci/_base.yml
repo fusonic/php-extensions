@@ -1,6 +1,6 @@
 .php:base:
     stage: test
-    image: php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
+    image: ${CI_REGISTRY_IMAGE}/php:${PHP_VERSION}-${PHP_DOCKER_RELEASE}
     interruptible: true
     variables:
         APP_ENV: prod
@@ -8,21 +8,12 @@
         DEPENDENCIES: highest
         XDEBUG_MODE: 'off'
         XDEBUG_CONFIG: "log_level=0"
-        INSTALL_PHP_EXTENSIONS: ''
         COMPOSER_CACHE_DIR: ${CI_PROJECT_DIR}/.composer-cache
     cache:
         key: composer-${PACKAGE}-${PHP_VERSION}-${DEPENDENCIES}
         paths:
             - .composer-cache/
     before_script:
-        - |
-            curl -sSLf \
-              -o /usr/local/bin/install-php-extensions \
-              https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
-              chmod +x /usr/local/bin/install-php-extensions
-        - install-php-extensions @composer-2 xdebug zip
-        - |
-            [ -n "${INSTALL_PHP_EXTENSIONS}" ] && install-php-extensions ${INSTALL_PHP_EXTENSIONS}
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
         - |
@@ -31,7 +22,10 @@
             else
               composer install --no-progress --no-interaction
             fi
-    needs: []
+    needs:
+        # Wait for the CI image if it gets (re)built in this pipeline
+        - job: build:php:image
+          optional: true
     rules:
         - changes:
               - packages/${PACKAGE}/**/*

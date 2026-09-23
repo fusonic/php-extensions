@@ -3,7 +3,6 @@
         PACKAGE: csv-reader
         PHP_LOWEST_VERSION: '8.2'
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git
-        INSTALL_PHP_EXTENSIONS: intl
 
 test:csv-reader:phpcs:
     extends: [ .test:phpcs, .package:csv-reader ]

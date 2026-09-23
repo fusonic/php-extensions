@@ -3,6 +3,7 @@ include:
     - local: 'ci/packages/*.yml'
 
 stages:
+    - build
     - test
     - publish
 

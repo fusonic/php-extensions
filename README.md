@@ -32,6 +32,11 @@ package's `composer.json`). PHP-CS-Fixer, PHPStan, Rector, Infection and PHPUnit
 PHPUnit additionally runs with the lowest dependencies and on the latest PHP version (`PHP_LATEST_VERSION` in
 `.gitlab-ci.yml`). Test jobs only run if the package or the CI definitions have changed.
 
+The jobs use a prebuilt CI image (`ci` target of `docker/php-cli/Dockerfile`) from the project's container registry,
+built by `build:php:image` for every PHP version listed in `ci/_build.yml`. The image is rebuilt by scheduled pipelines
+and can be built manually in merge requests that change the Dockerfile or the CI definition. When raising a package's
+`PHP_LOWEST_VERSION` or the `PHP_LATEST_VERSION`, make sure the version is listed in `ci/_build.yml`.
+
 ## Publishing
 
 Each package must have a public Git repository to which the source will be published.
