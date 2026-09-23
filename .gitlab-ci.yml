@@ -1,23 +1,15 @@
 include:
-    - local: 'ci/_includes.yml'
-    - local: 'ci/packages/api-documentation-bundle.yml'
-    - local: 'ci/packages/assert.yml'
-    - local: 'ci/packages/csv-reader.yml'
-    - local: 'ci/packages/ddd-extensions.yml'
-    - local: 'ci/packages/framework-bundle.yml'
-    - local: 'ci/packages/http-kernel-bundle.yml'
-    - local: 'ci/packages/messenger-mailer-bundle.yml'
-    - local: 'ci/packages/sentry-cron.yml'
+    - local: 'ci/_*.yml'
+    - local: 'ci/packages/*.yml'
 
 stages:
-    - install
     - test
     - publish
 
 variables:
     DOCKER_IMAGE: docker:29.8
     DOCKER_DIND_IMAGE: docker:29.8-dind-rootless
-    PHP_VERSION: '8.5'
+    PHP_LATEST_VERSION: '8.5'
     PHP_DOCKER_RELEASE: 'trixie'
 
 workflow:

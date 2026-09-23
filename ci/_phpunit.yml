@@ -1,0 +1,32 @@
+# Runs on the lowest supported PHP version with the highest dependencies and generates the coverage report
+.test:phpunit:
+    extends: .php:base
+    variables:
+        XDEBUG_MODE: coverage
+    script:
+        - composer test:coverage
+    environment:
+        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/phpunit
+        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/${CI_JOB_ID}/artifacts/file/packages/${PACKAGE}/coverage/phpunit/html/index.html
+        auto_stop_in: 1 week
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage/phpunit
+        expire_in: 1 week
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: packages/${PACKAGE}/coverage/phpunit/cobertura.xml
+    coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
+
+# Covers the remaining PHP version/dependency combinations without coverage
+.test:phpunit-matrix:
+    extends: .php:base
+    script:
+        - composer test
+    parallel:
+        matrix:
+            - PHP_VERSION: ${PHP_LOWEST_VERSION}
+              DEPENDENCIES: lowest
+            - PHP_VERSION: ${PHP_LATEST_VERSION}
+              DEPENDENCIES: highest

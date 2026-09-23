@@ -1,0 +1,4 @@
+.test:phpstan:
+    extends: .php:base
+    script:
+        - composer phpstan

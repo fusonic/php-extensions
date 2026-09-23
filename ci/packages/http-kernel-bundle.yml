@@ -1,44 +1,34 @@
-phpunit:http-kernel-bundle:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:http-kernel-bundle:
     variables:
         PACKAGE: http-kernel-bundle
+        PHP_LOWEST_VERSION: '8.2'
+        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
 
-infection:http-kernel-bundle:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: http-kernel-bundle
+test:http-kernel-bundle:phpcs:
+    extends: [ .test:phpcs, .package:http-kernel-bundle ]
 
-phpunit:http-kernel-bundle:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: http-kernel-bundle
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+test:http-kernel-bundle:phpstan:
+    extends: [ .test:phpstan, .package:http-kernel-bundle ]
 
-http-kernel-bundle:publish-branch:
-    extends: .publish-branch
+test:http-kernel-bundle:rector:
+    extends: [ .test:rector, .package:http-kernel-bundle ]
+
+test:http-kernel-bundle:phpunit:
+    extends: [ .test:phpunit, .package:http-kernel-bundle ]
+
+test:http-kernel-bundle:phpunit-matrix:
+    extends: [ .test:phpunit-matrix, .package:http-kernel-bundle ]
+
+test:http-kernel-bundle:infection:
+    extends: [ .test:infection, .package:http-kernel-bundle ]
+
+publish:http-kernel-bundle:branch:
+    extends: [ .publish:branch, .package:http-kernel-bundle ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: http-kernel-bundle:delete-branch
-    variables:
-        PACKAGE: http-kernel-bundle
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
+        on_stop: publish:http-kernel-bundle:delete-branch
 
-http-kernel-bundle:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: http-kernel-bundle
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
+publish:http-kernel-bundle:tag:
+    extends: [ .publish:tag, .package:http-kernel-bundle ]
 
-http-kernel-bundle:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: http-kernel-bundle
-        REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
+publish:http-kernel-bundle:delete-branch:
+    extends: [ .publish:delete-branch, .package:http-kernel-bundle ]

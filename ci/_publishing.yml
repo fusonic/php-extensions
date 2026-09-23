@@ -1,0 +1,49 @@
+.publish:tag:
+    image: ruby:2
+    stage: publish
+    needs: []
+    script:
+        - ./bin/publish-package.sh tag
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: manual
+        - when: never
+
+.publish:branch:
+    image: ruby:2
+    stage: publish
+    script:
+        - ./bin/publish-package.sh branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        url: https://github.com/fusonic/php-${PACKAGE}/tree/${CI_COMMIT_REF_NAME}
+        auto_stop_in: 1 month
+    allow_failure: true # allow to avoid blocking the pipeline
+    needs: []
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          changes:
+              - packages/${PACKAGE}/**/*
+          when: always
+        - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+          changes:
+              - packages/${PACKAGE}/**/*
+          when: manual
+
+.publish:delete-branch:
+    image: ruby:2
+    stage: publish
+    script:
+        - ./bin/publish-package.sh delete-branch
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        action: stop
+    allow_failure: true # allow to avoid blocking the pipeline
+    needs: []
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: never
+        - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+          changes:
+              - packages/${PACKAGE}/**/*
+          when: manual

@@ -1,44 +1,34 @@
-phpunit:api-documentation-bundle:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:api-documentation-bundle:
     variables:
         PACKAGE: api-documentation-bundle
+        PHP_LOWEST_VERSION: '8.2'
+        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
 
-infection:api-documentation-bundle:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: api-documentation-bundle
+test:api-documentation-bundle:phpcs:
+    extends: [ .test:phpcs, .package:api-documentation-bundle ]
 
-phpunit:api-documentation-bundle:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: api-documentation-bundle
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+test:api-documentation-bundle:phpstan:
+    extends: [ .test:phpstan, .package:api-documentation-bundle ]
 
-api-documentation-bundle:publish-branch:
-    extends: .publish-branch
+test:api-documentation-bundle:rector:
+    extends: [ .test:rector, .package:api-documentation-bundle ]
+
+test:api-documentation-bundle:phpunit:
+    extends: [ .test:phpunit, .package:api-documentation-bundle ]
+
+test:api-documentation-bundle:phpunit-matrix:
+    extends: [ .test:phpunit-matrix, .package:api-documentation-bundle ]
+
+test:api-documentation-bundle:infection:
+    extends: [ .test:infection, .package:api-documentation-bundle ]
+
+publish:api-documentation-bundle:branch:
+    extends: [ .publish:branch, .package:api-documentation-bundle ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: api-documentation-bundle:delete-branch
-    variables:
-        PACKAGE: api-documentation-bundle
-        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
+        on_stop: publish:api-documentation-bundle:delete-branch
 
-api-documentation-bundle:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: api-documentation-bundle
-        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
+publish:api-documentation-bundle:tag:
+    extends: [ .publish:tag, .package:api-documentation-bundle ]
 
-api-documentation-bundle:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: api-documentation-bundle
-        REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
+publish:api-documentation-bundle:delete-branch:
+    extends: [ .publish:delete-branch, .package:api-documentation-bundle ]

@@ -1,44 +1,34 @@
-phpunit:assert:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:assert:
     variables:
         PACKAGE: assert
+        PHP_LOWEST_VERSION: '8.2'
+        REPOSITORY: git@github.com:fusonic/php-assert.git
 
-infection:assert:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: assert
+test:assert:phpcs:
+    extends: [ .test:phpcs, .package:assert ]
 
-phpunit:assert:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: assert
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+test:assert:phpstan:
+    extends: [ .test:phpstan, .package:assert ]
 
-assert:publish-branch:
-    extends: .publish-branch
+test:assert:rector:
+    extends: [ .test:rector, .package:assert ]
+
+test:assert:phpunit:
+    extends: [ .test:phpunit, .package:assert ]
+
+test:assert:phpunit-matrix:
+    extends: [ .test:phpunit-matrix, .package:assert ]
+
+test:assert:infection:
+    extends: [ .test:infection, .package:assert ]
+
+publish:assert:branch:
+    extends: [ .publish:branch, .package:assert ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: assert:delete-branch
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+        on_stop: publish:assert:delete-branch
 
-assert:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+publish:assert:tag:
+    extends: [ .publish:tag, .package:assert ]
 
-assert:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+publish:assert:delete-branch:
+    extends: [ .publish:delete-branch, .package:assert ]
