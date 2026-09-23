@@ -16,8 +16,11 @@ test:api-documentation-bundle:rector:
 test:api-documentation-bundle:phpunit:
     extends: [ .test:phpunit, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:api-documentation-bundle ]
+test:api-documentation-bundle:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:api-documentation-bundle ]
+
+test:api-documentation-bundle:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:api-documentation-bundle ]
 
 test:api-documentation-bundle:infection:
     extends: [ .test:infection, .package:api-documentation-bundle ]

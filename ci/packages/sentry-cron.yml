@@ -16,8 +16,11 @@ test:sentry-cron:rector:
 test:sentry-cron:phpunit:
     extends: [ .test:phpunit, .package:sentry-cron ]
 
-test:sentry-cron:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:sentry-cron ]
+test:sentry-cron:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:sentry-cron ]
+
+test:sentry-cron:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:sentry-cron ]
 
 test:sentry-cron:infection:
     extends: [ .test:infection, .package:sentry-cron ]

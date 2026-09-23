@@ -16,8 +16,11 @@ test:http-kernel-bundle:rector:
 test:http-kernel-bundle:phpunit:
     extends: [ .test:phpunit, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:http-kernel-bundle ]
+test:http-kernel-bundle:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:http-kernel-bundle ]
+
+test:http-kernel-bundle:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:http-kernel-bundle ]
 
 test:http-kernel-bundle:infection:
     extends: [ .test:infection, .package:http-kernel-bundle ]

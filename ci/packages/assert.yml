@@ -16,8 +16,11 @@ test:assert:rector:
 test:assert:phpunit:
     extends: [ .test:phpunit, .package:assert ]
 
-test:assert:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:assert ]
+test:assert:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:assert ]
+
+test:assert:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:assert ]
 
 test:assert:infection:
     extends: [ .test:infection, .package:assert ]

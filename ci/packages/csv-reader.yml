@@ -17,8 +17,11 @@ test:csv-reader:rector:
 test:csv-reader:phpunit:
     extends: [ .test:phpunit, .package:csv-reader ]
 
-test:csv-reader:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:csv-reader ]
+test:csv-reader:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:csv-reader ]
+
+test:csv-reader:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:csv-reader ]
 
 test:csv-reader:infection:
     extends: [ .test:infection, .package:csv-reader ]

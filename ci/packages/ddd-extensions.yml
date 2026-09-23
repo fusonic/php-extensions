@@ -16,8 +16,11 @@ test:ddd-extensions:rector:
 test:ddd-extensions:phpunit:
     extends: [ .test:phpunit, .package:ddd-extensions ]
 
-test:ddd-extensions:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:ddd-extensions ]
+test:ddd-extensions:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:ddd-extensions ]
+
+test:ddd-extensions:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:ddd-extensions ]
 
 test:ddd-extensions:infection:
     extends: [ .test:infection, .package:ddd-extensions ]

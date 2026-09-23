@@ -16,8 +16,11 @@ test:messenger-mailer-bundle:rector:
 test:messenger-mailer-bundle:phpunit:
     extends: [ .test:phpunit, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:messenger-mailer-bundle ]
+test:messenger-mailer-bundle:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:messenger-mailer-bundle ]
+
+test:messenger-mailer-bundle:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:messenger-mailer-bundle ]
 
 test:messenger-mailer-bundle:infection:
     extends: [ .test:infection, .package:messenger-mailer-bundle ]

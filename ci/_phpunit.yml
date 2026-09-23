@@ -19,14 +19,18 @@
                 path: packages/${PACKAGE}/coverage/phpunit/cobertura.xml
     coverage: /Lines:\s*\d+\.\d+% \(\d+\/\d+\)/
 
-# Covers the remaining PHP version/dependency combinations without coverage
-.test:phpunit-matrix:
+# Runs on the lowest supported PHP version with the lowest dependencies
+.test:phpunit-lowest-deps:
     extends: .php:base
+    variables:
+        DEPENDENCIES: lowest
     script:
         - composer test
-    parallel:
-        matrix:
-            - PHP_VERSION: ${PHP_LOWEST_VERSION}
-              DEPENDENCIES: lowest
-            - PHP_VERSION: ${PHP_LATEST_VERSION}
-              DEPENDENCIES: highest
+
+# Runs on the latest PHP version with the highest dependencies
+.test:phpunit-latest:
+    extends: .php:base
+    variables:
+        PHP_VERSION: ${PHP_LATEST_VERSION}
+    script:
+        - composer test

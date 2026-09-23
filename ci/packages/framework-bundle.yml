@@ -16,8 +16,11 @@ test:framework-bundle:rector:
 test:framework-bundle:phpunit:
     extends: [ .test:phpunit, .package:framework-bundle ]
 
-test:framework-bundle:phpunit-matrix:
-    extends: [ .test:phpunit-matrix, .package:framework-bundle ]
+test:framework-bundle:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:framework-bundle ]
+
+test:framework-bundle:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:framework-bundle ]
 
 test:framework-bundle:infection:
     extends: [ .test:infection, .package:framework-bundle ]
