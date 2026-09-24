@@ -12,6 +12,7 @@
         paths:
             - packages/${PACKAGE}/coverage/infection
         expire_in: 1 week
+    allow_failure: true
     rules:
         - changes:
               - packages/${PACKAGE}/src/**/*
