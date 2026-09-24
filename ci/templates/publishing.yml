@@ -1,6 +1,7 @@
 .publish:tag:
     image: ruby:2
     stage: publish
+    interruptible: false
     needs: []
     script:
         - ./bin/publish-package.sh tag
@@ -12,6 +13,7 @@
 .publish:branch:
     image: ruby:2
     stage: publish
+    interruptible: false
     script:
         - ./bin/publish-package.sh branch
     environment:
@@ -33,6 +35,7 @@
 .publish:delete-branch:
     image: ruby:2
     stage: publish
+    interruptible: false
     script:
         - ./bin/publish-package.sh delete-branch
     environment:

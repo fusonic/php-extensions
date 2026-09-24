@@ -32,4 +32,5 @@
               - ci/templates/*.yml
               - ci/packages/${PACKAGE}.yml
               - ci/build.yml
+              - docker/php-cli/**/*
               - .gitlab-ci.yml
