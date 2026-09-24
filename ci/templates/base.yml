@@ -27,6 +27,8 @@
         - job: build:php:image
           optional: true
     rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: always
         - changes:
               - packages/${PACKAGE}/**/*
               - ci/templates/*.yml
