@@ -10,6 +10,7 @@ Please see the table below for an overview of supported PHP and Symfony versions
 
 | **Bundle version** | **Supported PHP version** | **Supported Symfony version** |
 |--------------------|---------------------------|-------------------------------|
+| ^1.7.0             | \>= 8.4                   | \>= 6.4                       |
 | ^1.0.0             | \>= 8.2                   | \>= 6.3                       |
 
 ## Installation

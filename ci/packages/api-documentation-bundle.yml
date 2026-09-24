@@ -1,7 +1,7 @@
 .package:api-documentation-bundle:
     variables:
         PACKAGE: api-documentation-bundle
-        PHP_LOWEST_VERSION: '8.2'
+        PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
 
 test:api-documentation-bundle:phpcs:
