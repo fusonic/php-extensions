@@ -15,10 +15,10 @@
     allow_failure: true
     rules:
         - changes:
-              - packages/${PACKAGE}/src/**/*
-              - packages/${PACKAGE}/tests/**/*
+              - packages/${PACKAGE}/**/*
               - ci/templates/*.yml
-              - ci/build.yml
               - ci/packages/${PACKAGE}.yml
+              - ci/build.yml
+              - docker/php-cli/**/*
               - .gitlab-ci.yml
           when: manual
