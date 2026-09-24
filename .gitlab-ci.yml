@@ -1,6 +1,7 @@
 include:
-    - local: 'ci/_*.yml'
     - local: 'ci/packages/*.yml'
+    - local: 'ci/templates/*.yml'
+    - local: 'ci/build.yml'
 
 stages:
     - build

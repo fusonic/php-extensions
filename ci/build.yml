@@ -32,7 +32,7 @@ build:php:image:
           when: always
         - if: $CI_MERGE_REQUEST_IID
           changes:
+              - ci/build.yml
               - docker/php-cli/**/*
-              - ci/_build.yml
               - .gitlab-ci.yml
           when: manual

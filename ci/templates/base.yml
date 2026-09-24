@@ -29,6 +29,7 @@
     rules:
         - changes:
               - packages/${PACKAGE}/**/*
-              - ci/_*.yml
+              - ci/templates/*.yml
               - ci/packages/${PACKAGE}.yml
+              - ci/build.yml
               - .gitlab-ci.yml

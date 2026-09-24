@@ -16,7 +16,8 @@
         - changes:
               - packages/${PACKAGE}/src/**/*
               - packages/${PACKAGE}/tests/**/*
-              - ci/_*.yml
+              - ci/templates/*.yml
+              - ci/build.yml
               - ci/packages/${PACKAGE}.yml
               - .gitlab-ci.yml
           when: manual
