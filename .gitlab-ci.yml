@@ -13,6 +13,9 @@ variables:
     PHP_LATEST_VERSION: '8.5'
     PHP_DOCKER_RELEASE: 'trixie'
 
+default:
+    interruptible: true
+
 workflow:
     rules:
         - if: $CI_PIPELINE_SOURCE == "schedule"
