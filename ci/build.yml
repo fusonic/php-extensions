@@ -13,8 +13,8 @@ build:php:image:
             # Must contain every PHP_LOWEST_VERSION of the packages and PHP_LATEST_VERSION
             - PHP_VERSION: [ '8.4', '8.5' ]
     before_script:
-        - docker login -u $DOCKER_HUB_PULL_USERNAME -p $DOCKER_HUB_PULL_PASSWORD https://index.docker.io/v1/
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - echo "$DOCKER_HUB_PULL_PASSWORD" | docker login -u "$DOCKER_HUB_PULL_USERNAME" --password-stdin https://index.docker.io/v1/
+        - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin "$CI_REGISTRY"
     script:
         - docker build
           --pull
