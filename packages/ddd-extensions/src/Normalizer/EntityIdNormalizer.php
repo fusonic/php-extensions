@@ -36,6 +36,7 @@ class EntityIdNormalizer implements NormalizerInterface, DenormalizerInterface
         return $data instanceof EntityIntegerId;
     }
 
+    // @phpstan-ignore method.childReturnType (supportsDenormalization() only allows EntityIntegerId types)
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): EntityIntegerId
     {
         /** @var EntityIntegerId $integerId */

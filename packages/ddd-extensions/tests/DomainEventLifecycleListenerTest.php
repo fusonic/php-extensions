@@ -32,7 +32,7 @@ final class DomainEventLifecycleListenerTest extends AbstractTestCase
         $listener->postUpdate(new PostUpdateEventArgs($user, $em));
         $listener->postRemove(new PostRemoveEventArgs($user, $em));
 
-        $postFlushEvent = $this->createMock(PostFlushEventArgs::class);
+        $postFlushEvent = self::createStub(PostFlushEventArgs::class);
         $listener->postFlush($postFlushEvent);
 
         $messages = $messageBus->getDispatchedMessages();
@@ -51,7 +51,7 @@ final class DomainEventLifecycleListenerTest extends AbstractTestCase
 
         $listener->postPersist($lifeCycleEvent);
 
-        $postFlushEvent = $this->createMock(PostFlushEventArgs::class);
+        $postFlushEvent = self::createStub(PostFlushEventArgs::class);
         $listener->postFlush($postFlushEvent);
 
         $messages = $messageBus->getDispatchedMessages();
