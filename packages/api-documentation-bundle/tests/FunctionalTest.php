@@ -22,7 +22,7 @@ final class FunctionalTest extends KernelTestCase
 
     public function testBootKernel(): void
     {
-        (new Filesystem())->remove('var/cache/test');
+        new Filesystem()->remove('var/cache/test');
         self::bootKernel();
         self::assertTrue(self::$booted);
     }

@@ -175,7 +175,7 @@ final class AnnotationBuilder
         $input = $this->input;
         $inputModel = new Model(type: $input);
 
-        $inputClassBasename = (new \ReflectionClass($input))->getShortName();
+        $inputClassBasename = new \ReflectionClass($input)->getShortName();
         $propertyInfoProperties = $this->propertyExtractor->extractClassProperties($input);
 
         if ([] === $propertyInfoProperties) {
@@ -246,7 +246,7 @@ final class AnnotationBuilder
     {
         /** @var class-string $output */
         $output = $this->output;
-        $outputClassBasename = (new \ReflectionClass($output))->getShortName();
+        $outputClassBasename = new \ReflectionClass($output)->getShortName();
 
         return \sprintf(
             '%s %s%s',
