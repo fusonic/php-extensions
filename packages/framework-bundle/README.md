@@ -1,9 +1,9 @@
 # framework-bundle
 
-[![License](https://img.shields.io/packagist/l/fusonic/framework-bundle?color=blue)](https://github.com/fusonic/php-framework-bundle/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/fusonic/framework-bundle?color=blue)](https://github.com/fusonic/php-framework-bundle/blob/main/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-framework-bundle.svg?color=blue)](https://github.com/fusonic/php-framework-bundle/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/framework-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/framework-bundle)
-[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-framework-bundle/blob/master/composer.json)
+[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-framework-bundle/blob/main/composer.json)
 
 * [About](#about)
 * [Install](#install)

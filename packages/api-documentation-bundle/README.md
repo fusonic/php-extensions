@@ -1,9 +1,9 @@
 # fusonic-api-documentation-bundle
 
-[![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/main/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-api-documentation-bundle.svg?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/api-documentation-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/api-documentation-bundle)
-[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-api-documentation-bundle/blob/master/composer.json)
+[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-api-documentation-bundle/blob/main/composer.json)
 
 * [About](#about)
 * [Install](#install)

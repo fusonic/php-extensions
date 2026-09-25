@@ -1,9 +1,9 @@
 # ddd-extensions
 
-[![License](https://img.shields.io/packagist/l/fusonic/ddd-extensions?color=blue)](https://github.com/fusonic/php-ddd-extensions/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/fusonic/ddd-extensions?color=blue)](https://github.com/fusonic/php-ddd-extensions/blob/main/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-ddd-extensions.svg?color=blue)](https://github.com/fusonic/php-ddd-extensions/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/ddd-extensions.svg?color=blue)](https://packagist.org/packages/fusonic/ddd-extensions)
-[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-ddd-extensions/blob/master/composer.json)
+[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-ddd-extensions/blob/main/composer.json)
 
 * [About](#about)
 * [Install](#install)
