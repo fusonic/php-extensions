@@ -1,44 +1,37 @@
-phpunit:ddd-extensions:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:ddd-extensions:
     variables:
         PACKAGE: ddd-extensions
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
 
-infection:ddd-extensions:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: ddd-extensions
+ddd-extensions:test:phpcs:
+    extends: [ .test:phpcs, .package:ddd-extensions ]
 
-phpunit:ddd-extensions:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: ddd-extensions
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+ddd-extensions:test:phpstan:
+    extends: [ .test:phpstan, .package:ddd-extensions ]
 
-ddd-extensions:publish-branch:
-    extends: .publish-branch
+ddd-extensions:test:rector:
+    extends: [ .test:rector, .package:ddd-extensions ]
+
+ddd-extensions:test:phpunit:
+    extends: [ .test:phpunit, .package:ddd-extensions ]
+
+ddd-extensions:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:ddd-extensions ]
+
+ddd-extensions:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:ddd-extensions ]
+
+ddd-extensions:test:infection:
+    extends: [ .test:infection, .package:ddd-extensions ]
+
+ddd-extensions:publish:branch:
+    extends: [ .publish:branch, .package:ddd-extensions ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: ddd-extensions:delete-branch
-    variables:
-        PACKAGE: ddd-extensions
-        REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
+        on_stop: ddd-extensions:publish:delete-branch
 
-ddd-extensions:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: ddd-extensions
-        REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
+ddd-extensions:publish:tag:
+    extends: [ .publish:tag, .package:ddd-extensions ]
 
-ddd-extensions:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: ddd-extensions
-        REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
+ddd-extensions:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:ddd-extensions ]

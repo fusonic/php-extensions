@@ -1,9 +1,9 @@
 # fusonic-api-documentation-bundle
 
-[![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/fusonic/api-documentation-bundle?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/blob/main/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-api-documentation-bundle.svg?color=blue)](https://github.com/fusonic/php-api-documentation-bundle/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/api-documentation-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/api-documentation-bundle)
-![php 8.2+](https://img.shields.io/badge/php-min%208.2-blue.svg)
+[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-api-documentation-bundle/blob/main/composer.json)
 
 * [About](#about)
 * [Install](#install)
@@ -34,7 +34,7 @@ composer require fusonic/api-documentation-bundle
 
 Requirements:
 
-- PHP 8.2+
+- PHP 8.4+
 - Symfony 6.4, 7.4 or 8.1
 
 In case Symfony did not add the bundle to the bundle configuration, add the following (by default located

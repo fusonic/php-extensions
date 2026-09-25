@@ -1,0 +1,26 @@
+.test:infection:
+    extends: .php:base
+    variables:
+        XDEBUG_MODE: coverage
+    script:
+        - composer infection
+    environment:
+        name: coverage/${PACKAGE}/${CI_COMMIT_REF_NAME}/infection
+        url: https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/${CI_JOB_ID}/artifacts/file/packages/${PACKAGE}/coverage/infection/infection.html
+        auto_stop_in: 1 week
+    artifacts:
+        paths:
+            - packages/${PACKAGE}/coverage/infection
+        expire_in: 1 week
+    allow_failure: true
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: manual
+        - changes:
+              - packages/${PACKAGE}/**/*
+              - ci/templates/*.yml
+              - ci/packages/${PACKAGE}.yml
+              - ci/build.yml
+              - docker/php-cli/**/*
+              - .gitlab-ci.yml
+          when: manual

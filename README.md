@@ -24,7 +24,19 @@ package as the working directory.
 
 ## Tests
 
-The `ci/packages/<package name>` Gitlab CI file should contain the tests for a package.
+The `ci/packages/<package name>` Gitlab CI file should contain the tests for a package. The shared job templates are
+located in the `ci/templates/*.yml` files.
+
+Each package defines its lowest supported PHP version in `PHP_LOWEST_VERSION` (must match `require.php` of the
+package's `composer.json`). PHP-CS-Fixer, PHPStan, Rector, Infection and PHPUnit (incl. coverage) run on this version,
+PHPUnit additionally runs with the lowest dependencies and on the latest PHP version (`PHP_LATEST_VERSION` in
+`.gitlab-ci.yml`). Test jobs only run if the package or the CI definitions have changed.
+
+The jobs use a prebuilt CI image (`ci` target of `docker/php-cli/Dockerfile`) from the project's container registry,
+built by `build:php:image` for every PHP version listed in `ci/build.yml`. The image is rebuilt by scheduled pipelines
+and on the default branch when the Dockerfile or the CI definition change, and can be built manually in such merge
+requests. When raising a package's `PHP_LOWEST_VERSION` or the `PHP_LATEST_VERSION`, make sure the version is listed
+in `ci/build.yml`.
 
 ## Publishing
 

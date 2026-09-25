@@ -1,14 +1,19 @@
 ARG PHP_VERSION
 ARG PHP_DOCKER_RELEASE
 
-FROM php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE}
+# Image used by the GitLab CI pipeline
+FROM php:${PHP_VERSION}-cli-${PHP_DOCKER_RELEASE} AS ci
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions @composer-2 xdebug zip intl
+    install-php-extensions @composer-2 xdebug zip intl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Image used for local development (default target)
+FROM ci AS dev
 
 RUN echo 'alias cs=composer' >> /root/.bashrc
 

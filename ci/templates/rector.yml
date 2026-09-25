@@ -1,0 +1,4 @@
+.test:rector:
+    extends: .php:base
+    script:
+        - composer rector:check

@@ -1,44 +1,37 @@
-phpunit:sentry-cron:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:sentry-cron:
     variables:
         PACKAGE: sentry-cron
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
 
-infection:sentry-cron:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: sentry-cron
+sentry-cron:test:phpcs:
+    extends: [ .test:phpcs, .package:sentry-cron ]
 
-phpunit:sentry-cron:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: sentry-cron
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+sentry-cron:test:phpstan:
+    extends: [ .test:phpstan, .package:sentry-cron ]
 
-sentry-cron:publish-branch:
-    extends: .publish-branch
+sentry-cron:test:rector:
+    extends: [ .test:rector, .package:sentry-cron ]
+
+sentry-cron:test:phpunit:
+    extends: [ .test:phpunit, .package:sentry-cron ]
+
+sentry-cron:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:sentry-cron ]
+
+sentry-cron:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:sentry-cron ]
+
+sentry-cron:test:infection:
+    extends: [ .test:infection, .package:sentry-cron ]
+
+sentry-cron:publish:branch:
+    extends: [ .publish:branch, .package:sentry-cron ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: sentry-cron:delete-branch
-    variables:
-        PACKAGE: sentry-cron
-        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
+        on_stop: sentry-cron:publish:delete-branch
 
-sentry-cron:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: sentry-cron
-        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
+sentry-cron:publish:tag:
+    extends: [ .publish:tag, .package:sentry-cron ]
 
-sentry-cron:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: sentry-cron
-        REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
+sentry-cron:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:sentry-cron ]

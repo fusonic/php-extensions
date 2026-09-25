@@ -1,44 +1,37 @@
-phpunit:messenger-mailer-bundle:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:messenger-mailer-bundle:
     variables:
         PACKAGE: messenger-mailer-bundle
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
 
-infection:messenger-mailer-bundle:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: messenger-mailer-bundle
+messenger-mailer-bundle:test:phpcs:
+    extends: [ .test:phpcs, .package:messenger-mailer-bundle ]
 
-phpunit:messenger-mailer-bundle:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: messenger-mailer-bundle
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+messenger-mailer-bundle:test:phpstan:
+    extends: [ .test:phpstan, .package:messenger-mailer-bundle ]
 
-messenger-mailer-bundle:publish-branch:
-    extends: .publish-branch
+messenger-mailer-bundle:test:rector:
+    extends: [ .test:rector, .package:messenger-mailer-bundle ]
+
+messenger-mailer-bundle:test:phpunit:
+    extends: [ .test:phpunit, .package:messenger-mailer-bundle ]
+
+messenger-mailer-bundle:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:messenger-mailer-bundle ]
+
+messenger-mailer-bundle:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:messenger-mailer-bundle ]
+
+messenger-mailer-bundle:test:infection:
+    extends: [ .test:infection, .package:messenger-mailer-bundle ]
+
+messenger-mailer-bundle:publish:branch:
+    extends: [ .publish:branch, .package:messenger-mailer-bundle ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: messenger-mailer-bundle:delete-branch
-    variables:
-        PACKAGE: messenger-mailer-bundle
-        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
+        on_stop: messenger-mailer-bundle:publish:delete-branch
 
-messenger-mailer-bundle:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: messenger-mailer-bundle
-        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
+messenger-mailer-bundle:publish:tag:
+    extends: [ .publish:tag, .package:messenger-mailer-bundle ]
 
-messenger-mailer-bundle:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: messenger-mailer-bundle
-        REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
+messenger-mailer-bundle:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:messenger-mailer-bundle ]

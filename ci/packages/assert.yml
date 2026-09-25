@@ -1,44 +1,37 @@
-phpunit:assert:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:assert:
     variables:
         PACKAGE: assert
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-assert.git
 
-infection:assert:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: assert
+assert:test:phpcs:
+    extends: [ .test:phpcs, .package:assert ]
 
-phpunit:assert:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: assert
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+assert:test:phpstan:
+    extends: [ .test:phpstan, .package:assert ]
 
-assert:publish-branch:
-    extends: .publish-branch
+assert:test:rector:
+    extends: [ .test:rector, .package:assert ]
+
+assert:test:phpunit:
+    extends: [ .test:phpunit, .package:assert ]
+
+assert:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:assert ]
+
+assert:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:assert ]
+
+assert:test:infection:
+    extends: [ .test:infection, .package:assert ]
+
+assert:publish:branch:
+    extends: [ .publish:branch, .package:assert ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: assert:delete-branch
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+        on_stop: assert:publish:delete-branch
 
-assert:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+assert:publish:tag:
+    extends: [ .publish:tag, .package:assert ]
 
-assert:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: assert
-        REPOSITORY: git@github.com:fusonic/php-assert.git
+assert:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:assert ]

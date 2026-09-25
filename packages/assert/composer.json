@@ -1,7 +1,7 @@
 {
     "name": "fusonic/assert",
     "license": "MIT",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Extends beberlei/assert with a convenient chaining functionality",
     "type": "library",
     "authors": [
@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "beberlei/assert": "^3.2"
     },
     "require-dev": {

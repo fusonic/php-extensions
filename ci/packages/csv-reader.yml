@@ -1,34 +1,37 @@
-phpunit:csv-reader:
-    extends: .phpunit-test
-    needs: []
+.package:csv-reader:
     variables:
         PACKAGE: csv-reader
-        INSTALL_PHP_EXTENSIONS: intl
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
 
-infection:csv-reader:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: csv-reader
-        INSTALL_PHP_EXTENSIONS: intl
+csv-reader:test:phpcs:
+    extends: [ .test:phpcs, .package:csv-reader ]
 
-csv-reader:publish-branch:
-    extends: .publish-branch
+csv-reader:test:phpstan:
+    extends: [ .test:phpstan, .package:csv-reader ]
+
+csv-reader:test:rector:
+    extends: [ .test:rector, .package:csv-reader ]
+
+csv-reader:test:phpunit:
+    extends: [ .test:phpunit, .package:csv-reader ]
+
+csv-reader:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:csv-reader ]
+
+csv-reader:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:csv-reader ]
+
+csv-reader:test:infection:
+    extends: [ .test:infection, .package:csv-reader ]
+
+csv-reader:publish:branch:
+    extends: [ .publish:branch, .package:csv-reader ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: csv-reader:delete-branch
-    variables:
-        PACKAGE: csv-reader
-        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
+        on_stop: csv-reader:publish:delete-branch
 
-csv-reader:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: csv-reader
-        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
+csv-reader:publish:tag:
+    extends: [ .publish:tag, .package:csv-reader ]
 
-csv-reader:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: csv-reader
-        REPOSITORY: git@github.com:fusonic/php-csv-reader.git
+csv-reader:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:csv-reader ]

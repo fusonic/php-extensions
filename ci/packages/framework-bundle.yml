@@ -1,44 +1,37 @@
-phpunit:framework-bundle:symfony:
-    extends: .phpunit-test
-    needs: []
+.package:framework-bundle:
     variables:
         PACKAGE: framework-bundle
+        PHP_LOWEST_VERSION: '8.4'
+        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
 
-infection:framework-bundle:symfony:
-    extends: .php-infection
-    needs: []
-    variables:
-        PACKAGE: framework-bundle
+framework-bundle:test:phpcs:
+    extends: [ .test:phpcs, .package:framework-bundle ]
 
-phpunit:framework-bundle:symfony-lowest:
-    extends: .phpunit-test
-    needs: []
-    variables:
-        PACKAGE: framework-bundle
-    script:
-        - composer update --prefer-lowest --prefer-stable --no-progress --no-suggest --no-interaction
-        - vendor/bin/phpunit
-    artifacts:
-        paths: []
-        reports: null
+framework-bundle:test:phpstan:
+    extends: [ .test:phpstan, .package:framework-bundle ]
 
-framework-bundle:publish-branch:
-    extends: .publish-branch
+framework-bundle:test:rector:
+    extends: [ .test:rector, .package:framework-bundle ]
+
+framework-bundle:test:phpunit:
+    extends: [ .test:phpunit, .package:framework-bundle ]
+
+framework-bundle:test:phpunit-lowest-deps:
+    extends: [ .test:phpunit-lowest-deps, .package:framework-bundle ]
+
+framework-bundle:test:phpunit-latest:
+    extends: [ .test:phpunit-latest, .package:framework-bundle ]
+
+framework-bundle:test:infection:
+    extends: [ .test:infection, .package:framework-bundle ]
+
+framework-bundle:publish:branch:
+    extends: [ .publish:branch, .package:framework-bundle ]
     environment:
-        name: review/$CI_COMMIT_REF_SLUG
-        on_stop: framework-bundle:delete-branch
-    variables:
-        PACKAGE: framework-bundle
-        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
+        on_stop: framework-bundle:publish:delete-branch
 
-framework-bundle:publish-tag:
-    extends: .publish-tag
-    variables:
-        PACKAGE: framework-bundle
-        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
+framework-bundle:publish:tag:
+    extends: [ .publish:tag, .package:framework-bundle ]
 
-framework-bundle:delete-branch:
-    extends: .delete-branch
-    variables:
-        PACKAGE: framework-bundle
-        REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
+framework-bundle:publish:delete-branch:
+    extends: [ .publish:delete-branch, .package:framework-bundle ]

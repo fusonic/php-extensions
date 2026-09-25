@@ -1,0 +1,4 @@
+.test:phpcs:
+    extends: .php:base
+    script:
+        - composer phpcs:check

@@ -1,0 +1,37 @@
+.php:base:
+    stage: test
+    image: ${CI_REGISTRY_IMAGE}/php:${PHP_VERSION}-${PHP_DOCKER_RELEASE}
+    variables:
+        APP_ENV: prod
+        PHP_VERSION: ${PHP_LOWEST_VERSION}
+        DEPENDENCIES: highest
+        XDEBUG_MODE: 'off'
+        XDEBUG_CONFIG: "log_level=0"
+        COMPOSER_CACHE_DIR: ${CI_PROJECT_DIR}/.composer-cache
+    cache:
+        key: composer-${PACKAGE}-${PHP_VERSION}-${DEPENDENCIES}
+        paths:
+            - .composer-cache/
+    before_script:
+        - cd packages/${PACKAGE}
+        - composer validate --no-check-all
+        - |
+            if [ "${DEPENDENCIES}" = "lowest" ]; then
+              composer update --prefer-lowest --prefer-stable --no-progress --no-interaction
+            else
+              composer install --no-progress --no-interaction
+            fi
+    needs:
+        # Wait for the CI image if it gets (re)built in this pipeline
+        - job: build:php:image
+          optional: true
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: always
+        - changes:
+              - packages/${PACKAGE}/**/*
+              - ci/templates/*.yml
+              - ci/packages/${PACKAGE}.yml
+              - ci/build.yml
+              - docker/php-cli/**/*
+              - .gitlab-ci.yml

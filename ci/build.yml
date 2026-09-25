@@ -1,0 +1,44 @@
+build:php:image:
+    stage: build
+    image: ${DOCKER_IMAGE}
+    services:
+        - ${DOCKER_DIND_IMAGE}
+    variables:
+        CI_IMAGE: ${CI_REGISTRY_IMAGE}/php:${PHP_VERSION}-${PHP_DOCKER_RELEASE}
+        # Pushing images with attestations fails with "blob unknown to registry", see
+        # https://support.gitlab.com/hc/en-us/articles/29426166749596-Push-to-Container-Registry-Fails-Error-error-from-registry-blob-unknown-to-registry
+        BUILDX_NO_DEFAULT_ATTESTATIONS: "1"
+    parallel:
+        matrix:
+            # Must contain every PHP_LOWEST_VERSION of the packages and PHP_LATEST_VERSION
+            - PHP_VERSION: [ '8.4', '8.5' ]
+    before_script:
+        - echo "$DOCKER_HUB_PULL_PASSWORD" | docker login -u "$DOCKER_HUB_PULL_USERNAME" --password-stdin https://index.docker.io/v1/
+        - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin "$CI_REGISTRY"
+    script:
+        - docker build
+          --pull
+          --cache-from $CI_IMAGE
+          --build-arg BUILDKIT_INLINE_CACHE=1
+          --build-arg PHP_VERSION
+          --build-arg PHP_DOCKER_RELEASE
+          --target ci
+          --tag $CI_IMAGE
+          docker/php-cli
+        - docker push $CI_IMAGE
+    needs: []
+    rules:
+        - if: $CI_PIPELINE_SOURCE == "schedule"
+          when: always
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          changes:
+              - ci/build.yml
+              - docker/php-cli/**/*
+              - .gitlab-ci.yml
+          when: always
+        - if: $CI_MERGE_REQUEST_IID
+          changes:
+              - ci/build.yml
+              - docker/php-cli/**/*
+              - .gitlab-ci.yml
+          when: manual
