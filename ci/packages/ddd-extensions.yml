@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-ddd-extensions.git
 
-test:ddd-extensions:phpcs:
+ddd-extensions:test:phpcs:
     extends: [ .test:phpcs, .package:ddd-extensions ]
 
-test:ddd-extensions:phpstan:
+ddd-extensions:test:phpstan:
     extends: [ .test:phpstan, .package:ddd-extensions ]
 
-test:ddd-extensions:rector:
+ddd-extensions:test:rector:
     extends: [ .test:rector, .package:ddd-extensions ]
 
-test:ddd-extensions:phpunit:
+ddd-extensions:test:phpunit:
     extends: [ .test:phpunit, .package:ddd-extensions ]
 
-test:ddd-extensions:phpunit-lowest-deps:
+ddd-extensions:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:ddd-extensions ]
 
-test:ddd-extensions:phpunit-latest:
+ddd-extensions:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:ddd-extensions ]
 
-test:ddd-extensions:infection:
+ddd-extensions:test:infection:
     extends: [ .test:infection, .package:ddd-extensions ]
 
-publish:ddd-extensions:branch:
+ddd-extensions:publish:branch:
     extends: [ .publish:branch, .package:ddd-extensions ]
     environment:
-        on_stop: publish:ddd-extensions:delete-branch
+        on_stop: ddd-extensions:publish:delete-branch
 
-publish:ddd-extensions:tag:
+ddd-extensions:publish:tag:
     extends: [ .publish:tag, .package:ddd-extensions ]
 
-publish:ddd-extensions:delete-branch:
+ddd-extensions:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:ddd-extensions ]

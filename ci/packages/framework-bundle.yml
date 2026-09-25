@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-framework-bundle.git
 
-test:framework-bundle:phpcs:
+framework-bundle:test:phpcs:
     extends: [ .test:phpcs, .package:framework-bundle ]
 
-test:framework-bundle:phpstan:
+framework-bundle:test:phpstan:
     extends: [ .test:phpstan, .package:framework-bundle ]
 
-test:framework-bundle:rector:
+framework-bundle:test:rector:
     extends: [ .test:rector, .package:framework-bundle ]
 
-test:framework-bundle:phpunit:
+framework-bundle:test:phpunit:
     extends: [ .test:phpunit, .package:framework-bundle ]
 
-test:framework-bundle:phpunit-lowest-deps:
+framework-bundle:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:framework-bundle ]
 
-test:framework-bundle:phpunit-latest:
+framework-bundle:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:framework-bundle ]
 
-test:framework-bundle:infection:
+framework-bundle:test:infection:
     extends: [ .test:infection, .package:framework-bundle ]
 
-publish:framework-bundle:branch:
+framework-bundle:publish:branch:
     extends: [ .publish:branch, .package:framework-bundle ]
     environment:
-        on_stop: publish:framework-bundle:delete-branch
+        on_stop: framework-bundle:publish:delete-branch
 
-publish:framework-bundle:tag:
+framework-bundle:publish:tag:
     extends: [ .publish:tag, .package:framework-bundle ]
 
-publish:framework-bundle:delete-branch:
+framework-bundle:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:framework-bundle ]

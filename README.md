@@ -34,8 +34,9 @@ PHPUnit additionally runs with the lowest dependencies and on the latest PHP ver
 
 The jobs use a prebuilt CI image (`ci` target of `docker/php-cli/Dockerfile`) from the project's container registry,
 built by `build:php:image` for every PHP version listed in `ci/build.yml`. The image is rebuilt by scheduled pipelines
-and can be built manually in merge requests that change the Dockerfile or the CI definition. When raising a package's
-`PHP_LOWEST_VERSION` or the `PHP_LATEST_VERSION`, make sure the version is listed in `ci/build.yml`.
+and on the default branch when the Dockerfile or the CI definition change, and can be built manually in such merge
+requests. When raising a package's `PHP_LOWEST_VERSION` or the `PHP_LATEST_VERSION`, make sure the version is listed
+in `ci/build.yml`.
 
 ## Publishing
 

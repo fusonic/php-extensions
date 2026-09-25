@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-assert.git
 
-test:assert:phpcs:
+assert:test:phpcs:
     extends: [ .test:phpcs, .package:assert ]
 
-test:assert:phpstan:
+assert:test:phpstan:
     extends: [ .test:phpstan, .package:assert ]
 
-test:assert:rector:
+assert:test:rector:
     extends: [ .test:rector, .package:assert ]
 
-test:assert:phpunit:
+assert:test:phpunit:
     extends: [ .test:phpunit, .package:assert ]
 
-test:assert:phpunit-lowest-deps:
+assert:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:assert ]
 
-test:assert:phpunit-latest:
+assert:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:assert ]
 
-test:assert:infection:
+assert:test:infection:
     extends: [ .test:infection, .package:assert ]
 
-publish:assert:branch:
+assert:publish:branch:
     extends: [ .publish:branch, .package:assert ]
     environment:
-        on_stop: publish:assert:delete-branch
+        on_stop: assert:publish:delete-branch
 
-publish:assert:tag:
+assert:publish:tag:
     extends: [ .publish:tag, .package:assert ]
 
-publish:assert:delete-branch:
+assert:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:assert ]

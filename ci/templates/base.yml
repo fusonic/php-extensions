@@ -1,7 +1,6 @@
 .php:base:
     stage: test
     image: ${CI_REGISTRY_IMAGE}/php:${PHP_VERSION}-${PHP_DOCKER_RELEASE}
-    interruptible: true
     variables:
         APP_ENV: prod
         PHP_VERSION: ${PHP_LOWEST_VERSION}

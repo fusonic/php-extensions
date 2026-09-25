@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-http-kernel-bundle.git
 
-test:http-kernel-bundle:phpcs:
+http-kernel-bundle:test:phpcs:
     extends: [ .test:phpcs, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:phpstan:
+http-kernel-bundle:test:phpstan:
     extends: [ .test:phpstan, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:rector:
+http-kernel-bundle:test:rector:
     extends: [ .test:rector, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:phpunit:
+http-kernel-bundle:test:phpunit:
     extends: [ .test:phpunit, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:phpunit-lowest-deps:
+http-kernel-bundle:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:phpunit-latest:
+http-kernel-bundle:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:http-kernel-bundle ]
 
-test:http-kernel-bundle:infection:
+http-kernel-bundle:test:infection:
     extends: [ .test:infection, .package:http-kernel-bundle ]
 
-publish:http-kernel-bundle:branch:
+http-kernel-bundle:publish:branch:
     extends: [ .publish:branch, .package:http-kernel-bundle ]
     environment:
-        on_stop: publish:http-kernel-bundle:delete-branch
+        on_stop: http-kernel-bundle:publish:delete-branch
 
-publish:http-kernel-bundle:tag:
+http-kernel-bundle:publish:tag:
     extends: [ .publish:tag, .package:http-kernel-bundle ]
 
-publish:http-kernel-bundle:delete-branch:
+http-kernel-bundle:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:http-kernel-bundle ]

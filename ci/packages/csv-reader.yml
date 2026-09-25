@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-csv-reader.git
 
-test:csv-reader:phpcs:
+csv-reader:test:phpcs:
     extends: [ .test:phpcs, .package:csv-reader ]
 
-test:csv-reader:phpstan:
+csv-reader:test:phpstan:
     extends: [ .test:phpstan, .package:csv-reader ]
 
-test:csv-reader:rector:
+csv-reader:test:rector:
     extends: [ .test:rector, .package:csv-reader ]
 
-test:csv-reader:phpunit:
+csv-reader:test:phpunit:
     extends: [ .test:phpunit, .package:csv-reader ]
 
-test:csv-reader:phpunit-lowest-deps:
+csv-reader:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:csv-reader ]
 
-test:csv-reader:phpunit-latest:
+csv-reader:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:csv-reader ]
 
-test:csv-reader:infection:
+csv-reader:test:infection:
     extends: [ .test:infection, .package:csv-reader ]
 
-publish:csv-reader:branch:
+csv-reader:publish:branch:
     extends: [ .publish:branch, .package:csv-reader ]
     environment:
-        on_stop: publish:csv-reader:delete-branch
+        on_stop: csv-reader:publish:delete-branch
 
-publish:csv-reader:tag:
+csv-reader:publish:tag:
     extends: [ .publish:tag, .package:csv-reader ]
 
-publish:csv-reader:delete-branch:
+csv-reader:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:csv-reader ]

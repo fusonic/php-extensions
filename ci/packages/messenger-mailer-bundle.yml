@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-messenger-mailer-bundle.git
 
-test:messenger-mailer-bundle:phpcs:
+messenger-mailer-bundle:test:phpcs:
     extends: [ .test:phpcs, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:phpstan:
+messenger-mailer-bundle:test:phpstan:
     extends: [ .test:phpstan, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:rector:
+messenger-mailer-bundle:test:rector:
     extends: [ .test:rector, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:phpunit:
+messenger-mailer-bundle:test:phpunit:
     extends: [ .test:phpunit, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:phpunit-lowest-deps:
+messenger-mailer-bundle:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:phpunit-latest:
+messenger-mailer-bundle:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:messenger-mailer-bundle ]
 
-test:messenger-mailer-bundle:infection:
+messenger-mailer-bundle:test:infection:
     extends: [ .test:infection, .package:messenger-mailer-bundle ]
 
-publish:messenger-mailer-bundle:branch:
+messenger-mailer-bundle:publish:branch:
     extends: [ .publish:branch, .package:messenger-mailer-bundle ]
     environment:
-        on_stop: publish:messenger-mailer-bundle:delete-branch
+        on_stop: messenger-mailer-bundle:publish:delete-branch
 
-publish:messenger-mailer-bundle:tag:
+messenger-mailer-bundle:publish:tag:
     extends: [ .publish:tag, .package:messenger-mailer-bundle ]
 
-publish:messenger-mailer-bundle:delete-branch:
+messenger-mailer-bundle:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:messenger-mailer-bundle ]

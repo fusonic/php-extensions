@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/packagist/l/fusonic/http-kernel-bundle?color=blue)](https://github.com/fusonic/php-http-kernel-bundle/blob/master/LICENSE)
 [![Latest Version](https://img.shields.io/github/tag/fusonic/php-http-kernel-bundle.svg?color=blue)](https://github.com/fusonic/php-http-kernel-bundle/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/fusonic/http-kernel-bundle.svg?color=blue)](https://packagist.org/packages/fusonic/http-kernel-bundle)
-![php 8.4+](https://img.shields.io/badge/php-%5E8.4-blue.svg)
+[![php 8.4+](https://img.shields.io/badge/php-%3E%3D%208.4-blue.svg)](https://github.com/fusonic/php-http-kernel-bundle/blob/master/composer.json)
 
 * [About](#about)
 * [Install](#install)

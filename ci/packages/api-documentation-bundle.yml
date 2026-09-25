@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-api-documentation-bundle.git
 
-test:api-documentation-bundle:phpcs:
+api-documentation-bundle:test:phpcs:
     extends: [ .test:phpcs, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:phpstan:
+api-documentation-bundle:test:phpstan:
     extends: [ .test:phpstan, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:rector:
+api-documentation-bundle:test:rector:
     extends: [ .test:rector, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:phpunit:
+api-documentation-bundle:test:phpunit:
     extends: [ .test:phpunit, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:phpunit-lowest-deps:
+api-documentation-bundle:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:phpunit-latest:
+api-documentation-bundle:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:api-documentation-bundle ]
 
-test:api-documentation-bundle:infection:
+api-documentation-bundle:test:infection:
     extends: [ .test:infection, .package:api-documentation-bundle ]
 
-publish:api-documentation-bundle:branch:
+api-documentation-bundle:publish:branch:
     extends: [ .publish:branch, .package:api-documentation-bundle ]
     environment:
-        on_stop: publish:api-documentation-bundle:delete-branch
+        on_stop: api-documentation-bundle:publish:delete-branch
 
-publish:api-documentation-bundle:tag:
+api-documentation-bundle:publish:tag:
     extends: [ .publish:tag, .package:api-documentation-bundle ]
 
-publish:api-documentation-bundle:delete-branch:
+api-documentation-bundle:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:api-documentation-bundle ]

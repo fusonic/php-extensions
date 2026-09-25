@@ -4,34 +4,34 @@
         PHP_LOWEST_VERSION: '8.4'
         REPOSITORY: git@github.com:fusonic/php-sentry-cron.git
 
-test:sentry-cron:phpcs:
+sentry-cron:test:phpcs:
     extends: [ .test:phpcs, .package:sentry-cron ]
 
-test:sentry-cron:phpstan:
+sentry-cron:test:phpstan:
     extends: [ .test:phpstan, .package:sentry-cron ]
 
-test:sentry-cron:rector:
+sentry-cron:test:rector:
     extends: [ .test:rector, .package:sentry-cron ]
 
-test:sentry-cron:phpunit:
+sentry-cron:test:phpunit:
     extends: [ .test:phpunit, .package:sentry-cron ]
 
-test:sentry-cron:phpunit-lowest-deps:
+sentry-cron:test:phpunit-lowest-deps:
     extends: [ .test:phpunit-lowest-deps, .package:sentry-cron ]
 
-test:sentry-cron:phpunit-latest:
+sentry-cron:test:phpunit-latest:
     extends: [ .test:phpunit-latest, .package:sentry-cron ]
 
-test:sentry-cron:infection:
+sentry-cron:test:infection:
     extends: [ .test:infection, .package:sentry-cron ]
 
-publish:sentry-cron:branch:
+sentry-cron:publish:branch:
     extends: [ .publish:branch, .package:sentry-cron ]
     environment:
-        on_stop: publish:sentry-cron:delete-branch
+        on_stop: sentry-cron:publish:delete-branch
 
-publish:sentry-cron:tag:
+sentry-cron:publish:tag:
     extends: [ .publish:tag, .package:sentry-cron ]
 
-publish:sentry-cron:delete-branch:
+sentry-cron:publish:delete-branch:
     extends: [ .publish:delete-branch, .package:sentry-cron ]
