@@ -14,7 +14,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
 abstract class TestFixture extends Fixture implements FixtureGroupInterface
 {
-    final public const FIXTURE_GROUP = 'test';
+    final public const string FIXTURE_GROUP = 'test';
 
     public static function getGroups(): array
     {

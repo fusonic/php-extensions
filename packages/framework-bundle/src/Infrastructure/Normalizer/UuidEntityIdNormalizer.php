@@ -32,6 +32,7 @@ final class UuidEntityIdNormalizer implements NormalizerInterface, DenormalizerI
         return $data instanceof UuidEntityId;
     }
 
+    // @phpstan-ignore method.childReturnType (supportsDenormalization() only allows UuidEntityId  (sub-)types)
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ?UuidEntityId
     {
         if (null === $data || '' === $data) {

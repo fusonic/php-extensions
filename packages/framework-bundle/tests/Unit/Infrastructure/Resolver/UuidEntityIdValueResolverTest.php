@@ -28,7 +28,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
     #[DataProvider('provideSupports')]
     public function testSupports(bool $expected, Request $request, ArgumentMetadata $argument): void
     {
-        self::assertCount((int) $expected, (new UuidEntityIdValueResolver())->resolve($request, $argument));
+        self::assertCount((int) $expected, new UuidEntityIdValueResolver()->resolve($request, $argument));
     }
 
     /**
@@ -152,7 +152,7 @@ final class UuidEntityIdValueResolverTest extends TestCase
     {
         self::assertEqualsCanonicalizing(
             [$expected],
-            (new UuidEntityIdValueResolver())->resolve(
+            new UuidEntityIdValueResolver()->resolve(
                 request: new Request(query: [], request: [], attributes: ['id' => $requestUuid]),
                 argument: new ArgumentMetadata(
                     name: 'id',
@@ -200,10 +200,10 @@ final class UuidEntityIdValueResolverTest extends TestCase
 
         // assert
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('The UUID for the "id" parameter is invalid.');
+        $this->expectExceptionMessageIs('The UUID for the "id" parameter is invalid.');
 
         // act
-        (new UuidEntityIdValueResolver())->resolve(
+        new UuidEntityIdValueResolver()->resolve(
             request: new Request(query: [], request: [], attributes: ['id' => 'foobar']),
             argument: new ArgumentMetadata(
                 name: 'id',

@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 final class UuidEntityIdNormalizerTest extends TestCase
 {
-    private const DUMMY_UUID = '0195820a-af6e-7ec9-882e-53580038dd78';
+    private const string DUMMY_UUID = '0195820a-af6e-7ec9-882e-53580038dd78';
 
-    private const INVALID_UUID = 'abcdefg';
+    private const string INVALID_UUID = 'abcdefg';
 
     public function testNormalize(): void
     {
