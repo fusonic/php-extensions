@@ -18,7 +18,7 @@ use TypeError;
  */
 class TypeConstraintViolation extends ConstraintViolation
 {
-    private const EXPECTED_MATCHES = 4;
+    private const int EXPECTED_MATCHES = 4;
 
     public function __construct(\TypeError $error)
     {

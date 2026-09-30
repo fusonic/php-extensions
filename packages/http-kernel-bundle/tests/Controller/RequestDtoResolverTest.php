@@ -36,7 +36,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -233,9 +232,7 @@ final class RequestDtoResolverTest extends TestCase
         $generator = $resolver->resolve($request, $argument);
 
         $this->expectException(ConstraintViolationException::class);
-        $this->expectExceptionMessage(
-            'The value you selected is not a valid choice.'
-        );
+        $this->expectExceptionMessageIs('ConstraintViolation: The value you selected is not a valid choice.');
 
         $generator->current();
     }
@@ -252,9 +249,7 @@ final class RequestDtoResolverTest extends TestCase
         $generator = $resolver->resolve($request, $argument);
 
         $this->expectException(ConstraintViolationException::class);
-        $this->expectExceptionMessage(
-            'The value you selected is not a valid choice.'
-        );
+        $this->expectExceptionMessageIs('ConstraintViolation: The value you selected is not a valid choice.');
 
         $generator->current();
     }
@@ -273,9 +268,7 @@ final class RequestDtoResolverTest extends TestCase
         $generator = $resolver->resolve($request, $argument);
 
         $this->expectException(ConstraintViolationException::class);
-        $this->expectExceptionMessage(
-            'ConstraintViolation: The value you selected is not a valid choice.'
-        );
+        $this->expectExceptionMessageIs('ConstraintViolation: The value you selected is not a valid choice.');
         $generator->current();
     }
 
@@ -443,7 +436,7 @@ final class RequestDtoResolverTest extends TestCase
     public function testInvalidTypeMappingHandling(): void
     {
         $this->expectException(ConstraintViolationException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIs(
             'ConstraintViolation: This value should be of type float.'
         );
 
@@ -587,7 +580,7 @@ final class RequestDtoResolverTest extends TestCase
         );
         $generator = $resolver->resolve($request, $argument);
 
-        $this->expectExceptionMessage('ConstraintViolation: This value should be of type int.');
+        $this->expectExceptionMessageIs('ConstraintViolation: This value should be of type int.');
 
         /* @var DummyClassA $dto */
         $generator->current();
@@ -631,7 +624,7 @@ final class RequestDtoResolverTest extends TestCase
         $iterable = $resolver->resolve($request, $argument);
 
         $this->expectException(ConstraintViolationException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIs(
             'ConstraintViolation: This value should be of type string.'
         );
 
@@ -742,12 +735,9 @@ final class RequestDtoResolverTest extends TestCase
 
     private function getValidator(): ValidatorInterface
     {
-        $validatorBuilder = Validation::createValidatorBuilder();
-
-        // @phpstan-ignore method.notFound (BC layer)
-        Kernel::VERSION_ID >= 70000 ? $validatorBuilder->enableAttributeMapping() : $validatorBuilder->enableAnnotationMapping();
-
-        return $validatorBuilder->getValidator();
+        return Validation::createValidatorBuilder()
+            ->enableAttributeMapping()
+            ->getValidator();
     }
 
     /**
