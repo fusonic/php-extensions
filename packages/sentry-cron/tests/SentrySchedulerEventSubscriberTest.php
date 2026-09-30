@@ -25,7 +25,7 @@ use Symfony\Component\Scheduler\Trigger\PeriodicalTrigger;
 
 final class SentrySchedulerEventSubscriberTest extends TestCase
 {
-    private const TEST_ID = '123';
+    private const string TEST_ID = '123';
 
     public function testConstructor(): void
     {
@@ -168,7 +168,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
 
     private function mockPreRunEvent(object $message, MessageContext $context): PreRunEvent
     {
-        $event = $this->createMock(PreRunEvent::class);
+        $event = self::createStub(PreRunEvent::class);
         $event->method('getMessageContext')->willReturn($context);
         $event->method('getMessage')->willReturn($message);
 
@@ -177,7 +177,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
 
     private function mockPostRunEvent(object $message, MessageContext $context): PostRunEvent
     {
-        $event = $this->createMock(PostRunEvent::class);
+        $event = self::createStub(PostRunEvent::class);
         $event->method('getMessageContext')->willReturn($context);
         $event->method('getMessage')->willReturn($message);
 
@@ -186,7 +186,7 @@ final class SentrySchedulerEventSubscriberTest extends TestCase
 
     private function mockFailureEvent(object $message, MessageContext $context): FailureEvent
     {
-        $event = $this->createMock(FailureEvent::class);
+        $event = self::createStub(FailureEvent::class);
         $event->method('getMessageContext')->willReturn($context);
         $event->method('getMessage')->willReturn($message);
 
