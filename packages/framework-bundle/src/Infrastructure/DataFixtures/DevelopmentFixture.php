@@ -15,7 +15,7 @@ use Faker;
 
 abstract class DevelopmentFixture extends Fixture implements FixtureGroupInterface
 {
-    final public const FIXTURE_GROUP = 'development';
+    final public const string FIXTURE_GROUP = 'development';
 
     protected Faker\Generator $faker;
 

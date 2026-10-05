@@ -18,7 +18,7 @@ use Symfony\Component\Validator\ConstraintViolation;
  */
 class MissingConstructorArgumentsConstraintViolation extends ConstraintViolation
 {
-    private const EXPECTED_MATCHES = 3;
+    private const int EXPECTED_MATCHES = 3;
 
     public function __construct(MissingConstructorArgumentsException $exception)
     {

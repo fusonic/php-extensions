@@ -11,7 +11,7 @@ namespace Fusonic\HttpKernelBundle\Provider;
 
 interface ContextAwareProviderInterface
 {
-    final public const TAG_CONTEXT_AWARE_PROVIDER = 'fusonic.http_kernel_bundle.context_aware_provider';
+    final public const string TAG_CONTEXT_AWARE_PROVIDER = 'fusonic.http_kernel_bundle.context_aware_provider';
 
     public function supports(object $dto): bool;
 

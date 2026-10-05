@@ -22,37 +22,11 @@ class EntityIdDescriber implements ModelDescriberInterface
 {
     public function supports(Model $model): bool
     {
-        // BC layer for nelmio/api-doc-bundle < 5.8
-        if (!method_exists($model, 'getTypeInfo')) { // @phpstan-ignore function.alreadyNarrowedType (BC layer)
-            $type = $model->getType(); // @phpstan-ignore method.deprecated (BC layer)
-
-            /** @var class-string|null $className */
-            $className = $type->getClassName(); // @phpstan-ignore method.deprecatedClass (BC layer)
-
-            return 'object' === $type->getBuiltinType() // @phpstan-ignore method.deprecatedClass (BC layer)
-                && null !== $className
-                && is_a($className, EntityId::class, true);
-        }
-
         return $model->getTypeInfo()->isIdentifiedBy(EntityId::class);
     }
 
     public function describe(Model $model, Schema $schema): void
     {
-        // BC layer for nelmio/api-doc-bundle < 5.8
-        if (!method_exists($model, 'getTypeInfo')) { // @phpstan-ignore function.alreadyNarrowedType (BC layer)
-            $type = $model->getType(); // @phpstan-ignore method.deprecated (BC layer)
-
-            /** @var class-string|null $className */
-            $className = $type->getClassName();  // @phpstan-ignore method.deprecatedClass (BC layer)
-
-            if (null !== $className && is_a($className, EntityIntegerId::class, true)) {
-                $schema->type = 'integer';
-            }
-
-            return;
-        }
-
         if ($model->getTypeInfo()->isIdentifiedBy(EntityIntegerId::class)) {
             $schema->type = 'integer';
         }

@@ -24,7 +24,7 @@ use Symfony\Component\Uid\Uuid;
 
 final class UuidEntityIdTypeTest extends TestCase
 {
-    private const DUMMY_UUID = '0195820d-38da-7972-adbe-474a038c4a66';
+    private const string DUMMY_UUID = '0195820d-38da-7972-adbe-474a038c4a66';
 
     /**
      * Simulated class extending the abstract {@see UuidEntityId} class.
@@ -41,7 +41,7 @@ final class UuidEntityIdTypeTest extends TestCase
         $this->uuidEntityId = new readonly class extends UuidEntityId {};
 
         $this->type = new class extends UuidEntityIdType {
-            public const NAME = 'sample_uuid';
+            public const string NAME = 'sample_uuid';
 
             /**
              * @var class-string<UuidEntityId>
@@ -95,10 +95,10 @@ final class UuidEntityIdTypeTest extends TestCase
         // assert
         if (class_exists(InvalidType::class)) { // Compatibility layer for doctrine/dbal 3.x
             $this->expectException(InvalidType::class);
-            $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.');
+            $this->expectExceptionMessageIs('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.');
         } else {
             $this->expectException(ConversionException::class);
-            $this->expectExceptionMessage('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId');
+            $this->expectExceptionMessageIs('Could not convert PHP value of type stdClass to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId');
         }
 
         // act
@@ -122,7 +122,7 @@ final class UuidEntityIdTypeTest extends TestCase
         // assert
         if (class_exists(ValueNotConvertible::class)) { // Compatibility layer for doctrine/dbal 3.x
             $this->expectException(ValueNotConvertible::class);
-            $this->expectExceptionMessage(
+            $this->expectExceptionMessageIs(
                 \sprintf(
                     'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
                     $invalidUuidString
@@ -130,7 +130,7 @@ final class UuidEntityIdTypeTest extends TestCase
             );
         } else {
             $this->expectException(ConversionException::class);
-            $this->expectExceptionMessage(
+            $this->expectExceptionMessageIs(
                 \sprintf(
                     'Could not convert database value "%s" to Doctrine Type sample_uuid',
                     $invalidUuidString
@@ -195,13 +195,13 @@ final class UuidEntityIdTypeTest extends TestCase
         // assert
         if (class_exists(InvalidType::class)) { // Compatibility layer for doctrine/dbal 3.x
             $this->expectException(InvalidType::class);
-            $this->expectExceptionMessage(\sprintf(
+            $this->expectExceptionMessageIs(\sprintf(
                 'Could not convert PHP value %d to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId.',
                 $unsupportedTypeValue
             ));
         } else {
             $this->expectException(ConversionException::class);
-            $this->expectExceptionMessage(\sprintf(
+            $this->expectExceptionMessageIs(\sprintf(
                 'Could not convert PHP value %d to type sample_uuid. Expected one of the following types: null, string, Fusonic\FrameworkBundle\Domain\Id\UuidEntityId',
                 $unsupportedTypeValue
             ));
@@ -219,7 +219,7 @@ final class UuidEntityIdTypeTest extends TestCase
         // assert
         if (class_exists(ValueNotConvertible::class)) { // Compatibility layer for doctrine/dbal 3.x
             $this->expectException(ValueNotConvertible::class);
-            $this->expectExceptionMessage(
+            $this->expectExceptionMessageIs(
                 \sprintf(
                     'Could not convert database value "%s" to Doctrine Type "sample_uuid".',
                     $invalidUuidString
@@ -227,7 +227,7 @@ final class UuidEntityIdTypeTest extends TestCase
             );
         } else {
             $this->expectException(ConversionException::class);
-            $this->expectExceptionMessage(
+            $this->expectExceptionMessageIs(
                 \sprintf(
                     'Could not convert database value "%s" to Doctrine Type sample_uuid',
                     $invalidUuidString

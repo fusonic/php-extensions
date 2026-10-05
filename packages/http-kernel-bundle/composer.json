@@ -1,7 +1,7 @@
 {
     "name": "fusonic/http-kernel-bundle",
     "description": "Symfony bundle with extensions for Symfony's HttpKernel",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -33,17 +33,17 @@
         "symfony/validator": "^6.4 || ^7.3 || ^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.91",
-        "infection/infection": "^0.31",
-        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "infection/infection": "^0.35",
+        "phpstan/phpstan": "^2.2",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^12.4",
-        "rector/rector": "^2.2",
+        "phpunit/phpunit": "^13.4",
+        "rector/rector": "^2.6",
         "symfony/cache": "^6.4 || ^7.3 || ^8.0",
-        "tomasvotruba/type-coverage": "^2.0"
+        "tomasvotruba/type-coverage": "^2.3"
     },
     "scripts": {
         "infection": "XDEBUG_MODE=coverage vendor/bin/infection",

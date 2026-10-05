@@ -13,6 +13,7 @@ namespace Fusonic\HttpKernelBundle\Exception;
  * Allows attaching structured context to an exception. Useful for exceptions returned in an API response.
  *
  * Can be used with the api-documentation-bundle to automatically document the response body shape.
+ *
  * @see https://github.com/fusonic/php-extensions/tree/master/packages/api-documentation-bundle
  */
 interface ContextAwareExceptionInterface extends \Throwable

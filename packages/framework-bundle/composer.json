@@ -1,7 +1,7 @@
 {
     "name": "fusonic/framework-bundle",
     "description": "Opinionated collection of classes and functionalities used throughout Fusonic's Symfony projects",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -26,17 +26,20 @@
         "symfony/uid": "^6.4 || ^7.3 || ^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.91",
-        "infection/infection": "^0.31",
-        "nelmio/api-doc-bundle": "^5.8",
-        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "infection/infection": "^0.35",
+        "nelmio/api-doc-bundle": "^5.9.2",
+        "phpstan/phpstan": "^2.2",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^12.4",
-        "rector/rector": "^2.2",
-        "tomasvotruba/type-coverage": "^2.0"
+        "phpunit/phpunit": "^13.4",
+        "rector/rector": "^2.5",
+        "tomasvotruba/type-coverage": "^2.3"
+    },
+    "conflict": {
+        "nelmio/api-doc-bundle": "<5.9.2"
     },
     "suggest": {
         "fusonic/api-documentation-bundle": "If the application needs to provide API documentation",

@@ -91,11 +91,8 @@ readonly class StrictRequestDataCollector implements RequestDataCollectorInterfa
      */
     protected function parseRequestBody(Request $request): array
     {
-        $requestBodyParser = $this->requestBodyParsers[$request->getContentTypeFormat()] ?? null;
-
-        if (null === $requestBodyParser) {
-            $requestBodyParser = $this->requestBodyParsers['default'];
-        }
+        $requestBodyParser = $this->requestBodyParsers[$request->getContentTypeFormat() ?? ''] ?? null;
+        $requestBodyParser ??= $this->requestBodyParsers['default'];
 
         return $requestBodyParser->parse($request);
     }

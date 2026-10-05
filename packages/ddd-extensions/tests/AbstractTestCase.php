@@ -11,7 +11,7 @@ namespace Fusonic\DDDExtensions\Tests;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\TraceableMessageBus;
@@ -19,19 +19,19 @@ use Symfony\Component\Messenger\TraceableMessageBus;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @return MockObject&AbstractPlatform
+     * @return Stub&AbstractPlatform
      */
-    protected function getDatabasePlatformStub(): MockObject
+    protected function getDatabasePlatformStub(): Stub
     {
-        return $this->createMock(AbstractPlatform::class);
+        return self::createStub(AbstractPlatform::class);
     }
 
     /**
-     * @return MockObject&EntityManagerInterface
+     * @return Stub&EntityManagerInterface
      */
-    protected function getEntityManager(): MockObject
+    protected function getEntityManager(): Stub
     {
-        return $this->createMock(EntityManagerInterface::class);
+        return self::createStub(EntityManagerInterface::class);
     }
 
     protected function getMessageBus(): TraceableMessageBus

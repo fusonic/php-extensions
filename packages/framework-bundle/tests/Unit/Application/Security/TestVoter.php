@@ -18,8 +18,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
  */
 final class TestVoter extends BaseVoter
 {
-    public const ATTRIBUTE_A = 'attribute.a';
-    public const ATTRIBUTE_B = 'attribute.b';
+    public const string ATTRIBUTE_A = 'attribute.a';
+    public const string ATTRIBUTE_B = 'attribute.b';
 
     protected function voteOnAttribute(
         string $attribute,

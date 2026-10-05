@@ -20,7 +20,7 @@ final class AggregateRootTest extends AbstractTestCase
         $user = new User('John');
 
         self::assertSame((string) new UserId(0), (string) $user->getId());
-        self::assertTrue((new UserId(0))->equals($user->getId()));
+        self::assertTrue(new UserId(0)->equals($user->getId()));
     }
 
     public function testEvent(): void

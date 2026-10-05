@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ConstraintViolationException extends \RuntimeException
 {
-    public const NAME = 'ConstraintViolation';
+    public const string NAME = 'ConstraintViolation';
 
     public function __construct(private readonly ConstraintViolationListInterface $constraintViolationList)
     {

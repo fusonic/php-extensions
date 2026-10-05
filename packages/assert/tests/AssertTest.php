@@ -21,7 +21,7 @@ final class AssertTest extends TestCase
         $password = '1123';
 
         self::expectException(AssertionFailedException::class);
-        self::expectExceptionMessage(
+        self::expectExceptionMessageIs(
             'The following 2 assertions failed:'.\PHP_EOL.'1) User.username: Value "" is empty, but non empty value was expected.'.\PHP_EOL.'2) User.password: Value "1123" is too short, it should have at least 8 characters, but only has 4 characters.'.\PHP_EOL
         );
 
@@ -39,7 +39,7 @@ final class AssertTest extends TestCase
         $username = 'notempty';
 
         self::expectException(AssertionFailedException::class);
-        self::expectExceptionMessage(
+        self::expectExceptionMessageIs(
             'The following 1 assertions failed:'.\PHP_EOL.'1) User.username: Value "notempty" has to be 10 exactly characters long, but length is 8.'.\PHP_EOL
         );
 
@@ -51,7 +51,7 @@ final class AssertTest extends TestCase
         $username = '';
 
         self::expectException(AssertionFailedException::class);
-        self::expectExceptionMessage(
+        self::expectExceptionMessageIs(
             'The following 1 assertions failed:'.\PHP_EOL.'1) Dummy.username: Value "" is empty, but non empty value was expected.'.\PHP_EOL
         );
 

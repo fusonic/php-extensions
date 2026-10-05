@@ -26,7 +26,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class RequestDtoResolver implements ValueResolverInterface
 {
-    public const METHODS_WITH_STRICT_TYPE_CHECKS = [
+    /**
+     * @var list<string>
+     */
+    public const array METHODS_WITH_STRICT_TYPE_CHECKS = [
         Request::METHOD_PUT,
         Request::METHOD_POST,
         Request::METHOD_DELETE,
@@ -106,12 +109,10 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
     {
         try {
             if (\count($data) > 0) {
-                $dto = $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT, $options);
-            } else {
-                $dto = new $class();
+                return $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT, $options);
             }
 
-            return $dto;
+            return new $class();
         } catch (\Throwable $ex) {
             throw $this->errorHandler->handleDenormalizeError($ex, $data, $class);
         }
