@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Dto;
 
-enum ExampleEnum: string
+enum ExampleIntBackedEnum: int
 {
-    case CHOICE_1 = 'CHOICE_1';
-    case CHOICE_2 = 'CHOICE_2';
+    case INT_1 = 1;
+    case INT_2 = 2;
 }

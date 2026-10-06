@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace Fusonic\HttpKernelBundle\Tests\Dto;
 
-class EnumDto
+final readonly class DateTimeDto
 {
+    /**
+     * @param \DateTimeImmutable[] $dates
+     */
     public function __construct(
-        public ExampleStringBackedEnum $exampleEnum,
+        public \DateTimeInterface $date,
+        public array $dates = [],
     ) {
     }
 }

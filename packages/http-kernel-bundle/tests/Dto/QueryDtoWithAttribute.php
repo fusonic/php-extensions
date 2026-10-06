@@ -20,7 +20,7 @@ class QueryDtoWithAttribute
 
     #[Assert\NotNull]
     private string $string;
-    private string $float;
+    private float $float;
     private int $bool;
 
     #[Assert\Valid]
@@ -49,12 +49,12 @@ class QueryDtoWithAttribute
         $this->string = $string;
     }
 
-    public function getFloat(): string
+    public function getFloat(): float
     {
         return $this->float;
     }
 
-    public function setFloat(string $float): void
+    public function setFloat(float $float): void
     {
         $this->float = $float;
     }

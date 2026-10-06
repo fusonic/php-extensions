@@ -13,7 +13,6 @@ use Fusonic\HttpKernelBundle\ConstraintViolation\ArgumentCountConstraintViolatio
 use Fusonic\HttpKernelBundle\ConstraintViolation\InvalidEnumConstraintViolation;
 use Fusonic\HttpKernelBundle\ConstraintViolation\MissingConstructorArgumentsConstraintViolation;
 use Fusonic\HttpKernelBundle\ConstraintViolation\NotNormalizableValueConstraintViolation;
-use Fusonic\HttpKernelBundle\ConstraintViolation\TypeConstraintViolation;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Fusonic\HttpKernelBundle\Exception\InvalidEnumException;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
@@ -48,10 +47,6 @@ class ConstraintViolationErrorHandler implements ErrorHandlerInterface
 
         if ($ex instanceof \ArgumentCountError) {
             return ConstraintViolationException::fromConstraintViolation(new ArgumentCountConstraintViolation($ex));
-        }
-
-        if ($ex instanceof \TypeError) {
-            return ConstraintViolationException::fromConstraintViolation(new TypeConstraintViolation($ex));
         }
 
         return $ex;

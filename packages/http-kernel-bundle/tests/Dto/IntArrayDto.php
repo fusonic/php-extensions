@@ -14,12 +14,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class IntArrayDto
 {
     /**
-     * @param int[] $items
+     * @param int[]             $items
+     * @param array<mixed>|null $nullableItems
      */
     public function __construct(
         #[Assert\NotNull]
         #[Assert\Valid]
+        #[Assert\All(new Assert\Positive())]
         private readonly array $items,
+        public readonly ?array $nullableItems = null,
     ) {
     }
 

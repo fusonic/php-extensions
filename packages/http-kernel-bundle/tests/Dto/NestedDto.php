@@ -13,10 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NestedDto
 {
+    /**
+     * @param array<NestedDto>|null $nestedItems
+     */
     public function __construct(
         #[Assert\NotNull]
         #[Assert\Valid]
         private readonly DummyClassA $objectArgument,
+        public readonly ?array $nestedItems,
     ) {
     }
 

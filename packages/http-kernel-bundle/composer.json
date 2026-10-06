@@ -24,13 +24,14 @@
     "require": {
         "php": ">=8.4",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "symfony/config": "^6.4 || ^7.3 || ^8.0",
-        "symfony/dependency-injection": "^6.4 || ^7.3 || ^8.0",
-        "symfony/http-kernel": "^6.4 || ^7.3 || ^8.0",
-        "symfony/property-access": "^6.4 || ^7.3 || ^8.0",
-        "symfony/property-info": "^6.4 || ^7.3 || ^8.0",
-        "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
-        "symfony/validator": "^6.4 || ^7.3 || ^8.0"
+        "symfony/config": "^7.3 || ^8.0",
+        "symfony/dependency-injection": "^7.3 || ^8.0",
+        "symfony/http-kernel": "^7.3 || ^8.0",
+        "symfony/property-access": "^7.3 || ^8.0",
+        "symfony/property-info": "^7.3 || ^8.0",
+        "symfony/serializer": "^7.3 || ^8.0",
+        "symfony/type-info": "^7.3 || ^8.0",
+        "symfony/validator": "^7.3 || ^8.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
@@ -42,7 +43,7 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^13.4",
         "rector/rector": "^2.6",
-        "symfony/cache": "^6.4 || ^7.3 || ^8.0",
+        "symfony/cache": "^7.3 || ^8.0",
         "tomasvotruba/type-coverage": "^2.3"
     },
     "scripts": {

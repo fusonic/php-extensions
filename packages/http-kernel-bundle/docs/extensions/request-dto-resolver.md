@@ -2,11 +2,13 @@
 
 * [About](#about)
 * [Features](#features)
+* [How it works](#how-it-works)
 * [Advantages over Symfony's `MapRequestPayload` & `MapQueryString` attributes](#advantages-over-symfonys-maprequestpayload--mapquerystring-attributes)
 * [Usage](#usage)
   * [Parameter attribute](#parameter-attribute)
   * [Class attribute](#class-attribute)
   * [Parsing and collecting data for models](#parsing-and-collecting-data-for-models)
+  * [Route and query parameters](#route-and-query-parameters)
   * [Error handling](#error-handling)
   * [Using an exception listener/subscriber](#using-an-exception-listenersubscriber)
   * [`ContextAwareProvider`](#contextawareprovider)
@@ -26,16 +28,17 @@ Our RequestDtoResolver can be used to map request data directly to objects. Inst
 information from your request and placing it in an object or, heaven forbid, passing around generic data arrays, this
 class leverages the Symfony [Serializer](https://symfony.com/doc/current/components/serializer.html) to map requests to
 objects. This enables you to use custom objects as data transfer objects (DTOs) to transport the request data from your
-controller to your business logic. Additionally, it will validate the resulting object using the Symfony 
+controller to your business logic. Additionally, it will validate the resulting object using the Symfony
 [Validator component](https://symfony.com/doc/current/components/validator.html) if you set validation constraints.
 
 - Mapping will happen for parameters accompanied by the [`Fusonic\HttpKernelBundle\Attribute\FromRequest`
   attribute](/src/Attribute/FromRequest.php). Alternatively the attribute can also be set on the class of the parameter
   (see example below).
-- Strong type checks will be enforced for `PUT`, `POST`, `PATCH` and `DELETE` during serialization, and it will result
-  in an error if the types in the request body don't match the expected ones in the DTO.
-- Type enforcement will be disabled for all other requests e.g. `GET` as query parameters will always be transferred as
-  string.
+- The request body will be used for `PUT`, `POST`, `PATCH` and `DELETE` requests. JSON request bodies are typed, so
+  strong type checks will be enforced and it will result in an error if the types in the request body don't match the
+  expected ones in the DTO.
+- Route and query parameters always come in as strings and will be converted to the types of the DTO (see
+  [Route and query parameters](#route-and-query-parameters)).
 - The request body will be combined with route parameters for `PUT`, `POST`, `PATCH` and `DELETE` requests (query
   parameters will be ignored in this case).
 - The query parameters will be combined with route parameters for all other requests (request body will be ignored in
@@ -53,6 +56,21 @@ controller to your business logic. Additionally, it will validate the resulting 
   [ErrorHandlerInterface](/src/ErrorHandler/ErrorHandlerInterface.php).
 - Depending on the given content type it will either parse the request body as a regular form or parse the content as JSON
   if the content type is set accordingly.
+
+## How it works
+
+1. The `RequestDtoResolver` checks if the controller argument is supported (it has the `FromRequest` attribute on the
+   parameter or the class).
+2. The `RequestDataCollectorInterface` (by default the `StrictRequestDataCollector`) collects the data from the request:
+   - the request body is parsed with a `RequestBodyParserInterface` depending on the content type (JSON or form)
+   - route and query parameters are converted to the types of the DTO with a `UrlParserInterface`
+3. The collected data is denormalized into the DTO with the Symfony Serializer.
+4. All `ContextAwareProviderInterface` implementations that support the DTO add their data.
+5. The DTO is validated with the Symfony Validator.
+
+Errors during denormalization (invalid types, invalid enum values, missing constructor arguments, ...) and validation
+are passed to the `ErrorHandlerInterface` (by default the `ConstraintViolationErrorHandler`), which maps them to a
+`ConstraintViolationException`. This way all errors have the same format.
 
 ## Advantages over Symfony's `MapRequestPayload` & `MapQueryString` attributes
 
@@ -83,10 +101,10 @@ final readonly class UpdateFooDto {
         #[Assert\NotNull]
         #[Assert\Positive]
         public int $id,
-        
+
         #[Assert\NotBlank]
         public string $clientVersion,
-        
+
         #[Assert\NotNull]
         public array $browserInfo,
     ) {
@@ -148,6 +166,46 @@ into an implementation of `Fusonic\HttpKernelBundle\Request\RequestDataCollector
 `Fusonic\HttpKernelBundle\Controller\RequestDtoResolver`. Inside the `RequestDataCollectorInterface` you can
 also modify the behaviour of how and which values are used from the `Request` object.
 
+### Route and query parameters
+
+Route and query parameters always come in as strings. The `StrictRequestDataCollector` uses the types of the DTO
+properties (including PHPDoc types like `array<int>`) to convert them:
+
+- `int`, `float`, `bool` and `string`
+- backed and unit enums (passed as a string to the serializer)
+- `\DateTimeInterface` implementations (passed as a string to the serializer)
+- arrays, including typed arrays like `array<int>` or `ExampleEnum[]`
+- objects and arrays of objects, by using nested parameters like `?filter[name]=foo&filter[ids][]=1`
+- union types of the types above, like `int|string`. The most restrictive type is tried first, so `?id=1` with
+  `int|string` results in the integer `1`. Union types with objects or arrays are not supported.
+
+Whether invalid values result in an error depends on the configuration:
+
+```yaml
+# config/packages/fusonic_http_kernel.yaml
+fusonic_http_kernel:
+    strict_route_params: true # default: false
+    strict_query_params: true # default: false
+```
+
+- **Strict**: invalid values are passed to `UrlParserInterface::handleFailure()`. The default `FilterVarUrlParser` throws a
+  `NotNormalizableValueException`, which will result in a `ConstraintViolationException` with the property path of the
+  invalid value (e.g. `filter.ids[1]`). Union types that contain objects or arrays throw an
+  `UnionTypeNotSupportedException`.
+- **Not strict**: valid values are converted, invalid values are passed on as they are and are left to the serializer.
+
+By default the `FilterVarUrlParser` is used, which converts the values with `filter_var`. To change the parsing, you can
+create your own implementation of `Fusonic\HttpKernelBundle\Request\UrlParser\UrlParserInterface` and pass it to the
+`StrictRequestDataCollector`. For example:
+
+- `isNull()`: which values are considered `null` for nullable properties. By default this is an empty string, but
+  you could also treat the string `null` as `null`.
+- `handleArrayParameter()`: how arrays are passed in the url. By default regular url arrays (`?ids[]=1&ids[]=2`) are
+  used, but you could also split comma separated values (`?ids=1,2`). It is up to the implementation to decide whether
+  a value with a comma is a list or a single value.
+- `handleFailure()`: what happens with invalid values in strict mode, e.g. throw an exception or do nothing and let a
+  later validation step handle this.
+
 ### Error handling
 
 The bundle provides a default error handler (`http-kernel-bundle/src/ErrorHandler/ConstraintViolationErrorHandler.php`)
@@ -174,7 +232,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 final class ExceptionSubscriber implements EventSubscriberInterface {
 
-    public function __construct(private readonly NormalizerInterface $normalizer) 
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -188,7 +246,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface {
     public function onKernelException(ExceptionEvent $event): void
     {
         $throwable = $event->getThrowable();
-        
+
         if ($throwable instanceof ConstraintViolationException) {
             $data = $this->normalizer->normalize($throwable);
             $event->setResponse(new JsonResponse($data, 422));
@@ -243,7 +301,7 @@ final readonly class UserIdAwareProvider implements ContextAwareProviderInterfac
 2. Create the interface to mark the class you support and set the data.
 
 ```php
-//... 
+//...
 interface UserIdAwareInterface
 {
     public function withUserId(int $id): void;

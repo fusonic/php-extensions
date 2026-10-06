@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\DependencyInjection;
 
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
+use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -23,7 +24,14 @@ class FusonicHttpKernelExtension extends Extension
             container: $container,
             locator: new FileLocator(__DIR__.'/../../config')
         );
+
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
         $loader->load('services.php');
+
+        $container->getDefinition(StrictRequestDataCollector::class)
+            ->setArgument('$strictRouteParams', $config['strict_route_params'])
+            ->setArgument('$strictQueryParams', $config['strict_query_params']);
 
         $container->registerForAutoconfiguration(ContextAwareProviderInterface::class)
             ->addTag(ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER);

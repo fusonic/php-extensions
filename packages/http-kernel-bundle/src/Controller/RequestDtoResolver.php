@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\Controller;
 
 use Fusonic\HttpKernelBundle\Attribute\FromRequest;
+use Fusonic\HttpKernelBundle\Cache\ReflectionClassCache;
 use Fusonic\HttpKernelBundle\ErrorHandler\ConstraintViolationErrorHandler;
 use Fusonic\HttpKernelBundle\ErrorHandler\ErrorHandlerInterface;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
@@ -20,22 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class RequestDtoResolver implements ValueResolverInterface
 {
-    /**
-     * @var list<string>
-     */
-    public const array METHODS_WITH_STRICT_TYPE_CHECKS = [
-        Request::METHOD_PUT,
-        Request::METHOD_POST,
-        Request::METHOD_DELETE,
-        Request::METHOD_PATCH,
-    ];
-
     public function __construct(
         private DenormalizerInterface $serializer,
         private ValidatorInterface $validator,
@@ -45,7 +35,7 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
          */
         #[AutowireIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)]
         private iterable $providers = [],
-        private RequestDataCollectorInterface $modelDataParser = new StrictRequestDataCollector(),
+        private RequestDataCollectorInterface $requestDataCollector = new StrictRequestDataCollector(),
     ) {
     }
 
@@ -55,17 +45,18 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
             return;
         }
 
-        $data = $this->modelDataParser->collect($request);
-
-        if (\in_array($request->getMethod(), self::METHODS_WITH_STRICT_TYPE_CHECKS, true)) {
-            $options = [];
-        } else {
-            $options = [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true];
-        }
-
         /** @var class-string $className */
         $className = $argument->getType();
-        $dto = $this->denormalize($data, $className, $options);
+
+        $data = [];
+
+        try {
+            $data = $this->requestDataCollector->collect($request, $className);
+            $dto = $this->denormalize($data, $className);
+        } catch (\Throwable $ex) {
+            throw $this->errorHandler->handleDenormalizeError($ex, $data, $className);
+        }
+
         $this->applyProviders($dto);
         $this->validate($dto);
 
@@ -94,28 +85,23 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
         }
 
         // attribute via class
-        $class = new \ReflectionClass($argument->getType());
+        $class = ReflectionClassCache::getReflectionClass($argument->getType());
         $attributes = $class->getAttributes(FromRequest::class, \ReflectionAttribute::IS_INSTANCEOF);
 
         return \count($attributes) > 0;
     }
 
     /**
-     * @param array<mixed>         $data
-     * @param class-string         $class
-     * @param array<string, mixed> $options
+     * @param array<mixed> $data
+     * @param class-string $class
      */
-    private function denormalize(array $data, string $class, array $options): object
+    private function denormalize(array $data, string $class): object
     {
-        try {
-            if (\count($data) > 0) {
-                return $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT, $options);
-            }
-
-            return new $class();
-        } catch (\Throwable $ex) {
-            throw $this->errorHandler->handleDenormalizeError($ex, $data, $class);
+        if (\count($data) > 0) {
+            return $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT);
         }
+
+        return new $class();
     }
 
     private function validate(object $dto): void
