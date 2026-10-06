@@ -5,14 +5,14 @@
 - Added `symfony/type-info` as a dependency
 
 ## Changes
-- Route and query parameters are converted to the types of the DTO properties. See the
-  [documentation](docs/extensions/request-dto-resolver.md#route-and-query-parameters) for the `strict_route_params` and
-  `strict_query_params` configuration.
+- The existing `StrictRequestDataCollector` was renamed to `RequestDataCollector`. Its behaviour did not change and it
+  is still used by default.
+- The new `StrictRequestDataCollector` converts route parameters, query parameters and form request bodies to the types
+  of the DTO and reports invalid values as a `ConstraintViolationException`. Enable it with the `strict` configuration, see the
+  [documentation](docs/extensions/request-dto-resolver.md#route-and-query-parameters).
 - `RequestDataCollectorInterface::collect()` has a new `$className` parameter
-- The constructor of `StrictRequestDataCollector` has changed. The `$forceRouteParamsIntegers` parameter was removed,
-  route parameters are now converted based on the types of the DTO.
-- `RequestDtoResolver::METHODS_WITH_STRICT_TYPE_CHECKS` was replaced by
-  `StrictRequestDataCollector::METHODS_WITH_REQUEST_BODY`
+- `RequestDataCollectorInterface` has a new `getDenormalizationContext()` method. Disabling the type enforcement for
+  requests without a body moved from the `RequestDtoResolver` to the `RequestDataCollector`.
+- `RequestDtoResolver::METHODS_WITH_STRICT_TYPE_CHECKS` is deprecated, use
+  `RequestDataCollectorInterface::METHODS_WITH_REQUEST_BODY` instead
 - The `$modelDataParser` constructor parameter of `RequestDtoResolver` was renamed to `$requestDataCollector`
-- Type enforcement of the serializer is no longer disabled for requests without a body
-- Removed the unused `TypeConstraintViolation`

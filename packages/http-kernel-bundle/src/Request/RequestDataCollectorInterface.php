@@ -17,9 +17,24 @@ use Symfony\Component\HttpFoundation\Request;
 interface RequestDataCollectorInterface
 {
     /**
+     * @var list<string>
+     */
+    public const array METHODS_WITH_REQUEST_BODY = [
+        Request::METHOD_PUT,
+        Request::METHOD_POST,
+        Request::METHOD_DELETE,
+        Request::METHOD_PATCH,
+    ];
+
+    /**
      * @param class-string $className
      *
      * @return array<mixed>
      */
     public function collect(Request $request, string $className): array;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getDenormalizationContext(Request $request): array;
 }

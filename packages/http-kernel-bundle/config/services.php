@@ -10,17 +10,12 @@ declare(strict_types=1);
 use Fusonic\HttpKernelBundle\Controller\RequestDtoResolver;
 use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
 use Fusonic\HttpKernelBundle\Normalizer\DecoratedBackedEnumNormalizer;
-use Fusonic\HttpKernelBundle\Request\RequestDataCollectorInterface;
-use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
-
-    $services->set(StrictRequestDataCollector::class);
-    $services->alias(RequestDataCollectorInterface::class, StrictRequestDataCollector::class);
 
     $services->set(RequestDtoResolver::class)
         ->autowire()
@@ -35,4 +30,5 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ConstraintViolationExceptionNormalizer::class)
         ->autoconfigure()
         ->arg('$normalizer', service('serializer.normalizer.constraint_violation_list'));
+    $services->load('Fusonic\HttpKernelBundle\Request\\', __DIR__.'/../src/Request/');
 };

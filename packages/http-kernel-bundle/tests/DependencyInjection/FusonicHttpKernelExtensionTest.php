@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Fusonic\HttpKernelBundle\Tests\DependencyInjection;
 
 use Fusonic\HttpKernelBundle\DependencyInjection\FusonicHttpKernelExtension;
+use Fusonic\HttpKernelBundle\Request\RequestDataCollector;
 use Fusonic\HttpKernelBundle\Request\RequestDataCollectorInterface;
 use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use PHPUnit\Framework\TestCase;
@@ -17,22 +18,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class FusonicHttpKernelExtensionTest extends TestCase
 {
-    public function testStrictParamsDefaultToFalse(): void
+    public function testDefaultRequestDataCollector(): void
     {
         $container = $this->loadExtension([]);
-        $definition = $container->getDefinition(StrictRequestDataCollector::class);
 
-        self::assertFalse($definition->getArgument('$strictRouteParams'));
-        self::assertFalse($definition->getArgument('$strictQueryParams'));
+        self::assertSame(RequestDataCollector::class, (string) $container->getAlias(RequestDataCollectorInterface::class));
     }
 
-    public function testStrictParamsAreConfiguredOnCollector(): void
+    public function testStrictRequestDataCollector(): void
     {
-        $container = $this->loadExtension([['strict_route_params' => true, 'strict_query_params' => true]]);
-        $definition = $container->getDefinition(StrictRequestDataCollector::class);
+        $container = $this->loadExtension([['strict' => true]]);
 
-        self::assertTrue($definition->getArgument('$strictRouteParams'));
-        self::assertTrue($definition->getArgument('$strictQueryParams'));
         self::assertSame(StrictRequestDataCollector::class, (string) $container->getAlias(RequestDataCollectorInterface::class));
     }
 

@@ -61,10 +61,12 @@ controller to your business logic. Additionally, it will validate the resulting 
 
 1. The `RequestDtoResolver` checks if the controller argument is supported (it has the `FromRequest` attribute on the
    parameter or the class).
-2. The `RequestDataCollectorInterface` (by default the `StrictRequestDataCollector`) collects the data from the request:
+2. The `RequestDataCollectorInterface` (the `RequestDataCollector` or the `StrictRequestDataCollector`, see
+   [Route and query parameters](#route-and-query-parameters)) collects the data from the request:
    - the request body is parsed with a `RequestBodyParserInterface` depending on the content type (JSON or form)
-   - route and query parameters are converted to the types of the DTO with a `UrlParserInterface`
-3. The collected data is denormalized into the DTO with the Symfony Serializer.
+   - route and query parameters are added, depending on the implementation converted to the types of the DTO
+3. The collected data is denormalized into the DTO with the Symfony Serializer, using the denormalization context of
+   the `RequestDataCollectorInterface`.
 4. All `ContextAwareProviderInterface` implementations that support the DTO add their data.
 5. The DTO is validated with the Symfony Validator.
 
@@ -168,8 +170,25 @@ also modify the behaviour of how and which values are used from the `Request` ob
 
 ### Route and query parameters
 
-Route and query parameters always come in as strings. The `StrictRequestDataCollector` uses the types of the DTO
-properties (including PHPDoc types like `array<int>`) to convert them:
+Route and query parameters always come in as strings. There are two implementations of the
+`RequestDataCollectorInterface` that handle them differently:
+
+- `RequestDataCollector` (default): route parameters that look like integers are converted to integers and type
+  enforcement of the serializer is disabled for requests without a body, so query parameters are converted by PHP.
+- `StrictRequestDataCollector`: route parameters, query parameters and form request bodies are converted to the types
+  of the DTO. Invalid values result in a `ConstraintViolationException` with the property path of the invalid value
+  (e.g. `filter.ids[1]`), the same way as for a JSON request body.
+
+The `StrictRequestDataCollector` is not enabled by default to not break existing projects. To enable it:
+
+```yaml
+# config/packages/fusonic_http_kernel.yaml
+fusonic_http_kernel:
+    strict: true # default: false
+```
+
+The `StrictRequestDataCollector` uses the types of the DTO properties (including PHPDoc types like `array<int>`) to
+convert the values. The following types are supported:
 
 - `int`, `float`, `bool` and `string`
 - backed and unit enums (passed as a string to the serializer)
@@ -179,20 +198,7 @@ properties (including PHPDoc types like `array<int>`) to convert them:
 - union types of the types above, like `int|string`. The most restrictive type is tried first, so `?id=1` with
   `int|string` results in the integer `1`. Union types with objects or arrays are not supported.
 
-Whether invalid values result in an error depends on the configuration:
-
-```yaml
-# config/packages/fusonic_http_kernel.yaml
-fusonic_http_kernel:
-    strict_route_params: true # default: false
-    strict_query_params: true # default: false
-```
-
-- **Strict**: invalid values are passed to `UrlParserInterface::handleFailure()`. The default `FilterVarUrlParser` throws a
-  `NotNormalizableValueException`, which will result in a `ConstraintViolationException` with the property path of the
-  invalid value (e.g. `filter.ids[1]`). Union types that contain objects or arrays throw an
-  `UnionTypeNotSupportedException`.
-- **Not strict**: valid values are converted, invalid values are passed on as they are and are left to the serializer.
+Union types that contain objects or arrays throw an `UnionTypeNotSupportedException`.
 
 By default the `FilterVarUrlParser` is used, which converts the values with `filter_var`. To change the parsing, you can
 create your own implementation of `Fusonic\HttpKernelBundle\Request\UrlParser\UrlParserInterface` and pass it to the
@@ -203,8 +209,8 @@ create your own implementation of `Fusonic\HttpKernelBundle\Request\UrlParser\Ur
 - `handleArrayParameter()`: how arrays are passed in the url. By default regular url arrays (`?ids[]=1&ids[]=2`) are
   used, but you could also split comma separated values (`?ids=1,2`). It is up to the implementation to decide whether
   a value with a comma is a list or a single value.
-- `handleFailure()`: what happens with invalid values in strict mode, e.g. throw an exception or do nothing and let a
-  later validation step handle this.
+- `handleFailure()`: what happens with invalid values. By default a `NotNormalizableValueException` is thrown, which
+  results in a `ConstraintViolationException`. You could also do nothing and let a later validation step handle this.
 
 ### Error handling
 

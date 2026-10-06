@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Fusonic\HttpKernelBundle\Tests\Normalizer;
+namespace Fusonic\HttpKernelBundle\Tests\Request\UrlParser;
 
 use Fusonic\HttpKernelBundle\Request\UrlParser\FilterVarUrlParser;
 use PHPUnit\Framework\TestCase;

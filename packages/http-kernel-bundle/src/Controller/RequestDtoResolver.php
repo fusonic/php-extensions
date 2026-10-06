@@ -14,8 +14,8 @@ use Fusonic\HttpKernelBundle\Cache\ReflectionClassCache;
 use Fusonic\HttpKernelBundle\ErrorHandler\ConstraintViolationErrorHandler;
 use Fusonic\HttpKernelBundle\ErrorHandler\ErrorHandlerInterface;
 use Fusonic\HttpKernelBundle\Provider\ContextAwareProviderInterface;
+use Fusonic\HttpKernelBundle\Request\RequestDataCollector;
 use Fusonic\HttpKernelBundle\Request\RequestDataCollectorInterface;
-use Fusonic\HttpKernelBundle\Request\StrictRequestDataCollector;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -26,6 +26,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class RequestDtoResolver implements ValueResolverInterface
 {
+    /**
+     * @var list<string>
+     */
+    #[\Deprecated(message: 'use RequestDataCollectorInterface::METHODS_WITH_REQUEST_BODY instead')]
+    public const array METHODS_WITH_STRICT_TYPE_CHECKS = RequestDataCollectorInterface::METHODS_WITH_REQUEST_BODY;
+
     public function __construct(
         private DenormalizerInterface $serializer,
         private ValidatorInterface $validator,
@@ -35,7 +41,7 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
          */
         #[AutowireIterator(tag: ContextAwareProviderInterface::TAG_CONTEXT_AWARE_PROVIDER)]
         private iterable $providers = [],
-        private RequestDataCollectorInterface $requestDataCollector = new StrictRequestDataCollector(),
+        private RequestDataCollectorInterface $requestDataCollector = new RequestDataCollector(),
     ) {
     }
 
@@ -52,7 +58,7 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
 
         try {
             $data = $this->requestDataCollector->collect($request, $className);
-            $dto = $this->denormalize($data, $className);
+            $dto = $this->denormalize($data, $className, $this->requestDataCollector->getDenormalizationContext($request));
         } catch (\Throwable $ex) {
             throw $this->errorHandler->handleDenormalizeError($ex, $data, $className);
         }
@@ -92,13 +98,14 @@ final readonly class RequestDtoResolver implements ValueResolverInterface
     }
 
     /**
-     * @param array<mixed> $data
-     * @param class-string $class
+     * @param array<mixed>         $data
+     * @param class-string         $class
+     * @param array<string, mixed> $context
      */
-    private function denormalize(array $data, string $class): object
+    private function denormalize(array $data, string $class, array $context): object
     {
         if (\count($data) > 0) {
-            return $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT);
+            return $this->serializer->denormalize($data, $class, JsonEncoder::FORMAT, $context);
         }
 
         return new $class();

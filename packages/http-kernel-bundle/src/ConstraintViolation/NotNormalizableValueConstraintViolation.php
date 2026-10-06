@@ -40,14 +40,6 @@ class NotNormalizableValueConstraintViolation extends ConstraintViolation
                 $invalidValue = $matches[4];
                 $expectedType ??= $matches[3];
                 $propertyPath ??= $matches[1];
-            } elseif (1 === preg_match(
-                '/The type of the "(\w+)" attribute for class "(.+)" must be one of "(.+)" \("(.+)" given\)\./',
-                $message,
-                $matches
-            )) {
-                $invalidValue = $matches[4];
-                $expectedType = $matches[3];
-                $propertyPath = $matches[1];
             } else {
                 throw $exception;
             }

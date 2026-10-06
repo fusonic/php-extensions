@@ -42,7 +42,7 @@ trait RequestDtoResolverTestTrait
         return new RequestDtoResolver(
             serializer: $this->getDenormalizer(),
             validator: $this->getValidator(),
-            requestDataCollector: new StrictRequestDataCollector(strictRouteParams: true, strictQueryParams: true),
+            requestDataCollector: new StrictRequestDataCollector(),
         );
     }
 

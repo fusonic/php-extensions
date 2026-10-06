@@ -20,10 +20,8 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->booleanNode('strict_route_params')
-                    ->defaultValue(false)
-                ->end()
-                ->booleanNode('strict_query_params')
+                ->booleanNode('strict')
+                    ->info('Parse route and query parameters strictly into the types of the DTO with the StrictRequestDataCollector.')
                     ->defaultValue(false)
                 ->end()
             ->end()
