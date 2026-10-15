@@ -7,11 +7,6 @@
         DEPENDENCIES: highest
         XDEBUG_MODE: 'off'
         XDEBUG_CONFIG: "log_level=0"
-        COMPOSER_CACHE_DIR: ${CI_PROJECT_DIR}/.composer-cache
-    cache:
-        key: composer-${PACKAGE}-${PHP_VERSION}-${DEPENDENCIES}
-        paths:
-            - .composer-cache/
     before_script:
         - cd packages/${PACKAGE}
         - composer validate --no-check-all
