@@ -19,7 +19,7 @@ class CsvReader
 
     public function __construct(private mixed $file, ?CsvReaderOptions $options = null)
     {
-        if (2 === \func_num_args() && null === $options) {
+        if (2 === \func_num_args() && !$options instanceof CsvReaderOptions) {
             trigger_deprecation(
                 'fusonic/csv-reader',
                 '0.5.2',
