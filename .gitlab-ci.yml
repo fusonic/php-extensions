@@ -9,6 +9,7 @@ stages:
     - publish
 
 variables:
+    GIT_STRATEGY: clone
     DOCKER_IMAGE: docker:29.8
     DOCKER_DIND_IMAGE: docker:29.8-dind-rootless
     PHP_LATEST_VERSION: '8.5'
