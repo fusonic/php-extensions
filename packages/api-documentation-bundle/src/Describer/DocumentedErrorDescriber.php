@@ -50,7 +50,7 @@ final readonly class DocumentedErrorDescriber
 
             $contextMethod = $this->resolveExceptionContextMethod($documentedError->exceptionClass);
 
-            if (null !== $contextMethod) {
+            if ($contextMethod instanceof \ReflectionMethod) {
                 $responseOptions['value'] = $this->buildContextResponseContent($contextMethod);
             }
 
@@ -91,13 +91,13 @@ final readonly class DocumentedErrorDescriber
         $extractor = new PropertyExtractor();
         $returnType = $extractor->extractMethodReturnType($contextMethod);
 
-        if (null === $returnType) {
+        if (!$returnType instanceof \Symfony\Component\TypeInfo\Type) {
             return new OA\JsonContent(['type' => 'object']);
         }
 
         $collectionType = $extractor->extractCollectionReturnType($returnType);
 
-        if (null !== $collectionType) {
+        if ($collectionType instanceof \Symfony\Component\TypeInfo\Type) {
             $itemType = $extractor->getTypeName($collectionType);
 
             if (null === $itemType) {

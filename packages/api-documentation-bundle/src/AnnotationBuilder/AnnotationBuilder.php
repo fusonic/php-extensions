@@ -60,7 +60,7 @@ final class AnnotationBuilder
             return;
         }
 
-        if (null === $this->requestObjectReflectionClass) {
+        if (!$this->requestObjectReflectionClass instanceof \ReflectionClass) {
             return;
         }
 
@@ -116,13 +116,13 @@ final class AnnotationBuilder
 
         $returnType = $this->propertyExtractor->extractMethodReturnType($this->method);
 
-        if (null === $returnType) {
+        if (!$returnType instanceof \Symfony\Component\TypeInfo\Type) {
             return;
         }
 
         $collectionType = $this->propertyExtractor->extractCollectionReturnType($returnType);
 
-        if (null !== $collectionType) {
+        if ($collectionType instanceof \Symfony\Component\TypeInfo\Type) {
             $output = $this->propertyExtractor->getTypeName($collectionType);
 
             if (null === $output) {
