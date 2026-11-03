@@ -70,7 +70,7 @@ class AttachmentEmailMiddleware implements MiddlewareInterface
             return $stack->next()->handle($envelope, $stack);
         }
 
-        if (null !== $envelope->last(ReceivedStamp::class)) {
+        if ($envelope->last(ReceivedStamp::class) instanceof \Symfony\Component\Messenger\Stamp\StampInterface) {
             $this->onReceive($email);
         } else {
             $this->onSend($email);
