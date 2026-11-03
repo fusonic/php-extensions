@@ -25,10 +25,13 @@ class EntityIdDescriber implements ModelDescriberInterface
         return $model->getTypeInfo()->isIdentifiedBy(EntityId::class);
     }
 
-    public function describe(Model $model, Schema $schema): void
+    /**
+     * PHPStan can be unignored when Nelmio got an update.
+     */
+    public function describe(Model $model, Schema $schema): void // @phpstan-ignore parameter.deprecatedClass
     {
         if ($model->getTypeInfo()->isIdentifiedBy(EntityIntegerId::class)) {
-            $schema->type = 'integer';
+            $schema->type = 'integer'; // @phpstan-ignore property.deprecatedClass
         }
     }
 }
