@@ -14,6 +14,7 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 final class AnnotationBuilder
@@ -116,13 +117,13 @@ final class AnnotationBuilder
 
         $returnType = $this->propertyExtractor->extractMethodReturnType($this->method);
 
-        if (!$returnType instanceof \Symfony\Component\TypeInfo\Type) {
+        if (!$returnType instanceof Type) {
             return;
         }
 
         $collectionType = $this->propertyExtractor->extractCollectionReturnType($returnType);
 
-        if ($collectionType instanceof \Symfony\Component\TypeInfo\Type) {
+        if ($collectionType instanceof Type) {
             $output = $this->propertyExtractor->getTypeName($collectionType);
 
             if (null === $output) {

@@ -18,6 +18,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 
@@ -70,7 +71,7 @@ class AttachmentEmailMiddleware implements MiddlewareInterface
             return $stack->next()->handle($envelope, $stack);
         }
 
-        if ($envelope->last(ReceivedStamp::class) instanceof \Symfony\Component\Messenger\Stamp\StampInterface) {
+        if ($envelope->last(ReceivedStamp::class) instanceof StampInterface) {
             $this->onReceive($email);
         } else {
             $this->onSend($email);
