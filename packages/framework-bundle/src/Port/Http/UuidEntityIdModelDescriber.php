@@ -24,11 +24,14 @@ final readonly class UuidEntityIdModelDescriber implements ModelDescriberInterfa
         return $model->getTypeInfo()->isIdentifiedBy(UuidEntityId::class);
     }
 
-    public function describe(Model $model, Schema $schema): void
+    /**
+     * PHPStan can be unignored when Nelmio got an update.
+     */
+    public function describe(Model $model, Schema $schema): void // @phpstan-ignore parameter.deprecatedClass
     {
         if ($model->getTypeInfo()->isIdentifiedBy(UuidEntityId::class)) {
-            $schema->type = 'string';
-            $schema->format = 'uuid';
+            $schema->type = 'string'; // @phpstan-ignore property.deprecatedClass
+            $schema->format = 'uuid'; // @phpstan-ignore property.deprecatedClass
         }
     }
 }

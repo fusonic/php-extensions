@@ -6,6 +6,8 @@
     script:
         - ./bin/publish-package.sh tag
     rules:
+        - if: $CI_PIPELINE_SOURCE == "schedule"
+          when: never
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           when: manual
         - when: never
@@ -23,6 +25,8 @@
     allow_failure: true # allow to avoid blocking the pipeline
     needs: []
     rules:
+        - if: $CI_PIPELINE_SOURCE == "schedule"
+          when: never
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           changes:
               - packages/${PACKAGE}/**/*
@@ -44,6 +48,8 @@
     allow_failure: true # allow to avoid blocking the pipeline
     needs: []
     rules:
+        - if: $CI_PIPELINE_SOURCE == "schedule"
+          when: never
         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
           when: never
         - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH

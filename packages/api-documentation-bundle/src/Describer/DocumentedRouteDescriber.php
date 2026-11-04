@@ -61,7 +61,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
 
             $documentedRoute = $this->getDocumentedRouteObject($method);
 
-            if (null === $documentedRoute) {
+            if (!$documentedRoute instanceof DocumentedRoute) {
                 continue;
             }
 
@@ -95,7 +95,7 @@ final class DocumentedRouteDescriber implements DescriberInterface
             $controller = $route->getDefault('_controller');
             $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
 
-            if (null === $reflectedMethod) {
+            if (!$reflectedMethod instanceof \ReflectionMethod) {
                 continue;
             }
             $path = $this->normalizePath($route->getPath());

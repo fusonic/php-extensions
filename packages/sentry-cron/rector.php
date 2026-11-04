@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
+use Rector\Symfony\CodeQuality\Rector\Class_\EventSubscriberToAttributeRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -33,6 +33,6 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
-        FlipTypeControlToUseExclusiveTypeRector::class,
         PreferPHPUnitThisCallRector::class,
+        EventSubscriberToAttributeRector::class,
     ]);

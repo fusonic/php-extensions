@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveEmptyClassMethodRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
@@ -34,7 +33,6 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
-        FlipTypeControlToUseExclusiveTypeRector::class,
         PreferPHPUnitThisCallRector::class,
         RemoveEmptyClassMethodRector::class => [
             __DIR__.'/tests/App/Controller/TestController.php',

@@ -49,10 +49,16 @@ final class AbstractIdModelDescriberTest extends AbstractTestCase
         );
 
         $describer = new EntityIdDescriber();
-        $schema = new Schema([]);
+
+        /**
+         * PHPStan can be unignored when Nelmio got an update.
+         *
+         * @phpstan-ignore method.deprecatedClass
+         */
+        $schema = new Schema([]); // @phpstan-ignore new.deprecatedClass
 
         $describer->describe($model, $schema);
 
-        self::assertSame('integer', $schema->type);
+        self::assertSame('integer', $schema->type); // @phpstan-ignore property.deprecatedClass
     }
 }

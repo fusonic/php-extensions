@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
@@ -38,7 +37,6 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
-        FlipTypeControlToUseExclusiveTypeRector::class,
         NarrowObjectReturnTypeRector::class => [
             // ↓ Rule breaks BC layer
             __DIR__.'/tests/Unit/Infrastructure/Doctrine/Types/UuidEntityIdTypeTest.php',

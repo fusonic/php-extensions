@@ -13,6 +13,7 @@ use Fusonic\ApiDocumentationBundle\AnnotationBuilder\PropertyExtractor;
 use Fusonic\ApiDocumentationBundle\Attribute\DocumentedError;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\TypeInfo\Type;
 
 final readonly class DocumentedErrorDescriber
 {
@@ -50,7 +51,7 @@ final readonly class DocumentedErrorDescriber
 
             $contextMethod = $this->resolveExceptionContextMethod($documentedError->exceptionClass);
 
-            if (null !== $contextMethod) {
+            if ($contextMethod instanceof \ReflectionMethod) {
                 $responseOptions['value'] = $this->buildContextResponseContent($contextMethod);
             }
 
@@ -91,13 +92,13 @@ final readonly class DocumentedErrorDescriber
         $extractor = new PropertyExtractor();
         $returnType = $extractor->extractMethodReturnType($contextMethod);
 
-        if (null === $returnType) {
+        if (!$returnType instanceof Type) {
             return new OA\JsonContent(['type' => 'object']);
         }
 
         $collectionType = $extractor->extractCollectionReturnType($returnType);
 
-        if (null !== $collectionType) {
+        if ($collectionType instanceof Type) {
             $itemType = $extractor->getTypeName($collectionType);
 
             if (null === $itemType) {
