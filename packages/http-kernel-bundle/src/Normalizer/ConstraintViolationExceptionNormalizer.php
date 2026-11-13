@@ -12,6 +12,7 @@ namespace Fusonic\HttpKernelBundle\Normalizer;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
  * A normalizer for {@see ConstraintViolationException}.
@@ -53,7 +54,12 @@ final readonly class ConstraintViolationExceptionNormalizer implements Normalize
                     $code = $violation->getCode();
 
                     if (null !== $constraint && null !== $code) {
-                        $normalized['violations'][$index]['errorName'] = $constraint::getErrorName($code);
+                        try {
+                            $normalized['violations'][$index]['errorName'] = $constraint::getErrorName($code);
+                        } catch (InvalidArgumentException) {
+                            // Not every violation code has a registered error name, e.g. the File constraint uses
+                            // the raw PHP upload error code (UPLOAD_ERR_*) as violation code. Omit the error name.
+                        }
                     }
                 }
             }
