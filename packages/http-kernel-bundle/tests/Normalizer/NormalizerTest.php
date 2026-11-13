@@ -12,7 +12,9 @@ namespace Fusonic\HttpKernelBundle\Tests\Normalizer;
 use Fusonic\HttpKernelBundle\Exception\ConstraintViolationException;
 use Fusonic\HttpKernelBundle\Normalizer\ConstraintViolationExceptionNormalizer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validation;
@@ -54,5 +56,26 @@ final class NormalizerTest extends TestCase
         self::assertSame('8', $result['violations'][0]['parameters']['{{ value_length }}']);
         self::assertSame('urn:uuid:9ff3fdc4-b214-49db-8718-39c315e33d45', $result['violations'][0]['type']);
         self::assertSame('TOO_SHORT_ERROR', $result['violations'][0]['errorName']);
+    }
+
+    public function testValidationErrorWithCodeWithoutErrorName(): void
+    {
+        // arrange
+        $validator = Validation::createValidator();
+        $normalizer = new ConstraintViolationExceptionNormalizer(new ConstraintViolationListNormalizer());
+
+        $file = new UploadedFile(__FILE__, 'upload.txt', null, \UPLOAD_ERR_PARTIAL, true);
+
+        // act
+        $violations = $validator->validate($file, new File());
+        self::assertCount(1, $violations);
+        self::assertSame((string) \UPLOAD_ERR_PARTIAL, $violations->get(0)->getCode());
+
+        $result = $normalizer->normalize(new ConstraintViolationException($violations));
+
+        // assert
+        self::assertSame('The file was only partially uploaded.', $result['violations'][0]['title']);
+        self::assertSame('urn:uuid:'.\UPLOAD_ERR_PARTIAL, $result['violations'][0]['type']);
+        self::assertArrayNotHasKey('errorName', $result['violations'][0]);
     }
 }
